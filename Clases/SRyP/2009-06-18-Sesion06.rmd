@@ -1,0 +1,431 @@
+---
+layout: post
+title: "Sesión 06"
+main-class: 'clase'
+permalink: /SemilleroRyPython/SRyP:title.html
+tags:
+
+introduction: |
+              Python<br>
+               - Estructuras de control <br>
+              &nbsp * Condicionales<br>
+              &nbsp * Ciclos<br>
+              - Funciones
+              
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../SemilleroRyPython/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+link-citations: yes
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../SemilleroRyPython/images/", "Sesion06"),
+               cache.path = "../../SemilleroRyPython/cache/",
+               cache = FALSE)
+
+```
+
+## Funciones que se introducen en esta sesión
+En ésta sesión se introducen las siguientes funciones
+
+* <tt>if</tt>: es usado cuando deseamos que una operación se ejecute únicamente cuando una condición se cumple.
+* <tt>else</tt>: es un complemento de la función <tt>if</tt>, y es usado para indicarle a <tt>R</tt> qué hacer en caso de la condición de un <tt>if</tt> no se cumpla.
+* <tt>elif</tt>: es otra función complementaria para la función <tt>if</tt>, y el objetivo es dar la posibilidad de establecer condicionales anidados, o en su defecto, establecer condiciones adicionales dentro de un <tt>if()</tt>
+* <tt>for</tt>: es usado para generar ciclos un número específico de veces.
+* <tt>while</tt>: es usado para generar ciclos a partir de una condición específica.
+* <tt>continue</tt>: es usado para finalizar la corrida de uno de los ciclos e iniciar el siguiente.
+* <tt>break</tt>: es usado para finalizar cualquier ciclo.
+* <tt>def</tt>: es usado para crear nuevas funciones.
+* <tt>return</tt>: es usado dentro de la función <tt>function</tt> para devolver un resultado en específico.
+
+## Qué es una estructura de control?
+Las estructuras de control son instrucciones que permiten controlar la forma en que se ejecutará una secuencia de comandos, puesto que dan la posibilidad de establecer funciones en el código que permitan ejecutar o no algunas secuencias de código, o ejecutar repetidamente fragmentos de código una y otra vez.
+
+## Qué es un condicional?
+Los condicionales son acciones usadas en programación, que **permiten que se ejecute un conjuntos de instrucciones, en función de si se cumple o no una condición establecida previamente**.
+
+## Funciones condicionales en <tt>Python</tt>
+La función básica en <tt>Python</tt> para establecer condicionales, que permitan ejecutar fragmentos de código, es función <tt>if/elif/else</tt>.\newline
+
+La función <tt>if()</tt> permite ejecutar una secuencia de código basada en el cumplimiento de una condición preestablecida. Similar a lo explicado en <tt>R</tt> sobre las función <tt>if</tt>, en <tt>Python</tt> puede emplearse dicha función de tres formas diferentes. La primera, es mediante el establecimiento de la función <tt>if()</tt> sin establecer qué pasa en caso de no cumplirse la condición. La estructura en este caso está dado por
+
+```{python eval=F}
+if <condición>: 
+  # Fragmento de código que se ejecuta en caso de que la condición sea verdadera
+```
+
+La segunda, es mediante el empleo de la función <tt>if()</tt> seguido de la función <tt>else</tt>, siendo la función <tt>else</tt> la que permite establecer qué pasa en caso de que no se cumpla la condición inicial. La estructura en este caso está dado por
+
+```{python eval=F}
+if <condición>:
+  # Fragmento de código que se ejecuta en caso de que la condición es verdadera
+else:
+  # Fragmento de código que se ejecuta en caso de que la condición es falta
+
+```
+
+La tercera, permite establecer en <tt>Python</tt> condicionales adicionales de forma anidada, para establecer diferentes salidas dependiendo de una serie de condiciones dadas. Para ello, se emplea la función <tt>elif</tt>, de la forma
+
+```{python eval=F}
+if <condición>:
+  # Fragmento de código que se ejecuta en caso de que la condición es verdadera
+elif <condición>:
+  # Fragmento de código que se ejecuta en caso de que la condición inicial es falsa y se desea establecer una condición adicional verdadera
+else:
+  # Fragmento de código que se ejecuta en caso de que la condición inicial es falsa y la condición anidada es falsa
+```
+
+También podrían establecerse condicionales anidados mediante el empleo de la función <tt>if()</tt> de forma sucesiva, tal que
+
+```{python eval=F}
+if(<condición>):
+  # Fragmento de código que se ejecuta en caso de que la condición es verdadera
+  if(<condición>):
+  # Fragmento de código que se ejecuta en caso de que la condición inicial es verdadera y se desea establecer una condición adicional verdadera
+  else:
+  # Fragmento de código que se ejecuta en caso de que la condición inicial es verdadera y la condición anidada es falsa
+else:
+  # Fragmento de código que se ejecuta en caso de que la condición inicial es falsa
+```
+
+Es de anotar, que la condición que se establece dentro del paréntesis de la función <tt>if()</tt>, suele establecerse mediante el empleo de [Operadores lógicos](../../SemilleroRyPython/SRyPSesion02.html#operadores-lógicos){:target="_blank"}. \newline
+
+<button id="Show1" class="btn btn-secondary">Mostrar Ejemplo en <tt>Python</tt></button>
+<button id="Hide1" class="btn btn-info">Ocultar Ejemplo en <tt>Python</tt></button>
+<main id="botoncito1"> 
+<h3 data-toc-skip> Función <tt>if</tt> </h3> 
+<p>Establezca una semilla con número $1754$, realice la selección aleatoria de dos números entre el $1$ y el $10$ sin remplazo, y calcule una variable $X$ igual a la resta entre el primero y el segundo número. Establezca un condicional que evalué la variable $X$ e imprima el mensaje <i>"La resta es negativa"</i>, si se encuentra que la resta es menor a $0$.</p>
+
+```{python echo=F, eval=F}
+import random as rd
+rd.seed(1754) # Se establece la semilla
+A = rd.sample(range(1,11), k = 2) # Se crean los dos números aleatorios sin reemplazo
+# Se establece 11 debido a que el valor superior lo toma como conjunto de datos "abierto" lo que significa que no se incluye el 11.
+A
+X = A[0] - A[1] # Se realiza la resta del primer dato menos el segundo
+X
+# Se crea el condicional
+if X < 0:
+  print("La resta es negativa")
+```
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="n">rd</span>
+<span class="n">rd</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1754</span><span class="p">)</span> <span class="c1"># Se establece la semilla
+</span><span class="n">A</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">),</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># Se crean los dos números aleatorios sin reemplazo
+# Se establece 11 debido a que el valor superior lo toma como conjunto de 
+# datos "abierto" lo que significa que no se incluye el 11.
+</span><span class="n">A</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>[4, 3]
+</code></pre></section></section>
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Se realiza la resta del primer dato menos el segundo
+</span><span class="n">X</span>
+<span class="c1"># Se crea el condicional
+</span></code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>1
+</code></pre></section></section>
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p"> </span><span class="n">X</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"La resta es negativa"</span><span class="p">)</span>
+</code></pre></section></section>
+
+<h3 data-toc-skip> Función <tt>if/else</tt> </h3> 
+<p>Establezca una semilla con número $143$, realice la selección aleatoria de un número entre el $-10$ y el $10$, sin incluir el $0$. Si el número generado es positivo imprima el mensaje <i>"El número generado es positivo e igual a"</i> seguido del número generado, en caso de que se cumpla la condición imprima el mensaje <i>"El número generado es negativo e igual a"</i> seguido del número.</p>
+
+```{python echo=F, eval=F}
+import random as rd
+rd.seed(143) # Se establece la semilla
+datos = list(range(-10,11))
+del datos[10] # Se elimina el 0
+datos
+
+B = rd.sample(datos, k = 1) # Se crean el número números aleatorios
+B
+# Se crea el condicional
+if B[0] > 0: 
+  print("El número generado es positivo e igual a", B[0])
+else:
+  print("El número generado es negativo e igual a", B[0])
+```
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="n">rd</span>
+<span class="n">rd</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">143</span><span class="p">)</span> <span class="c1"># Se establece la semilla
+</span><span class="n">datos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
+<span class="k">del</span> <span class="n">datos</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="c1"># Se elimina el 0
+</span><span class="n">datos</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>[-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</code></pre></section></section>
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="n">B</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">datos</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Se crean el número números aleatorios
+</span><span class="n">B</span>
+<span class="c1"># Se crea el condicional
+</span></code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>[-5]
+</code></pre></section></section>
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> 
+  <span class="k">print</span><span class="p">(</span><span class="s">"El número generado es positivo e igual a"</span><span class="p">,</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"El número generado es negativo e igual a"</span><span class="p">,</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>El número generado es negativo e igual a -5
+</code></pre></section></section>
+
+<h3 data-toc-skip> Función <tt>elif</tt> </h3> 
+<p>Genere cinco números aleatorios de una distribución normal estándar con la semilla $8546$, y calcule el promedio de los mismos. Contruya una función que diga si el valor promedio estimado, es superior, inferior o igual la media real, e imprima la media muestral obtenida.</p>
+
+```{python echo=F, eval=F}
+import numpy as np
+import random as rd
+# Se generan los cinco números de la distribución normal estándar
+rd.seed(8546)
+datos = np.random.normal(loc = 0, scale = 1, size = 5)
+
+# Se crea el condicional
+if np.mean(datos) > 0: 
+  print("El valor de la media muestral es mayor a la media real, e igual a", np.round(np.mean(datos), 3))
+elif np.mean(datos) < 0: 
+  print("El valor de la media muestral es menor a la media real, e igual a", np.round(np.mean(datos), 3))
+else: 
+  print("El valor de la media muestral es igual a la media real")
+```
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="n">rd</span>
+<span class="c1"># Se generan los cinco números de la distribución normal estándar
+</span><span class="n">rd</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8546</span><span class="p">)</span>
+<span class="n">datos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Se crea el condicional
+</span><span class="k">if</span><span class="p"> </span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">datos</span><span class="p"> </span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span> 
+  <span class="k">print</span><span class="p">(</span><span class="s">"El valor de la media muestral es mayor a la media real, e igual a"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">datos</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">elif</span><span class="p"> </span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> 
+  <span class="k">print</span><span class="p">(</span><span class="s">"El valor de la media muestral es menor a la media real, e igual a"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">datos</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span> 
+  <span class="k">print</span><span class="p">(</span><span class="s">"El valor de la media muestral es igual a la media real"</span><span class="p">)</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>El valor de la media muestral es menor a la media real, e igual a -0.049
+</code></pre></section></section>
+
+</main>
+
+## Qué es un ciclo?
+Un ciclo o bucle, es una acción que tiene por objetivo **replicar una o un secuencia de instrucciones** un número determinado de veces con cambios menores, a través de uno o varios índices, hasta que se cumpla una condición o un límite máximo de iteraciones establecidas previamente en la construcción del ciclo.
+
+
+## Funciones para ciclos en <tt>Python</tt>
+Para el caso de los ciclos, existen dos funciones básicas en <tt>Python</tt> que **permiten realizar bucles, es decir, fragmentos de código que se repiten una y otra vez, sin tener que escribir varias veces el mismo fragmento de código**. Estas funciones están dadas por <tt>for</tt> y <tt>while</tt>. Adicionalmente, se presenta la función <tt>break</tt> el cual sirve para detener cualquier ciclo y la función <tt>continue</tt> que sirve para dejar de ejecutar el resto de un ciclo y pasa a ejecutar el siguiente. \newline
+
+La función <tt>for()</tt> **permite ejecutar una secuencia de código un número específico de veces, a partir un índice que se establece mediante una secuencia numérica, vector o lista**. El ciclo se ejecutará para cada valor si es una secuencia numérica, recorrerá cada valor si es un vector o para cada elemento sucesivo si es una lista. La estructura de la función <tt>for</tt> está dada por
+
+```{python eval=F}
+for <índice> in <secuencia>:
+  # Fragmento de código que se ejecuta una y otra vez
+```
+
+Por su parte, la función <tt>while</tt> **permite establecer una condición lógica, para repetir un ciclo un sin número de veces, hasta que dicha condición lógica se cumpla**. La condición establecida, suele escribirse generalmente mediante el empleo de [Operadores lógicos](../../SemilleroRyPython/SRyPSesion02.html#operadores-lógicos){:target="_blank"} o mediante la comparación entre una variable de control y un valor. La estructura de la función <tt>while</tt> está dada por
+
+```{python eval=F}
+while <condición>:
+  # Fragmento de código que se ejecuta una y otra vez
+```
+
+<button id="Show2" class="btn btn-secondary">Mostrar Ejemplo en <tt>Python</tt></button>
+<button id="Hide2" class="btn btn-info">Ocultar Ejemplo en <tt>Python</tt></button>
+<main id="botoncito2"> 
+<h3 data-toc-skip> Función <tt>for</tt> </h3> 
+<p>Cree una secuencia de número del $6$ al $25$, y calcule e imprima de forma iterativa la raíz cuadrada de cada valor de la secuencia, mientras que se cumpla la condición de que la raíz cuadrada es menor a $4$.</p>
+
+```{python echo=F, eval=F}
+import math as mt
+import pandas as pd
+# Se crea la secuencia del 1 al 20
+seq = range(6, 26)
+# Creo lista vacía
+raices = []
+# Se crea secuencia
+for i in range(0, len(seq)):
+  if mt.sqrt(seq[i]) >= 4: break
+  raices.append(mt.sqrt(seq[i]))
+
+# Imprimir valor original junto a la raíz
+pd.DataFrame({"Originales" : seq[0:len(raices)], "Raíces" : raices})
+```
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span> <span class="k">as</span> <span class="n">mt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="c1"># Se crea la secuencia del 1 al 20
+</span><span class="n">seq</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+<span class="c1"># Creo lista vacía
+</span><span class="n">raices</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Se crea secuencia
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)):</span>
+  <span class="k">if</span> <span class="n">mt</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span> <span class="k">break</span>
+  <span class="n">raices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+<span class="c1"># Imprimir valor original junto a la raíz
+</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">"Originales"</span><span class="p">:</span><span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">raices</span><span class="p">)],</span> <span class="s">"Raíces"</span><span class="p">:</span><span class="n">raices</span><span class="p">})</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>   Originales    Raíces
+0           6  2.449490
+1           7  2.645751
+2           8  2.828427
+3           9  3.000000
+4          10  3.162278
+5          11  3.316625
+6          12  3.464102
+7          13  3.605551
+8          14  3.741657
+9          15  3.872983
+</code></pre></section></section>
+
+<h3 data-toc-skip> Función <tt>while</tt> </h3> 
+<p>Establezca una semilla igual a $184$, y haga la selección aleatoria de un número entre el $1$ y el $100$. Cree un ciclo, con un contador de iteraciones, en el cual se seleccione un número aleatorio entre $1$ y $10$, y se le sume y reemplace el valor inicialmente generado. Repita el ciclo hasta que el número final sea mayor a $200$, y reporte el número de iteraciones que fueron necesarias para llegar a dicho número. </p>
+
+```{python echo=F, eval=F}
+import random as rd
+
+# Se establece la semilla
+rd.seed(184)
+# Se realiza la selección aleatoria 
+seleccion = rd.sample(range(1,101), k = 1)[0]
+# Se crea contador de iteraciones
+iteracion = 0
+# Se crea secuencia
+while seleccion <= 200:
+  crecimiento = rd.sample(range(1, 11), k = 1)[0]
+  seleccion = seleccion + crecimiento
+  iteracion = iteracion + 1
+print("El número de iteraciones necesarias fue de:",iteracion)
+```
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="n">rd</span>
+
+<span class="c1"># Se establece la semilla
+</span><span class="n">rd</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">184</span><span class="p">)</span>
+<span class="c1"># Se realiza la selección aleatoria 
+</span><span class="n">seleccion</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">),</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># Se crea contador de iteraciones
+</span><span class="n">iteracion</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># Se crea secuencia
+</span><span class="k">while</span> <span class="n">seleccion</span> <span class="o">&lt;=</span> <span class="mi">200</span><span class="p">:</span>
+  <span class="n">crecimiento</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">seleccion</span> <span class="o">=</span> <span class="n">seleccion</span> <span class="o">+</span> <span class="n">crecimiento</span>
+  <span class="n">iteracion</span> <span class="o">=</span> <span class="n">iteracion</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"El número de iteraciones necesarias fue de:"</span><span class="p">, </span><span class="n">iteracion</span><span class="p">)</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>El número de iteraciones necesarias fue de: 31
+</code></pre></section></section>
+
+</main>
+
+## Por qué crear función?
+Una de las principales ventajas de usar un lenguaje de programación en lugar de un programa que solo use funciones estáticas, es que te da la libertar de crear funciones propias para facilitar o automatizar algunos procesos que se usan recurrentemente, debido a que **es posible albergar secuencias completas de código, dentro de una función para usarla posteriormente**, sin tener que volver a realizar la misma programación en el mismo código. Usualmente se crean funciones cuando hay que realizar presentaciones, investigaciones o cuando se deba compartir el código con el público.
+
+## Crear funciones en <tt>Python</tt>
+Para definir funciones nuevas en <tt>Python</tt> es necesario emplear la función <tt>def</tt>, la cual posee una estructura de la forma
+
+```{r eval=F}
+def <nombre funcion>(<argumentos>):
+  """documentación (opcional)"""
+  # Fragmento de código que se desea incorporar en la función
+
+```
+
+La estructura anterior presentada muestra las componentes que son necesarias para la construcción de una función, en donde se observa
+
+* La función <tt>def</tt> es la que inicia la construcción de la función
+* El nombre de la función puede estar dado por cualquier conjunto de carácteres alfa numéricos.
+* Los argumentos son los parámetros que desean especificarse para usar dentro de la función.
+* Los dos puntos <tt>:</tt> denotan el fin del encabezado de la función.
+* Puede establecerse o no la documentación relacionada con la función, en donde se explique qué hace y cómo funciona.
+* Se establece el cuerpo o contenido de la función, mediante la escritura de los diferentes códigos que se desean agregar en ésta.
+* Se entregan los resultados de la función, una se realiza las operaciones que se han definido en el cuerpo. La función <tt>return</tt> permite devolver los resultados finales de interés.
+
+<button id="Show3" class="btn btn-secondary">Mostrar Ejemplo en <tt>Python</tt></button>
+<button id="Hide3" class="btn btn-info">Ocultar Ejemplo en <tt>Python</tt></button>
+<main id="botoncito3"> 
+<h3 data-toc-skip> Función <tt>def</tt> </h3> 
+<p>Cree una función que permita calcular la probabilidad de obtener más de $3$ caras en el lanzamiento de $10$ monedas, y compare el resultado obtenido con el de una distribución binomial.</p>
+
+```{python echo=F, eval=F}
+# Se crea función la función
+def mipbinom(x, n, p, izquierda = True):
+  prob = []
+  import math as mt
+  if izquierda == True: 
+    # P(X<=x)
+    for k in range(0,(x+1)):
+      prob.append((mt.factorial(n)/(mt.factorial(n-k)*mt.factorial(k)))*(p**k)*((1-p)**(n-k)))
+  else:
+    for k in range((x+1),(n+1)): 
+    # P(X>x)
+      prob.append((mt.factorial(n)/(mt.factorial(n-k)*mt.factorial(k)))*p**k*(1-p)**(n-k))
+  return({"Prob": sum(prob)})
+
+# Se emplea función creada
+mipbinom(x = 4, n = 10, p = 0.5, izquierda = False)
+# Se emplea función binomial
+import scipy.stats as sp
+1-sp.binom.cdf(k = 4, n = 10, p = 0.5)
+```
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="c1"># Se crea función la función
+</span><span class="k">def</span> <span class="nf">mipbinom</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">izquierda</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
+  <span class="n">prob</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="kn">import</span> <span class="nn">math</span> <span class="k">as</span> <span class="n">mt</span>
+  <span class="k">if</span> <span class="n">izquierda</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span> 
+    <span class="c1"># P(X&lt;=x)
+</span>    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+      <span class="n">prob</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mt</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">mt</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">)))</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)))</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">),(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span> 
+    <span class="c1"># P(X&gt;x)
+</span>      <span class="n">prob</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mt</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">mt</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">)))</span><span class="o">*</span><span class="n">p</span><span class="o">**</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">))</span>
+  <span class="k">return</span><span class="p">({</span><span class="s">"Prob"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">prob</span><span class="p">)})</span>
+
+<span class="c1"># Se emplea función creada
+</span><span class="n">mipbinom</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">izquierda</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span></code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>{'Prob': 0.623046875}
+</code></pre></section></section>
+
+<section class="language-python highlighter-rouge"><section class="highlight"><pre class="highlight"><code><span class="c1"># Se emplea función binomial
+</span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="n">sp</span>
+<span class="mi">1</span><span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+</code></pre></section></section>
+
+<section class="highlighter-rouge"><section class="highlight"><pre class="highlight"><code>0.6230468749999999
+</code></pre></section></section>
+
+</main>

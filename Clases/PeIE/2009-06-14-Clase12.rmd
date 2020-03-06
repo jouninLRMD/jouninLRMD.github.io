@@ -1,0 +1,111 @@
+---
+layout: post
+title: "Clase 12"
+main-class: 'clase'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: |
+  Introducción a la inferencia estadística. <br/>
+  Estadísticos. <br/>
+  Distribuciones muestrales: <br/>
+  - Distribución muestral para la media muestral. <br/>
+  - Teorema del Límite Central. <br/>
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all")})
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Clase12"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Inferencia estadística
+La inferencia estadística es la obtención de conclusiones basadas en datos experimentales. Para entender la naturaleza de la inferencia estadística, se debe entender primero la diferencia entre "población" y "muestra".
+
+**Población:** Consta del total de observaciones del suceso o proceso en que estamos interesados. En muchas ocasiones, no es posible obtener o replicar dicha información.
+
+**Muestra:** Es un subconjunto de la población de interés, extraída con el objetivo de hacer inferencia sobre la población.
+
+**Muestra aleatoria:** Es un subconjunto de la población seleccionado de forma independiente e idénticamente distribuidos (*iid* en adelante).
+
+## Estadístico
+Son funciones de las variables aleatorias obtenidas a partir de muestras aleatorias, que tienen por objetivo estimar o hacer inferencia acerca de parámetros desconocidos de una población.
+
+A continuación se definirán algunos estadísticos importantes que sirven para medir el centro y la dispersión de un conjunto de datos, acomodados por orden de magnitud.
+
+## Estadísticos muestrales
+Sea `$X_1, X_2, \ldots, Xn$` una muestra aleatoria *iid* de tamaño `$n$`, entonces se tendrán los siguientes estadísticos muestrales
+
+### Media muestral
+Es el promedio aritmético del total de las `$n$` observaciones pertenecientes a una muestra aleatoria. Éste estadístico se define como
+`\begin{align*}
+  \bar{X}=\sum_{i=1}^n\frac{x_i}{n}=\frac{x_1+x_2+\ldots+x_n}{n}
+\end{align*}`
+
+En <tt>R</tt>, puede calcularse el valor de la media muestral de una muestra aleatoria mediante la función `mean(datos)`.
+
+### Varianza muestral
+Es la distancia media **al cuadrado** del conjunto de observaciones pertenecientes a una muestra aleatoria, respecto a la media muestra.
+`\begin{align*}
+  S^2=\frac{1}{n-1}\sum_{i=1}^n{(x_i-\bar{X})^2}
+\end{align*}` 
+
+siendo el valor `$n-1$` conocido como la corrección de Bessel, el cuál se usa en lugar de la división sobre `$n$` con el fin de corregir el sesgo tendría el estimador.
+
+En <tt>R</tt> puede calcularse la varianza muestral de una muestra aleatoria mediante la función `var(datos)`.
+
+### Desviación estándar muestral
+Es la raíz cuadrada de la distancia media **al cuadrado** del conjunto de observaciones pertenecientes a una muestra aleatoria, respeto a la media, es decir, indica qué tan dispersos se encuentra el conjunto de observaciones de una muestra aleatoria respecto a su valor promedio.
+`\begin{align*}
+  S=\sqrt{S^2}
+\end{align*}`
+
+En <tt>R</tt> puede calcularse la desviación estándar de una muestra aleatoria mediante la función `sd(datos)`.
+
+## Distribuciones muestrales
+Debido a que todos los estadístico son funciones de las variables aleatorias observadas en una muestra, éstos también serán variables aleatorias que tendrán distribuciones de probabilidad asociadas, distribuciones que son llamadas distribuciones muestrales.
+
+### Distribución muestral de `$\bar{X}$`
+Sea `$X_1, X_2, \ldots, X_n$` una muestra aleatoria de tamaño `$n$` de una distribución normal con media `$\mu$` y varianza `$\sigma^2$`, entonces se puede mostrar que
+`\begin{align*}
+\bar{X}=\frac{1}{n}\sum_{i=1}^n \sim N(\mu, \sigma^2/n)
+\end{align*}`
+se distribuye normalmente con media `$mu$` y varianza `$\sigma^2/n$`.
+
+#### Teorema
+Dado que `$\bar{X}\sim N(\mu,\sigma^2/n)$`, entonces se puede aplicar la estandarización que se emplea a la distribución normal para llevar ésta, a una distribución normal estándar. Dicha estandarización sería de la forma
+`\begin{align*}
+Z = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim N(0,1)
+\end{align*}`
+y se tendrá que `$Z$` se distribuirá como una normal estándar de forma exacta.
+
+### Teorema del límite central
+Sea `$X_1, X_2, \ldots, X_n$` una muestra aleatoria *iid* con media `$\mathbb{E}(X_i) = \mu$` y varianza `$Var(X_i)=\sigma^2<\infty$` entonces, cuando `$n\to \infty$`, se tendrá que
+`\begin{align*}
+Z = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \stackrel{a}{\sim} N(0,1)
+\end{align*}`
+tendrá una distribución aproximadamente normal estándar, cuando `$n\sim \infty$`

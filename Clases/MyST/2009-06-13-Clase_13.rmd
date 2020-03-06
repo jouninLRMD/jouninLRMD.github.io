@@ -1,0 +1,164 @@
+---
+layout: post
+title: "Clase 13"
+main-class: 'clase'
+permalink: /MuestreoySeriesdeTiempo/MyST:title.html
+tags:
+
+introduction: |
+  Definición de encuesta y sus tipos. </br>
+  Por qué hacer encuestas? </br>
+  Etapas en el análisis de encuestas. </br>
+  Diseño de un cuestionario.
+
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../MuestreoySeriesdeTiempo/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+link-citations: yes
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../MuestreoySeriesdeTiempo/images/", "Clase13"),
+               cache.path = "../../MuestreoySeriesdeTiempo/cache/",
+               cache = FALSE)
+```
+
+## Qué es una encuesta
+La encuesta es un método de investigación y recopilación de datos que consta de una serie de preguntas estandarizadas hechas a una muestra representativa de la población de la que buscamos obtener informacion sobre diversos temas. Éstas poseen una gran variedad de propósitos y pueden llevarse a cabo de muchas maneras dependiendo de la metodología elegida y los objetivos que se deseen alcanzar.
+
+## Las razones más comunes para usar encuestas
+* Investigación de mercado.
+* Medición del clima laboral.
+* Medición de la satisfaccion al cliente.
+* Lanzamiento de productos nuevos.
+* Generar estadísticas.
+* Conocer tendencias (tendencias electorales).
+* Caracterización de una población.
+
+## Tipos de encuestas
+El tipo de las encuestas dependen de las componentes que se deseen abordar, las cuales se reparten en tres caracteristicas principales
+
+* Según la forma de aplicación
+  * Encuesta por correo
+  * Encuesta directa
+  * Encuesta telefónicas
+  * Encuesta personal
+  * Encuesta online
+  * Combinación de los anteriores
+* Según sus objetivos
+  * **Encuestas descriptivas:** buscan crear un registro sobre las actitudes o condiciones presentes dentro de una población en un momento determinado, es decir, en el momento en el que se realiza la encuesta.
+  * **Encuestas análiticas:** su objetivo es explicar y describir el problema para poder encontrar la mejor solución.
+* Según las el tipo de cuestionario
+  * **Respuesta abierta:** permiten al encuestado tener la libertad de responder libremente cada pregunta, esto permite obtener respuestas más profundas y también obtener respuestas en las que no había pensado, sin embargo, el problema de este tipo de encuestas es que es muy difícil de cuantificar, por el contrario se deben interpretar las respuestas.
+  * **Respuesta cerrada:** en este tipo, los encuestados deberán elegir alguna de las posibles opciones, su principal ventaja es que son más fáciles de cuantificar, sin embargo, en ocasiones ninguna de las opciones refleja el pensamiento de los participantes, para ello, siempre es recomendable añadir la casi “otro”.
+  
+## Objetivos de una encuesta
+Existen varios razones u objetivos que tienen las encuestas, entre las cuales puede destacarse como las razones más comunes:
+
+* Medir las relaciones entre variables demogrráficas, económicas y sociales.
+* Evaluar las estadísticas demográficas como errores, omisiones e inexactitudes.
+* Conocer profundamente patrones de las variables demográficas y sus factores asociados como fecundidad y migraciones determinantes.
+* Evaluar periódicamente los resultados de un programa en ejecución.
+* Saber la opinión del público acerca de un determinado tema.
+* Investigar previamente de las características de la población para hacer las preguntas correctas.
+
+## Etapas de la encuesta
+Generalmente, el origen de la encuesta ocurre cuando una persona, empresa u organización se enfrenta a la necesidad de obtener información sobre un tema en específico, y no existen o no tienen a la mano dato suficientes para la realización de un análisis adecuado. Debido a lo anterior, en @Hilario2013[, pp. 323-325], los autores establecen las etapas que deben tenerse en cuenta para la realización de encuestas:
+
+1. **Planteamiento de objetivos de la encuesta:** Estos objetivos deben ser claros y específicos, para poder remitirse a ellos a medida que se vaya progresando en el diseño e instrumentación de la encuesta. Se deben de mantener los objetivos suficientemente simples, de tal manera que sean entendidos por quienes trabajan en la encuesta y sean logrados exitosamente cuando se complete la misma.
+2. **Selección de la población objetivo:** Definir de forma cuidadosa el segmento de la población de interés, para la cual debe precisarse de acuerdo a los conceptos y variables que se quieren medir. Para seleccionar la muestra correctamente, la población objetivo deberá de coincidir con la que se muestrea; en caso de no ser así los resultados son aplicables únicamente a la población muestreada.
+Por ejemplo, en una encuesta política ¿la población objetivo debieran ser todos los adultos que pueden votar? ¿Todos los votantes registrados? ¿Todas las personas que votaron en la última elección? En ocasiones se deben definir los conceptos o nociones que sean necesarios para el planteamiento de la población. Así por ejemplo si se van a hacer un muestreo de adultos, defina qué se entiende por adulto, pues la elección de la población objetivo afectará profundamente las estadísticas resultantes.  
+3. **Elección del marco de muestreo:** El marco de muestreo es la lista de las unidades de muestreo. Éstas últimas son las unidades donde realizamos la muestra; por ejemplo una familia es una unidad de muestreo y los individuos que viven en ella serán unidades de observación. Se debe seleccionar el marco (o marcos) de tal forma que la lista de las unidades muestrales y la población objetivo concuerden lo más posible. Para las encuestas telefónicas el marco de muestreo podría ser una lista de todos los números residenciales de la ciudad; para las entrevistas personales, una lista de las direcciones de todas las calles; para una encuesta de agricultura, una lista de todas las granjas o un mapa de las áreas que contienen granjas. Debe tenerse en cuenta que marcos múltiples pueden hacer el muestreo más eficiente. Hay que tener cuidado con las posibles deficiencias que presente el marco, como información incompleta, obsoleta, inadecuada, etcétera, pues afectará los resultados a obtener.
+4. **Establecimiento del método de medición:** Decidir sobre el método de medición. Estos son usualmente: entrevistas personales, telefónicas, cuestionarios enviados por correo u observación directa. En este aspecto, la encuesta puede clasificarse dependiendo si su método de aplicación es realizado mediante autoaplicación (Entrega directa,  por correo electrónico u online) o usando encuestador (Vía telefónica o de forma personal)
+5. **Instrumento de medición:** Junto a las etapas anteriores, es necesario especificar cuidadosamente qué mediciones van a ser obtenidas. Si se va usar un cuestionario planee las preguntas de tal manera que se minimice la no respuesta y el sesgo en las mismas. Hay que tener siempre en mente que la disposición de un encuestado para responder, dependerá de la presentación de la encuesta. Ésta debe contener la presentación de los objetivos del estudio e instrucciones sobre el llenado. Es conveniente incluir datos de identificación como: nombre de la institución, nombre del entrevistador, número del cuestionario de la muestra, hora de inicio de la entrevista y todo tipo de datos que sirvan para el control de la investigación. La sección final deberá contener el cierre de la entrevista, la hora de terminación y espacio para que el entrevistador anote sus observaciones, o para algún otro dato que el entrevistador determine es conveniente observar y anotar. Se debe tener en cuenta también
+   * **Orden de las preguntas:** Se recomienda que aparezcan primero las preguntas más generales y después las específicas. Conviene que la complejidad de las preguntas vaya de menos a más. Enseguida deberán estar las preguntas referentes al tema de investigación y finalmente, si se desea, las preguntas de opinión o actitudes. La secuencia de las preguntas debe diseñarse de manera que evite la llamada contaminación, que consiste en la influencia o sesgo que el orden de las preguntas puede ejercer en las respuestas del informante.
+   * **Contenido de las preguntas:** Debe verificarse que las preguntas realmente permitan recabar la información necesaria para cubrir el o los objetivos planteados. Para ello puede haber preguntas cortas o de opinión, si el tema lo requiere. A veces es recomendable la combinación de **preguntas abiertas** (el entrevistado no enfrenta categorías en la respuesta) y **preguntas cerradas** (se presentan opciones múltiples), para darle motivación al encuestado. Éstas últimas permiten una sencilla codificación y captura de la información. En consecuencia con lo anterior, la mayoría de las preguntas deben de tener una respuesta numérica simple (como la edad del entrevistado) o un número fijo de selecciones predeterminadas, una de las cuales será elegida por el entrevistado
+   * **Redacción de las preguntas:** Éstas deben realizarse con un lenguaje acorde a las personas a quienes van dirigidas. No es comparable la terminología de un especialista con la de la población en general. Por otra parte, muchas preguntas que pueden parecer claras para quien diseña la encuesta, no lo serán para el encuestado. Digamos, preguntar *¿cuántos niños hay en su familia?*, en este caso no es claro para muchos, pues no se especifica hasta que edad se considerara que la persona es todavía un niño. Se debe evitar asimismo preguntas que induzcan al entrevistado a decir lo que se quiere escuchar. Por ejemplo plantear, La Iglesia Católica está en contra del uso del condón, ¿y usted? Incrementa la proporción de encuestados que quieren compartir la opinión de la Iglesia. Asimismo, preguntas como ¿cuál es el problema principal que enfrenta el magisterio? Brinda un rango de posibilidades que tal vez origine respuestas que no corresponden a la información que se quería recabar. Es por eso que se debe ser muy cuidadoso en la redacción de las preguntas de una encuesta.
+6. **Diseño de muestreo:** Se debe planear cuidadosamente el diseño de muestreo, calculando un número apropiado de elementos de la muestra, de tal manera ésta proporcione suficiente información para los objetivos de la encuesta. Muchas encuestas producen poca o inútil información porque no fueron diseñadas apropiadamente.
+   * **Muestreo dirigido o de juicio:** Sus elementos son seleccionados mediante decisión personal.
+     * Generalmente un experto selecciona los elementos de la muestra.
+   * **Muestreo aleatorio simple:** Cada elemento de la población tiene igual oportunidad de ser seleccionado.
+     * La selección de la muestra es objetiva y el error muestral puede ser medido.
+     * Toma una muestra de tamaño `$n$` de una población de tamaño `$N$`.
+     * Cada elemento tiene una probabilidad `$n/N$` de entrar en la muestra.
+   * **Muestreo sistemático:** Los elementos seleccionados en una manera ordenada.
+     * Los elementos de la población están ordenados al azar.
+     * El número de elementos en la población es dividido por el número deseado en la muestra.
+   * **Muestreo aleatorio estratificado:** Se utiliza para garantizarla representativa cuando hay indicios que la población es muy heterogénea.
+     * La población se divide en grupos (estratos) que son más homogéneos.
+   * **Muestreo por clusters:** Se selecciona una parte de los grupos al azar o por un método sistemático, cuando existen agrupaciones "naturales" relativamente homogéneos.
+     * Se toman todos los elementos de cada grupo seleccionado o una parte.
+7. **Selección y adiestramiento de los investigadores de campo:** Se debe de seleccionar y adiestrar cuidadosamente a los investigadores de campo ya que después de que el plan de muestreo está claro y completamente establecido, alguien debe de recolectar apropiadamente los datos. Las personas que van a reunir los datos, deben ser cuidadosamente adiestrados sobre qué mediciones hacer y cómo realizarlas. El adiestramiento es especialmente importante si se usan entrevistas personales, porque la tasa de respuesta y la exactitud de las respuestas son afectadas por el estilo personal del entrevistador.
+8. **Prueba piloto:** Es recomendable seleccionar una pequeña muestra para una prueba piloto. La prueba piloto es crucial, ya que permite, probar en el campo el cuestionario y otros instrumentos de medición, calificar a los entrevistadores, etc. Los resultados de la prueba piloto usualmente sugieren algunas modificaciones antes de realizar el muestreo completo. 
+9. **Redacción del cuestionario definitivo:** Con los resultados de la prueba piloto, se revisan los distintos aspectos del cuestionario que se haya comprobado que no cumplen los objetivos establecidos y se hace la redacción definitiva del mismo. El diseño definitivo del cuestionario debe contemplar la futura codificación del mismo, ya sea reservando espacio para la misma, ya sea haciendo una pre-codificación del mismo, así como su presentación gráfica.
+10. **Organización del trabajo de campo:** Se debe planear con detalle el trabajo de campo. Cualquier encuesta a gran escala involucra un gran número de personas trabajando como entrevistadores, coordinadores o personal dedicado al manejo de datos. Antes de empezar con la encuesta se debe organizar cuidadosamente los trabajos, delimitando claramente las tareas, y estableciendo las líneas de autoridad.
+11. **Organización y manejo de datos:** Se debe elaborar un esquema el manejo apropiado de la información en todas las etapas de la encuesta. Las grandes encuestas generan gran cantidad de información y por ello requieren un plan bien preparado para el manejo de los datos. Este plan debe de incluir los pasos a seguir en el proceso de los datos, desde el momento en que se hace una medición en el campo hasta que el análisis final ha sido completado. Se debe incluir también un esquema de control de calidad para verificar la correlación entre los datos procesados y los datos recolectados en el campo.
+12. **Análisis de los datos:** Definir los análisis que deberán realizarse. Este punto está estrechamente relacionado con el paso anterior, e involucra la especificación detallada de los análisis que deben ser ejecutados. Se puede también listar los temas que se deberán incluir en el reporte final.
+
+## Desafíos metodológicos en la realización de encuestas
+Los desafíos metodológicos más importantes durante el proceso de realización de encuestas, incluye
+
+* Identificar y seleccionar posibles miembros de la muestra.
+* Ponerse en contacto con los individuos incluidos en la muestra y recopilar información que pueda ser sensible para los individuos.
+* Realizar la debida evaluación de la encuesta.
+* Seleccionar el mejor modo para hacer las preguntas y recopilar las respuestas.
+* De estar involucrados, realizar la debida capacitación y supervición de los entrevistadores.
+* Verificar la información recolectada para mayor precisión y consistencia interna.
+* Ajustar las estimaciones de la encuesta para corregir los errores identificados.
+
+## Recomendaciones para la realización de encuestas
+1. Asegúrese de que las preguntas sean imparciales, no trate de guiar al encuestado hacia una respuesta u otra.
+2. Formule las preguntas de la forma más sencilla posible. Las preguntas que incluyen indeas múltiples o dos interrogantes simultáneos confundirán a los encuestados.
+3. Formule preguntas concretas y sea muy específico con los tiempos. 
+4. Evite utilizar lenguaje técnico y abreviaturas. Tampoco emplee palabras especializadas de una industria, ni acrónimos o iniciales que no sean de uso común.
+5. No utilice palabras rebuscadas o poco comunes. Es conveniente emplear exclusivamente términos de lenguaje común.
+6. Evite el uso de palabras ambiguas. Palabras como normalmente o frecuentemente no tienen significado específico.
+7. Evite formular preguntas en negativo.
+8. Evite las preguntas hipotéticas. Es difícil responder preguntas sobre situaciones imaginarias, debido a que no siempre se puede confiar en las respuestas.
+9. No utilice palabras que puedan malintepretarse. Esto es especialmente importante cuando la entrevista se realiza por teléfono.
+10. Relativice las respuestas utilizando rangos de respuesta. Al usar cuestionarios en los que se pregunta por ejemplo por la edad, o el número de empleados despedidos en una empresa, es mejor ofrecer una serie de alternativas con diferentes rangos cuantitativos.
+11. Asegúrese de que las respuestas fijas no se solapen. Las categorías de las preguntas con respuesta fija deberían ser secuenciales y no sobreponerse unas con otras.
+12. Incluya la opción "otros" en las preguntas de respuesta fija. Cuando las respuestas están definidas, es recomendable dar siempre la opción de responder algo que no está en la lista.
+13. Evite realizar encuestas muy largas, debido a que estas pueden llegar a cansar al encuestado y hacer que abandone la encuesta o te responda apresuradamente y con errores.
+
+## Diseño de un cuestionario
+El cuestionario es un conjunto de preguntas sobre los hechos o aspectos que interesan en una investigación y son contestados por los encuestados. Se trata de un instrumento fundamental para la obtención de datos.
+
+Éste debe redactarse una vez se ha determinado el objetivo de la encuesta, en donde, las preguntas que se hagan deben responder a la información que se desea recolectar, con el fin de alcanzar los objetivos propuestos.
+
+Existen diferentes tipos de preguntas que pueden realizarse en una encuesta, entre las cuales se destaca
+
+* **Preguntas de identificación:** Edad, sexo, profesión, nacionalidad, etc.
+* **Preguntas de hecho:** Referidas a acontecimientos concretos.
+* **Preguntas de acción:** Referidas a actividades de los encuestados.
+* **Preguntas de información:** Para conocer los conocimientos de los encuestados.
+* **Preguntas de intención:** Para conocer la intención de los encuestados.
+* **Preguntas de opinión:** Para conocer la opinión de los encuestados.
+
+
+
+<!-- Para tener una muestra verdaderamente representativa. Se, de la cual se debe estar seguro de que todos los miembros del grupo a encuestar tengan la misma probabilidad de estar en la muestra, y/o se debe tener una muestra bastante grande. Además, es importante asegurarse de que el tamaño de la muestra que se escoja es adecuado y no excesivamente grande o pequeño. Si es muy grande, podría ser imposible encuestar a todos eficazmente y quedarse dentro del presupuesto asignado. Una regla general es que entre más grande sea la muestra, más exacto será el reflejo de la totalidad. -->
+
+<!-- Realizar el muestreo es un desafío necesario para llevar a cabo buenas encuestas; sin embargo, tiene sus dificultades. Por ejemplo, se dice que las personas voluntarias para responder la encuesta son auto-seleccionadas. Estas personas pueden tener un interés especial en responder la encuesta, por lo que sus respuestas pueden no ser verdaderamente representativas del grupo en el cual se está interesado. Hay maneras de tratar con audiencias auto-seleccionadas, tales como sólo usar una selección al azar de estas encuestas cuando únicamente se incluye la auto-selección. Por ejemplo, si se reciben 300 encuestas completas, se puede decidir sólo usar en orden cada tercera encuesta para que los resultados sean al azar. -->
+
+## Referencias

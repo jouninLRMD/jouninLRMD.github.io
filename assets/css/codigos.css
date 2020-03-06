@@ -1,0 +1,77 @@
+/* Códigos R */
+.language-r.highlighter-rouge .highlight{max-width: 50rem; margin-right: auto; margin-left: auto;}
+.language-r.highlighter-rouge .highlight pre{background-color:#000000; border:1px solid #e3edf3}
+@media only screen and (min-width:37.5rem){.language-r.highlighter-rouge .highlight{word-wrap:break-word}}
+.language-r.highlighter-rouge .highlight .hll{background-color:#333}
+.language-r.highlighter-rouge .highlight .c,.language-r.highlighter-rouge .highlight .cm,.language-r.highlighter-rouge .highlight .cp,.language-r.highlighter-rouge .highlight .cs{color:#75715e}
+.language-r.highlighter-rouge .highlight .c1{color:#0088ff}
+.language-r.highlighter-rouge .highlight .err{background-color:#000000}
+.language-r.highlighter-rouge .highlight .k,.language-r.highlighter-rouge .highlight .kd,.language-r.highlighter-rouge .highlight .kp,.language-r.highlighter-rouge .highlight .kr,.language-r.highlighter-rouge .highlight .kt,.language-r.highlighter-rouge .highlight .no{color:#ff9d00}
+.language-r.highlighter-rouge .highlight .l,.language-r.highlighter-rouge .highlight .mf,.language-r.highlighter-rouge .highlight .mh,.language-r.highlighter-rouge .highlight .mi,.language-r.highlighter-rouge .highlight .mo,.language-r.highlighter-rouge .highlight .se,.language-r.highlighter-rouge .highlight .il{color:#ae81ff}
+.language-r.highlighter-rouge .highlight .p{color:#FFFFFF; font-weight:bold}
+.language-r.highlighter-rouge .highlight .m{color:#ff628c}
+.language-r.highlighter-rouge .highlight .ni,.language-r.highlighter-rouge .highlight .nl,.language-r.highlighter-rouge .highlight .nn,.language-r.highlighter-rouge .highlight .py,.language-r.highlighter-rouge .highlight .nv,.language-r.highlighter-rouge .highlight .w,.language-r.highlighter-rouge .highlight .bp,.language-r.highlighter-rouge .highlight .vc,.language-r.highlighter-rouge .highlight .vg,.language-r.highlighter-rouge .highlight .vi{color:#d90000}
+.language-r.highlighter-rouge .highlight .n{color:#FFFFFF; font-weight:bold}
+.language-r.highlighter-rouge .highlight .kn,.language-r.highlighter-rouge .highlight .nt,.language-r.highlighter-rouge .highlight .ow{color:#f92672}
+.language-r.highlighter-rouge .highlight .ge{font-style:italic}
+.language-r.highlighter-rouge .highlight .gs{font-weight:bold}
+.language-r.highlighter-rouge .highlight .ld,.language-r.highlighter-rouge .highlight .s,.language-r.highlighter-rouge .highlight .sb,.language-r.highlighter-rouge .highlight .sc,.language-r.highlighter-rouge .highlight .sd,.language-r.highlighter-rouge .highlight .sh,.language-r.highlighter-rouge .highlight .si,.language-r.highlighter-rouge .highlight .sx,.language-r.highlighter-rouge .highlight .sr,.language-r.highlighter-rouge .highlight .s1,.language-r.highlighter-rouge .highlight .ss{color:#e6db74}
+.language-r.highlighter-rouge .highlight .na,.language-r.highlighter-rouge .highlight .nc,.language-r.highlighter-rouge .highlight .nd,.language-r.highlighter-rouge .highlight .ne,.language-r.highlighter-rouge .highlight .nx{color:#a6e22e}
+.language-r.highlighter-rouge .highlight .s2{color:#3ad900}
+.language-r.highlighter-rouge .highlight .o{color:#A8A8A8}
+.language-r.highlighter-rouge .highlight .kc, .language-r.highlighter-rouge .highlight .nb{color:#ff9d00} /* #da44ff no recuerdo porqué lo había puesto morado*/
+.language-r.highlighter-rouge .highlight .nf{color:#ff9d00}
+
+pre{color:#FFFFFF; font-weight:bold}
+
+/* Códigos Python */
+.language-python.highlighter-rouge .highlight{max-width: 50rem; margin-right: auto; margin-left: auto;}
+.language-python.highlighter-rouge .highlight pre{background-color:#940012; border:1px solid #e3edf3}
+@media only screen and (min-width:37.5rem){.language-python.highlighter-rouge .highlight{word-wrap:break-word}}
+.language-python.highlighter-rouge .highlight .hll{background-color:#333}
+.language-python.highlighter-rouge .highlight .c,.language-python.highlighter-rouge .highlight .cm,.language-python.highlighter-rouge .highlight .cp,.language-python.highlighter-rouge .highlight .cs{color:#75715e}
+.language-python.highlighter-rouge .highlight .c1{color:#0088ff}
+.language-python.highlighter-rouge .highlight .err{background-color:#940012}
+.language-python.highlighter-rouge .highlight .k,.language-python.highlighter-rouge .highlight .kc,.language-python.highlighter-rouge .highlight .kd,.language-python.highlighter-rouge .highlight .kp,.language-python.highlighter-rouge .highlight .kr,.language-python.highlighter-rouge .highlight .kt,.language-python.highlighter-rouge .highlight .no{color:#ff9d00}
+.language-python.highlighter-rouge .highlight .l,.language-python.highlighter-rouge .highlight .mh,.language-python.highlighter-rouge .highlight .mo,.language-python.highlighter-rouge .highlight .se,.language-python.highlighter-rouge .highlight .il{color:#ae81ff}
+.language-python.highlighter-rouge .highlight .p{color:#FFFFFF; font-weight:bold}
+.language-python.highlighter-rouge .highlight .m{color:#ff628c}
+.language-python.highlighter-rouge .highlight .nb,.language-python.highlighter-rouge .highlight .ni,.language-python.highlighter-rouge .highlight .nl,.language-python.highlighter-rouge .highlight .nn,.language-python.highlighter-rouge .highlight .py,.language-python.highlighter-rouge .highlight .nv,.language-python.highlighter-rouge .highlight .w,.language-python.highlighter-rouge .highlight .vc,.language-python.highlighter-rouge .highlight .vg,.language-python.highlighter-rouge .highlight .vi{color:#00d0ff}
+.language-python.highlighter-rouge .highlight .n{color:#FFFFFF; font-weight:bold}
+.language-python.highlighter-rouge .highlight .kn,.language-python.highlighter-rouge .highlight .nt,.language-python.highlighter-rouge .highlight .ow{color:#ffc107}
+.language-python.highlighter-rouge .highlight .ge{font-style:italic}
+.language-python.highlighter-rouge .highlight .gs{font-weight:bold}
+.language-python.highlighter-rouge .highlight .ld,.language-python.highlighter-rouge .highlight .s,.language-python.highlighter-rouge .highlight .sb,.language-python.highlighter-rouge .highlight .sc,.language-python.highlighter-rouge .highlight .sd,.language-python.highlighter-rouge .highlight .sh,.language-python.highlighter-rouge .highlight .si,.language-python.highlighter-rouge .highlight .sx,.language-python.highlighter-rouge .highlight .sr,.language-python.highlighter-rouge .highlight .s1,.language-python.highlighter-rouge .highlight .ss{color:#01d81b}
+.language-python.highlighter-rouge .highlight .na,.language-python.highlighter-rouge .highlight .nc,.language-python.highlighter-rouge .highlight .nd,.language-python.highlighter-rouge .highlight .ne,.language-python.highlighter-rouge .highlight .nf,.language-python.highlighter-rouge .highlight .nx{color:#a6e22e}
+.language-python.highlighter-rouge .highlight .s2{color:#3ad900}
+.language-python.highlighter-rouge .highlight .o{color:#A8A8A8}
+pre{color:#FFFFFF; font-weight:bold}
+.language-python.highlighter-rouge .highlight .bp{color:#ff42f0}
+.language-python.highlighter-rouge .highlight .mi, .language-python.highlighter-rouge .highlight .mf{color:#FFFFFF}
+
+
+/* Salidas R y Python */
+.highlight{max-width: 50rem; margin-right: auto; margin-left: auto;}
+.highlight pre{background-color:#535353; border:1px solid #e3edf3}
+@media only screen and (min-width:37.5rem){.highlight{word-wrap:break-word}}
+.highlight .hll{background-color:#333}
+.highlight .c,.highlight .cm,.highlight .cp,.highlight .cs{color:#75715e}
+.highlight .c1{color:#0088ff}
+.highlight .err{background-color:#1e0010}
+.highlight .k,.highlight .kc,.highlight .kd,.highlight .kp,.highlight .kr,.highlight .kt,.highlight .no{color:#ff9d00}
+.highlight .l,.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo,.highlight .se,.highlight .il{color:#ae81ff}
+.highlight .p{color:#FFFFFF; font-weight:bold}
+.highlight .m{color:#ff628c}
+.highlight .nb,.highlight .ni,.highlight .nl,.highlight .nn,.highlight .py,.highlight .nv,.highlight .w,.highlight .bp,.highlight .vc,.highlight .vg,.highlight .vi{color:#d90000}
+.highlight .n{color:#FFFFFF; font-weight:bold}
+.highlight .kn,.highlight .nt,.highlight .ow{color:#f92672}
+.highlight .ge{font-style:italic}
+.highlight .gs{font-weight:bold}
+.highlight .ld,.highlight .s,.highlight .sb,.highlight .sc,.highlight .sd,.highlight .sh,.highlight .si,.highlight .sx,.highlight .sr,.highlight .s1,.highlight .ss{color:#e6db74}
+.highlight .na,.highlight .nc,.highlight .nd,.highlight .ne,.highlight .nf,.highlight .nx{color:#a6e22e}
+.highlight .s2{color:#3ad900}
+.highlight .o{color:#A8A8A8}
+pre{color:#FFFFFF; font-weight:bold}
+
+.highlight pre code {color: #FFF!important;}
+

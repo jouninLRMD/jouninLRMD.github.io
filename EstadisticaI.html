@@ -1,0 +1,35 @@
+---
+layout: default
+---
+
+<main class="home" id="post" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">
+    <div class=section-title>
+        <h2>
+            <span>Estadística I</span>
+        </h2>
+    </div>
+    <div id="grid" class="row flex-grid">
+    {% for post in site.categories.EstadisticaI %}
+        <article class="box-item post-{{post.main-class}}" itemscope="itemscope" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+            <span class="ribbon">
+                <a href="{{ post.url | prepend: site.baseurl }}"><span>{{post.main-class}}</span></a>
+            </span>
+            <div class="box-body">
+                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+                    <h2 class="post-title" itemprop="name">
+                        {{ post.title }}
+                    </h2>
+                </a>
+                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+                    <p class="description">{{ post.introduction }}</p>
+                </a>
+                <div class="tags">
+                    {% for rawtag in post.rawtags %}
+                        <a href="{{site.baseurl}}/tags/#{{rawtag | slugify }}">{{ rawtag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+    </div>
+</main>

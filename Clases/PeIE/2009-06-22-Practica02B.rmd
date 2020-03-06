@@ -1,0 +1,64 @@
+---
+layout: post
+title: "Práctica 02B"
+main-class: 'practica'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: Ejercicio sobre estadística descriptiva.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Práctica02B"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Enunciado encuesta
+La siguiente base de datos contiene información sobre diferentes vinos cultivados en los países con mayor producción en el mundo. La base de datos contiene las siguientes variables. 
+
+Con tal propósito en mente, se construye la siguiente encuesta la cual contiene preguntas sobre las siguientes variables. 
+
+* **País**: Hace referencia al lugar en cual fue elaborado el vino. 
+* **Precio**: Hace referencia al precio por el cual se comercializa el vino en Pesos.
+* **Color**: Hace referencia a la variedad del vino (Blanco, Rosado, Tinto). 
+* **Gr_Alcohol**: Hace referencia a los grados de alcohol del vino. 
+* **Sabor**: Hace referencia a la sensación que produce (Amarga, Dulce, Acida). 
+* **Puntuación**: Hace referencia a la puntuación dada al vino en específico, basado en diferentes características.
+
+### Base de datos
+La encuesta se aplicó a un total de 980 registros, y los resultados obtenidos pueden ser descargados del siguiente [Link](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/SimEncuesta2.xlsx){:target="_blank"}.
+
+## Ejercicios
+A partir de la base de datos de los diferentes vinos cultivados en los países con mayor producción en el mundo, apoyandose en el entorno <tt>R</tt> para responder las siguientes preguntas.
+
+1. Identifique completamente el tipo de variables contenidas en su base de datos y realice una descripción inicial de las variables cuantitativas con las medidas que considere apropiados.
+2. ¿Los grados de alcohol que poseen los vinos se comporta de forma diferente dependiendo del sabor del vino? 
+3. ¿Cuál es el país que produce la mayor cantidad de vinos? ¿Cuál es la proporción del tercer y cuarto país con mayor producción de vinos?  
+4. Se tiene la creencia respeto a que un vino que sea de alta calidad (que tenga una puntuación alta) debe tener un precio alto, ¿Tal creencia se encuentra apoyada por la evidencia? 
+5. ¿Es cierto que el sabor del vino depende mucho del color? ¿Se evidencia que algún color posea algún sabor dominante? 
+

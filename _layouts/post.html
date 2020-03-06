@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/BlogPosting" {% if page.main-class %}class="post-{{ page.main-class }}"{% endif %}>
+    {% include head.html %}
+    <body data-spy="scroll" data-target="#toc">
+        {% include header-post.html %}
+        
+        <section class="post">
+
+            <article role="article" id="post" class="post-content" itemprop="articleBody">
+
+                <section data-spy="scroll" data-target="#toc">
+                     <div class="container">
+                        <div class="row">
+                        <!-- sidebar, which will move to the top on a small screen -->
+                            <div class="col-sm-3">
+                                <nav id="toc" data-toggle="toc" class="sticky-top"><b>Tabla de contenido</b> <br></nav>
+                            </div>
+                            <!-- main content area -->
+                            <div class="col-sm-9">{{ content }}</div>
+                        </div>
+                    </div>
+                </section>
+            </article>
+            {% include footer.html %}
+        </section>
+        
+    </body>
+</html>

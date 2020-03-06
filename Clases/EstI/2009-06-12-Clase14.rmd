@@ -1,0 +1,116 @@
+---
+layout: post
+title: "Clase 14"
+main-class: 'clase'
+permalink: /EstadisticaI/EstI:title.html
+tags:
+
+introduction: |
+  Distribuciones de probabilidad continuas: </br>
+  - Distribución Normal. </br>
+  - Distribución Normal estándar. </br>
+  Teoremas de aproximación: </br>
+  - Aproximación Binomial a Normal.  <br/>
+  - Aproximación Poisson a Normal.
+  
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../EstadisticaI/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../EstadisticaI/images/", "Clase14"),
+               cache.path = "../../EstadisticaI/cache/",
+               cache = FALSE)
+
+```
+
+## Distribuciones de probabilidad continuas
+### Distribución Normal
+Se dice que la variable aleatoria `$X$` tiene una distribución Normal con parámetros `$\mu$` y `$\sigma^2)$`, si su función de densidad de probabilidad es de la forma
+`\begin{align*} 
+f(x) = \begin{cases} \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x - \mu)^2}{2\sigma^2}} & -\infty<x<\infty, -\infty<\mu<\infty, \sigma^2>0 \\ 0 & \text{en otro caso} \end{cases}
+\end{align*}`
+
+#### Teorema
+Si `$X\sim N(\mu, \sigma^2)$`, entonces se puede probar que la media y la varianza de la variable aleatoria `$X$` están dadas por 
+`\begin{align*}
+\mathbb{E}(X)=\mu \quad \quad Var(X)=\sigma^2
+\end{align*}`
+
+### Distribución Normal estándar
+Un caso particular de la distribución normal cuando la media `$\mu=0$` y ka varianza `$\sigma^2=1$`, recibe el nombre de distribución normal estándar, cuya variable aleatoria se simboliza con `$Z$`, tal que `$Z\sim N(0,1)$`, y donde su función de densidad de probabilidad está dada por
+
+`\begin{align*} 
+f(z) = \begin{cases} \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}} & -\infty<z<\infty \\ 0 & \text{en otro caso} \end{cases}
+\end{align*}`
+
+### Propiedades
+Si `$X\sim N(\mu, \sigma^2)$`, se tendrá que `$Z=\frac{x-\mu}{\sigma}\sim N(0,1)$`, y por tanto, si `$a$` y `$b$` son constantes, entonces 
+
+1. `$\mathbb{P}(Z\leq a) = \mathbb{P}(Z\geq -a)$`
+2. `$\mathbb{P}(Z\geq a) = \mathbb{P}(Z\leq -a) = 1- \mathbb{P}(Z\leq a)$`
+3. `$\mathbb{P}(a\leq Z\leq b) = \mathbb{P}(Z\leq b) - \mathbb{P}(Z< a)$`
+4. Si `$a = - b$` entonces `$\mathbb{P}(a\leq Z\leq b) = \mathbb{P}(-b\leq Z\leq b) =2\mathbb{P}(Z\leq b) - 1$`
+5. `$Z_\alpha$` es el valor de la variable aleatoria `$Z\sim N(0,1)$` tal que `$\mathbb{P}(Z\geq Z_\alpha)=\alpha$`, y `$\mathbb{P}(Z\leq Z_\alpha)=1 - \alpha$`
+
+## Teoremas de Aproximación
+### Teorema de Aproximación Binomial a Normal
+Si `$X\sim b(n,p)$` con `$n$` grande `$(n\geq 30)$` y `$p$` cercano a 0.5 `$(p\approx 0.5)$` entonces se dice que `$X\stackrel{a}{\sim}N(\mu,\sigma^2)$` donde `$\mu = np$` y `$\sigma^2 = np(1-p)$`.
+
+Además, se tendrá que `$Z\stackrel{a}{\sim}N(0,1)$`, tal que
+`\begin{align*}
+Z=\frac{x-np}{\sqrt{np(1-p)}}\stackrel{a}{\sim}N(0,1)
+\end{align*}`
+
+La aproximación será buena si `$np$` y `$n(1-p)>5$`.
+
+**Nota:** 
+Para realizar la aproximación de Binomial a Normal, se debe usar un factor de corrección de continuaidad de 0.5, así
+`\begin{align*} 
+\text{Binomial} & & & & \text{Normal} \quad \quad \quad \quad \quad \\
+\mathbb{P}(X\leq a) & & & & \mathbb{P}(X\leq a + 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X<a) & & & & \mathbb{P}(X\leq a - 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X\geq a) & & & & \mathbb{P}(X\geq a - 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X>a) & & & & \mathbb{P}(X\geq a + 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X=a) & & & & \mathbb{P}(a - 0.5 \leq X\leq a + 0.5)
+\end{align*}`
+
+### Teorema de Aproximación Poisson a Normal
+Si `$X\sim P(\lambda)$` con `$\lambda$` grande `$(\lambda\geq 30)$` entonces se dice que `$X\stackrel{a}{\sim}N(\mu,\sigma^2)$` donde `$\mu = \lambda$` y `$\sigma^2 = \lambda$`.
+
+Además, se tendrá que `$Z\stackrel{a}{\sim}N(0,1)$`, tal que
+`\begin{align*}
+Z=\frac{x-\lambda}{\sqrt{\lambda}}\stackrel{a}{\sim}N(0,1)
+\end{align*}`
+
+**Nota:** 
+Para realizar la aproximación de Poisson a Normal, se debe usar el mismo factor de corrección de continuaidad de 0.5, así
+`\begin{align*} 
+\text{Poisson} & & & & \text{Normal} \quad \quad \quad \quad \quad \\
+\mathbb{P}(X\leq a) & & & & \mathbb{P}(X\leq a + 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X<a) & & & & \mathbb{P}(X\leq a - 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X\geq a) & & & & \mathbb{P}(X\geq a - 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X>a) & & & & \mathbb{P}(X\geq a + 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X=a) & & & & \mathbb{P}(a - 0.5 \leq X\leq a + 0.5)
+\end{align*}`

@@ -1,0 +1,252 @@
+---
+layout: post
+title: "Práctica 03"
+main-class: 'practica'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: Ejercicio sobre variables aleatorias y distribuciones de probabilidad.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Práctica03"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+# Lista de ejercicios
+1. Suponga que por Ley, la vida máxima de la patente para un nuevo medicamento es `$17$` años. Si restamos el tiempo requerido por la FDA para someter a pruebas y aprobar el medicamento, se obtiene la vida real de la patente para el medicamento, es decir, el tiempo que la compañía tiene para recuperar los costos de investigación, desarrollo y obtener una utilidad. La distribución de los tiempos de vida reales de las patentes para nuevos medicamentos se da a continuación:
+```{r echo=FALSE}
+library(kableExtra)
+tabla1 <- data.frame(c("Años, $x$", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"),
+              c("$f(x)$", "0.03", "0.05", "0.07", "0.10", "0.14", "0.20", "0.18", "0.12", "0.07", "0.04"))
+tabla1 <- data.frame(t(tabla1))
+
+kable(tabla1, align = c("c", "l", "l", "l", "l"),
+  format = "html", booktabs = T, row.names = FALSE, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+<ol type ="a">
+<li> Encuentre el tiempo de vida real promedio de las patentes para nuevos medicamentos. </li>
+<li> Encuentre la función de distribución acumulada $F(X)$. </li>
+<li> Calcule la probabilidad de que el tiempo de vida en años de la patente sea a lo más $9$ años. </li>
+</ol>
+2. Sea `$X$` la variable aleatoria del número de clientes que llegan a un centro comercial en un periodo de una hora. Si la distribución acumulada de `$X$` es:
+`\begin{align*}
+	F(x) =\begin{cases}0 & x < 0\\0.03 & 0\leq x < 1 \\ 0.12 & 1\leq x < 2 \\ 0.21 & 2\leq x < 3\\ 0.33 & 3\leq x < 4\\ 0.52 & 4\leq x < 5\\ 0.74 & 5\leq x < 6 \\ 0.89 & 6\leq x < 7 \\ 0.96 & 7\leq x < 8 \\ 1.00 & 8\geq x\end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> Encuentre la función de masa de probabilidad de la variable aleatoria $X$. </li>
+<li> Calcule la $P(X > 4.3)$. </li>
+<li> Calcule la $P(3\leq X\leq 7)$. </li>
+<li> Calcule la $P(X=5)$. </li>
+<li> Calcule la media y desviación estándar del número de clientes que llegan a un centro comercial en una hora. </li>
+</ol>
+3. Considere la función de densidad
+`\begin{align*}
+	f(x) =\begin{cases}k\sqrt{x}, & 0< x < 1\\ 0, & \text{En otro caso} \end{cases}
+\end{align*}`
+<ol type ="a">
+<li> Encuentre el valor de $k$ para que $f(x)$ sea una función de densidad de probabilidad bien definida. </li>
+<li> Calcule la función de distribución acumulada $F(x)$ y utilice el resultado para calcular $P(0.24 < X < 0.63)$. </li>
+<li> Calcule el valor promedio y desviación estándar de la variable aleatoria $X$. </li>
+</ol>
+4. Suponga que el tiempo medido en unidades de `$100$` horas, en las cuales, se usa una licuadora en un hogar durante un año, es una variable aleatoria continua `$X$` con función de densidad de probabilidad dada por:
+`\begin{align*}
+	f(x) =\begin{cases}x & 0< x < 1 \\ 2-x & 1\leq x < 2 \\ 0 & \text{En otro caso}\end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> Pruebe si efectivamente es una función de densidad de probabilidad bien definida, de no serlo, multiplique la función por una constante $k$ que hace a $f(x)$ estar bien definida. </li>
+<li> Calcule la función de distribución acumulada $F(x)$. </li>
+<li> Calcule la probabilidad de que en un año una familia use la licuadora entre $65$ y $100$ horas. </li>
+<li> Calcule la media y la varianza del tiempo de uso de la licuadora, medido en unidades de $100$ horas. </li>
+</ol>
+5. El tiempo que pasa, en horas, para que un radar detecte entre conductores sucesivos a los que exceden los límites de velocidad es una variable aleatoria continua con una función de distribución acumulativa
+`\begin{align*}
+	F(x) =\begin{cases}0, & 0< x\\ 1-e^{-x/10}, & x \geq 0 \end{cases} 
+\end{align*}`
+Calcule la probabilidad de que el tiempo que pase para que el radar detecte entre conductores sucesivos a los que exceden los límites de velocidad sea menor de `$12$` minutos
+<ol type ="a">
+<li> Usando la función de distribución acumulativa de $X$. </li>
+<li> Utilizando la función de densidad de probabilidad	de $X$. </li>
+</ol>
+6. Sea `$X$` una variable aleatoria continua con distribución de probabilidades `$f(x)$` dada por:
+`\begin{align*}
+	f(x)=\begin{cases}\frac{x}{\theta^2}e^{-x^2/(2\theta^2)} & x > 0;\quad \theta > 0,\\0 & \text{En otro caso}\end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> Verifique si $f(x)$ es efectivamente una función de densidad de probabilidad. </li>
+<li> Suponga que $\theta = 100$, ¿Cuál es la probabilidad de que $X$ sea a lo más de 200? menos de 200? al menos 200?. </li>
+<li> Suponga nuevamente que $\theta = 100$. ¿Cuál es el valor esperado y varianza de la distribución de probabilidad $f(x)$?. </li>
+<li> De una expresión para $P(X > x)$?. </li>
+</ol>
+7. Considere a `$X$` la variable aleatoria que representa la suma de las caras para el lanzamiento de dos dados, con función de masa de probabilidad dada por
+`\begin{align*}
+	f(x)=\begin{cases}6-|7-x| & x = 2,3,\ldots,12 ,\\0 & \text{En otro caso}\end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> Compruebe si $f(x)$ es es efectivamente una función de masa de probabilidad bien definida. De no serlo, encuentre el valor $k$ que haría a $f(x)$ bien definida. </li>
+<li> Calcule la función de distribución acumulada, $F(x)$. </li>
+<li> Calcule la probabilidad de que la suma de las caras se encuentren entre 5 y 9 inclusive. </li>
+<li> Calcule la probabilidad de que la suma de las caras sean mayores que 7 o a lo más 4. </li>
+</ol>
+8. El `$20\%$` de las inversiones realizadas por un experto en finanzas terminan en pérdida. Si se seleccionan aleatoriamente `$5$` inversiones realizadas por el experto, ¿Cuál es la probabilidad de que una o tres, no terminen en pérdida?
+9. Suponga que se realiza un estudio en la ciudad de Medellín para observar el número de fotomultas que se le han impuesto a las personas que conducen motocicletas de alto cilindraje. Luego de recolectar la información, la secretaría de movilidad presenta un gráfico de distribución acumulada de la cual se obtiene la siguiente tabla.
+`\begin{align*}
+	F(x) = \begin{cases} 
+	0.0026  & x<2 \\ 
+	0.0134 & 2\leq x<3 \\ 
+	0.0420 & 3\leq x<4 \\ 
+	0.0992 & 4\leq x<5 \\ 
+	0.1909 & 5\leq x<6 \\ 
+	0.3130 & 6\leq x<7 \\ 
+	0.4526 & 7\leq x<9 \\ 
+	0.5922 & 9\leq x<11 \\ 
+	0.7162 & 11\leq x<12 \\ 
+	0.8155 & 12\leq x<14 \\ 
+	0.9377 & 14\leq x<15 \\ 
+	1 & x\geq 15 \end{cases}
+\end{align*}`
+A partir de esta función de probabilidad
+<ol type ="a">
+<li> Verifique si la función de distribución acumulada está bien definida, y de estarlo, calcule la función de masa de probabilidad del número de fotomultas por persona. </li>
+<li> Si se selecciona una persona al azar, cuál sería la probabilidad de que el número de fotomultas que tenga sea más de 3, pero a lo más 8. </li>
+</ol>
+10. Según una página de estadísticas deportivas, el número promedio de goles que anota el Barcelona por partido es de `$2.61$`. ¿Cuál es la probabilidad de que en un determinado partido anote más de `$2$` goles?.
+11. Suponga que el número de llamadas telefónicas que entran a un conmutador  particular siguen un proceso de Poisson con un promedio de `$5$` llamadas entrantes por minuto. ¿Cuál es la probabilidad de que transcurra hasta un minuto en el momento en que han entrado `$3$` llamadas al conmutador? 
+12. En el artículo de W. Pang, et. al (2001) "*Parameter Estimation with Only One Complete Failure Observation, International Journal of Reliability, Quality, and Safety Engineering, 2001:109-122*", se modela la duración, en horas, de cierto tipo de cojinete con la distribución de Weibull(`$\alpha = 2.25, \beta = 4.474*10^{-4}$`).
+<ol type ="a">
+<li> Determine la probabilidad de que un cojinete dure más de 1000 horas. </li>
+<li> Determine la probabilidad de que un cojinete dure menos de 2000 horas. </li>
+<li> Determine la media y desviación estándar de la duración de un cojinete. </li>
+<li> La función de riesgo se definió en el ejercicio 4. ¿Cuál es el riesgo en t = 2000 horas?. </li>
+</ol>
+13. El periodo de vida de una broca en una operación mecánica, en horas, tiene una distribución de Weibull con `$\alpha = 1/2$` y `$\beta = 35$`. Calcule la probabilidad de que la broca falle antes de 10 horas de uso.
+14. El número de automóviles que llegan a cierta intersección por minuto tiene una distribución de Poisson con una media de `$3$`. Existe interés por el tiempo que transcurre antes de que `$8$` automóviles aparezcan en la intersección.
+<ol type ="a">
+<li> Cuál es la probabilidad de que más de $8$ automóviles aparezcan en la intersección durante cualquier minuto determinado. </li>
+<li> Cuál es la probabilidad de que transcurran más de 2 minutos antes de que lleguen $8$ autos. </li>
+<li> Determine la media y desviación estándar del tiempo que transcurre hasta que aparece un automóvil en la intersección. </li>
+</ol>
+15. Suponga que se realiza un estudio estadístico y se encuentra que número de clientes que llega donde Pastora en media hora, es una variable aleatoria Poisson con media de `$4$`.
+<ol type ="a">
+<li> ¿Cuál es el tiempo promedio y la desviación para la llegada de cada cliente?. </li>
+<li> Si en los $10$ primeros minutos no ha llegado ningún cliente, ¿Cuál es la probabilidad de que llegue un cliente en los próximos $10$ minutos?. </li>
+</ol>
+16. Cada semestre se presentan miles de personas para ganar uno de los `$260$` cupos que se abren para el programa de ingeniería industrial. Si el puntaje obtenido por los estudiantes se distribuye aproximadamente normal con media de `$52.7$` puntos y desviación estándar de `$15.3$` puntos.
+<ol type ="a">
+<li> ¿Cuál es la probabilidad de que una persona que se presenta a ingeniería industrial sea admitida si se tiene que el puntaje de corte es de $67.14$ puntos?. </li>
+<li> Si se sabe que una persona sacó más de $57.3$ puntos, ¿Cuál es la probabilidad de que haya superado el puntaje de corte de $67.14$ puntos?. </li>
+</ol>
+17. Se sabe que los resultados en cierto examen de estadística, tienen una distribución normal, con media `$3.1$` y desviación estándar `$0.35$`. ¿Cuál es la probabilidad de que un estudiante obtenga una nota entre `$3$` y `$3.5$`?
+18. La magnitud de temblores registrados en una región de América del Norte puede modelarse como si tuviera una distribución exponencial con media `$2.4$`, según se mide en la escala de Richter. Encuentre la probabilidad de que un temblor que ocurra en esta región
+<ol type ="a">
+<li> Sea mayor que 3.0 en la escala de Richter. </li>
+<li> Caiga entre 2.0 y 3.0 en la escala de Richter. </li>
+</ol>
+19. El tiempo `$Y$` necesario para completar una operación clave en la construcción de casas tiene una distribución exponencial con media de `$10$` horas. La fórmula `$C = 100 + 40Y + 3Y^2$` relaciona el costo `$C$` de completar esta operación con el cuadrado del tiempo para completarla. Encuentre la media y la varianza de `$C$`.
+20. Suponga que el transito de Medellín afirma que `$3$` de cada `$10$` accidentes de tráfico se debe a que al menos uno de los implicados no pasó la prueba de alcoholemia. Si ocurren `$15$` accidentes de tráfico un día cualquiera. ¿Cuál es la probabilidad de que al menos `$4$` pero menos de `$7$` accidentes, no hayan sido causados por "borrachitos".
+21. Sea `$X$` una variable aleatoria discreta con distribución de probabilidades `$f(x)$` dada por:
+```{r echo=FALSE}
+tabla2 <- data.frame(c("$x$", "1", "3", "4", "5", "7"),
+              c("$f(x)$", "0.31", "0.13", "0.15", "0.18", "0.23"))
+tabla2 <- data.frame(t(tabla2))
+
+kable(tabla2, align = c("c", "l", "l", "l", "l"),
+  format = "html", booktabs = T, row.names = FALSE, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+Encuentre el coeficiente de asimetría, el cuál está dado por 
+`\begin{align*}
+\gamma_{1}= \mathbb{E}\left[\left({\frac{X-\mu}{\sigma}}\right)^{3}\right]={\frac{\mu_{3}}{\sigma^{3}}}={\frac{\mathbb{E}\left[(X-\mu)^{3}\right]}{(\mathbb{E}\left[(X-\mu)^{2}\right])^{3/2}}}
+\end{align*}`
+22. A partir de la siguiente función de masa de probabilidad 
+`\begin{align*}
+	f(x)=\frac{\binom{2}{x}\binom{3}{3-x}}{\binom{5}{3}} \quad \quad \text{ para }x=0,1,2
+\end{align*}`
+Calcule el coeficiente de curtosis, el cual está dado por 
+`\begin{align*}
+	\gamma_{2}= \mathbb{E}\left[\left({\frac{X-\mu}{\sigma}}\right)^{4}\right]={\frac{\mu_{4}}{\sigma^{4}}}={\frac{\mathbb{E}\left[(X-\mu)^{4}\right]}{(\mathbb{E}\left[(X-\mu)^{2}\right])^{4/2}}}
+\end{align*}`
+23. Considere la siguiente función de densidad de probabilidad
+`\begin{align*}
+	f(x) =\begin{cases}kx^{3/2}, & 0< x < 1\\ 0, & \text{en otro caso} \end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> Calcule la esperanza de $1/X$. </li>
+<li> Calcule la esperanza de $2/X^2$ </li>
+</ol>	
+24. Suponga que cierto tipo de pequeñas empresas de procesamiento de datos están tan especializadas que algunas tienen dificultades para obtener utilidades durante su primer año de operación. La función de densidad de probabilidad que caracteriza la proporción `$Y$` que obtiene utilidades está dada por
+`\begin{align*}
+		f(y)=\begin{cases}ky^4(1-y)^3 & 0\leq y \leq 1,\\0 & \text{en otro caso}\end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> ¿Cuál es el valor de $k$ que hace de la anterior una función de densidad válida? </li>
+<li> Calcule la varianza de la variable aleatoria $Z=3Y-4$. </li>
+</ol>	
+25. El tiempo que trabaja en horas un profesor normalmente, posee una distribución exponencial con parámetro de escala `$6$`.
+<ol type ="a">
+<li> ¿Cuál es la probabilidad de que en un día cualquiera, un profesor trabaje entre $5$ y $6$ horas?. </li>
+<li> Cuál es la media y la desviación estándar del tiempo en horas que trabaja una profesor en un día. </li>
+<li> Si en un día un profesor ya ha trabajado 5 horas, cuál es la probabilidad de que trabaje menos de 3 horas más?. </li>
+</ol>	
+26. Un proveedor de queroseno tiene un tanque de `$150$` galones que se llena al empezar cada semana. Su demanda semanal muestra un comportamiento de frecuencia relativo que aumenta de manera continua hasta `$100$` galones y luego se nivela entre `$100$` y `$150$` galones. Si `$Y$` denota la demanda semanal en cientos de galones, la frecuencia relativa de demanda puede ser modelada por
+`\begin{align*}
+	f(y)=\begin{cases}y & 0\leq y\leq 1 \\1 & 1<y\leq 1.5 \\0 & \text{en otro caso}\end{cases} 
+\end{align*}`
+<ol type ="a">
+<li> Calcule la esperanza de la variable aleatoria $Y$. </li>
+<li> Calcule la varianza de la variable aleatoria $Y$. </li>
+<li> Calcule la asimetría de la variable aleatoria $Y$. </li>
+<li> Calcule la curtosis de la variable aleatoria $Y$. </li>
+</ol>	
+27. Unas partículas están suspendidas en un medio líquido con concentración de seis partículas por $mL$. Se agita por completo un volumen grande de la suspensión, y después se extrae $3 mL$.
+<ol type ="a">
+<li> ¿Cuál es la probabilidad de que sólo se retiren 15 partículas? </li>
+<li> ¿Cuál es la probabilidad de que se retiren menos de 8 o más de 18 partículas? </li>
+<li> Cuál es el número promedio y desviación estándar de particulas que se retirarían, si se extrae un total de $4 mL$?. </li>
+</ol>	
+28. Suponga que se tiene cierto tipo de tablero de circuitos que contiene un total de `$250$` diodos. Si se sabe por experiencia que la probabilidad de que falle cualquier circuito es de `$0.002$`.
+<ol type ="a">
+<li> ¿Cuál es la probabilidad de que fallen exactamente dos
+diodos? </li>
+<li> ¿Cuál es la probabilidad de que fallen más de $45$
+diodos? </li>
+<li> ¿Cuál es la media del número de diodos que falla? </li>
+<li> ¿Cuál es la desviación estándar del número de diodos
+que falla? </li>
+<li> Un tablero funciona si ninguno de sus diodos falla.
+¿Cuál es la probabilidad de que funcione un tablero? </li>
+<li> Se envían cinco tableros a un cliente. ¿Cuál es la probabilidad
+de que cuatro o más de ellos funcione? </li>
+</ol>	
+29. Un fabricante de alimentos usa una máquina de moldeo por inyección (que produce galletas del tamaño de un bocado y botanas) que proporciona un ingreso para la empresa a razón de `$200$` por hora cuando está en operación. No obstante, la máquina se descompone a un promedio de dos veces por cada día que trabaja. Si `$Y$` denota el número de descomposturas por día, el ingreso diario generado por la máquina es `$R = 1600 – 50Y^2$`. Encuentre el ingreso diario esperado por usar la máquina.
+30. El tiempo de vida `$X$`, en horas, de un artículo en el taller mecánico tiene una distribución de Weibull con parámetro de escala `$10$` y de forma `$2$`.
+<ol type ="a">
+<li> ¿Cuál es la probabilidad de que falle antes de $8$ horas de uso? </li>
+<li> Cómo es el comportamiento de su función de falla? </li>
+</ol>

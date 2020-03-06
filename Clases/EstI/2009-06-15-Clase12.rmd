@@ -1,0 +1,106 @@
+---
+layout: post
+title: "Clase 12"
+main-class: 'clase'
+permalink: /EstadisticaI/EstI:title.html
+tags:
+
+introduction: |
+  Distribuciones de probabilidad discreta: </br>
+  - Distribución Binomial Negativa </br>
+  - Distribución Poisson </br>
+  - Distribución Uniforme discreta </br>
+  Teoremas de Aproximación: </br>
+  - Aproximación Hipergeométrica a Binomial </br>
+  - Aproximación Binomial a Poisson 
+  
+  
+  
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../EstadisticaI/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../EstadisticaI/images/", "Clase12"),
+               cache.path = "../../EstadisticaI/cache/",
+               cache = FALSE)
+
+```
+
+## Distribuciones de probabilidad discretas
+### Distribución Binomial Negativa
+Sea `$X$` el número de ensayos necesarios para generar `$k$` éxitos en un experimento Binomial Negativo, entonces se dice que `$X\sim b^*(k,p)$` si su función de probabilidad es de la forma
+`\begin{align*}
+b^*(p) = \left(\begin{array}{c}x-1\\ k-1\end{array}\right)p^k(1-p)^{x-k} \quad \quad x=k, k+1, \ldots
+\end{align*}`
+
+#### Teorema
+Si `$X\sim b^*(k,p)$`, entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=\frac{k}{p} \quad \quad Var(X)=k\frac{(1-p)}{p^2}
+\end{align*}`
+
+### Proceso Poisson
+Un proceso Poisson es aquel que cumple
+
+1. El número de resultados que ocurren en un intervalo o región específica es independiente del número que ocurre en cualquier otro intervalo de tiempo o región del espacio disjunto.
+2. La probabilidad de que ocurra un solo resultado durante un intervalo de tiempo corto o región pequeña es proporcional a la longitud del intervalo o al tamaño de la región, y no depende del número de resultados que ocurren por fuera de este intervalo de tiempo o región.
+3. La probabilidad de que ocurra más de un resultado en tal intervalo o región pequeña es insignificante.
+
+### Distribución Poisson
+El número de sucesos que ocurren en un intervalo de tiempo o región específica, es una variable aleatoria `$X$` con distribución de probabilidad Poisson, tal que
+`\begin{align*}
+f(x) = \frac{e^{-\lambda}\lambda^x}{x!} \quad \quad x=0,1,\ldots
+\end{align*}`
+donde `$\lambda$` es el parámetro de la distribución y representa el número promedio de sucesos por unidad de tiempo o región específica.
+
+#### Teorema
+Si `$X\sim P(\lambda)$` entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=\lambda \quad \quad Var(X)=\lambda
+\end{align*}`
+
+### Distribución Uniforme discreta
+Se dice que la variable aleatoria `$X$`tiene una distribución uniforme discreta en los enteros `$1,2,\ldots, m$`, si su distribución de probabilidad es de la forma
+`\begin{align*}
+f(x) = \frac{1}{m} \quad \quad x = 1,2, \ldots, m
+\end{align*}`
+
+### Teorema
+Si `$X\sim Unif{1,2,\ldots,m}.$` entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=\frac{m+1}{2} \quad \quad Var(X)=\frac{m^2-1}{12}
+\end{align*}`
+
+<!-- Demostración, suma de números triangulares pitágoras -->
+<!-- `\begin{align*} -->
+<!-- \sum_{i=1}^N x_i = \frac{N(N+1)}{2} \quad \quad \sum_{i=1}^N x_i^2 = \frac{N(N+1)(2N+1)}{6} -->
+<!-- \end{align*}` -->
+
+## Teoremas de Aproximación
+### Teorema de Aproximación Hipergeométrica a Binomial
+Si `$X\sim h(N,M,n)$` con `$n$` pequeña en comparación con `$N$` (`$n/N <0.05$`) entonces se dice que `$X\stackrel{a}{\sim}b(n,p)$` con `$p = M/N$`.
+
+### Teorema de Aproximación Binomial a Poisson
+Si `$X\sim b(n,p)$` con `$n$` grande `$(n\geq 100)$` y `$p$` pequeña `$(p\leq 0.01)$` entonces se dice que `$X\stackrel{a}{\sim}P(\lambda)$` donde `$\lambda = np$`

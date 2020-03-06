@@ -1,0 +1,135 @@
+---
+layout: post
+title: "Práctica 01"
+main-class: 'practica'
+permalink: /MuestreoySeriesdeTiempo/MyST:title.html
+tags:
+
+introduction: |
+  Ejercicios sobre: <br>
+  - Identificación de componentes de una serie de tiempo. <br>
+  - Función de autocorrelación. <br>
+  - Funciones de pérdida. <br>
+  - Modelo de regresión lineal simple.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../MuestreoySeriesdeTiempo/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../MuestreoySeriesdeTiempo/images/", "Práctica01"),
+               cache.path = "../../MuestreoySeriesdeTiempo/cache/",
+               cache = FALSE)
+
+```
+
+## Lista de ejercicios
+
+1. A partir de las series de tiempo suministradas en el archivo de los siguientes enlaces
+[GeneraciónCO2](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/CO2.xlsx){:target="_blank"}, [ConsumoGasEspaña](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/GasEspaña.xlsx){:target="_blank"}, [TasaDesempleoCanada](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/CanadianUnemploymentRate.xlsx){:target="_blank"}, [Muertos enAccidentesUSA](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/USAccDeaths.xlsx){:target="_blank"}, [LagoHuron](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/LakeHuron.xlsx){:target="_blank"}. Realice el gráfico de cada serie y el gráfico asociado a su ACF. A partir de estos dos gráficos, identifique las componentes que posee la serie temporal y explique la razón de por qué se identificaron dichas componentes.
+2. Suponga una serie de tiempo asociada al valor total de las ventas de automóviles particulares de producción nacional que contiene un total de 86 observaciones trimestrales registradas desde el primer trimestre de 1997. Suponga que los 15 primeros coeficientes de autocorrelación, están dados por
+```{r echo=FALSE}
+library(kableExtra)
+acf1 <- rbind("$k$" = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+              "$\\hat{\\rho}(k)$" = c(1.000, 0.923, 0.856, 0.788, 0.743, 0.644, 0.564, 0.508, 0.473, 0.421, 0.389, 0.364, 0.360, 0.326, 0.307, 0.266))
+acf1[2,] <- formatC(as.matrix(acf1[2,]),digits=2,format="f")
+
+kable(data.frame(acf1),
+  format = "html", booktabs = T, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+A partir de la información anterior, responda
+<ol type="a">
+  <li>A partir de un nivel de significancia del $5\%$, plantee la prueba de hipótesis dada en la ACF de manera general y determine la región crítica.</li>
+  <li>Grafique el correlograma y las bandas de confianza asociadas al nivel de significancia $\alpha=0.05$.</li>
+  <li>Hay evidencia para creer que la serie de tiempo es estacional?. explique por qué sí o por qué no?</li>
+</ol>
+3. Suponga una serie de tiempo asociada al valor total de las ventas de camperos de producción nacional que contiene un total de 119 observaciones trimestrales registradas desde el primer trimestre de 1990. Suponga que los 15 primeros coeficientes de autocorrelación, están dados por
+```{r echo=FALSE}
+acf2 <- rbind("$k$" = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+              "$\\hat{\\rho}(k)$" = c(1.000, 0.865, 0.782, 0.718, 0.665, 0.520, 0.415, 0.329, 0.264, 0.156, 0.056, -0.017, -0.100, -0.205, -0.270, -0.340))
+acf2[2,] <- formatC(as.matrix(acf1[2,]),digits=2,format="f")
+
+kable(data.frame(acf2),
+  format = "html", booktabs = T, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+A partir de la información anterior, responda
+<ol type="a">
+  <li>A partir de un nivel de significancia del $8\%$, plantee la prueba de hipótesis dada en la ACF de manera general y determine la región crítica.</li>
+  <li>Grafique el correlograma y las bandas de confianza asociadas al nivel de significancia $\alpha=0.08$.</li>
+  <li>Hay evidencia para creer que la serie de tiempo es estacionaria en media?. explique por qué sí o por qué no?</li>
+</ol>
+4. Suponga el siguiente modelo de regresión lineal simple ajustado a un conjunto de 100 observaciones
+`\begin{align*}
+\hat{Y}_t = 15.310 + 2.389 X
+\end{align*}`
+A partir de este modelo calcule
+<ol type="a">
+  <li>Encuentre los pronósticos $\hat{Y}_{T+H}$, para $H = 1,2,3,4,5,6$ correspondientes para los siguientes valores de $X$
+```{r echo=FALSE}
+dep <- rbind("$H$" = c(1,2,3,4,5,6), "$X_{T+H}$" = c(15.461, 13.329, 13.042, 14.103,  9.744, 13.017), "$\\hat{Y}_{T+H}$" = c("", "", "", "", "", ""))
+
+kable(rbind(dep),
+  format = "html", booktabs = T, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+  </li>
+  <li>Si los valores reales de $Y_{T+H}$ para $H=1,2,3,4,5,6$ están dados por 
+```{r echo=FALSE}
+indep <- rbind("$H$" = c(1,2,3,4,5,6), "$Y_{T+H}$" = c(52.576, 45.206, 44.951, 49.992, 37.528, 46.082))
+indep[1,] <- formatC(as.matrix(indep[1,]),digits=0,format="f")
+
+kable(rbind(indep),
+  format = "html", booktabs = T, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```  
+  cálcule las medidas de error $ME, MAE, MSE$  y $RMSE$ asociadas a las estimaciones obtenidas en el punto a, e interprete los resultados obtenidos.</li>
+</ol>
+5. Suponga el siguiente modelo de regresión lineal simple ajustado a un conjunto de 1000 observaciones
+`\begin{align*}
+\hat{Y}_t = 1316.28 + 22.48 X
+\end{align*}`
+
+A partir de este modelo calcule
+<ol type="a">
+  <li>Encuentre los pronósticos $\hat{Y}_{T+H}$, para $H = 1,2,3,4,5$ correspondientes para los siguientes valores de $X$
+```{r echo=FALSE}
+dep <- rbind("$H$" = c(1,2,3,4,5), "$X_{T+H}$" = c(23.904, 40.160, 13.594, 24.215, 31.101), "$\\hat{Y}_{T+H}$" = c("", "", "", "", ""))
+
+kable(rbind(dep),
+  format = "html", booktabs = T, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+  </li>
+  <li>Si los valores reales de $Y_{T+H}$ para $H=1,2,3,4,5$ están dados por 
+```{r echo=FALSE}
+indep <- rbind("$H$" = c(1,2,3,4,5), "$Y_{T+H}$" = c(1852.657, 2205.323, 1623.818, 1858.007, 2005.945))
+indep[1,] <- formatC(as.matrix(indep[1,]),digits=0,format="f")
+
+kable(rbind(indep),
+  format = "html", booktabs = T, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```  
+  cálcule las medidas de error $MPE, MAPE, MSE$  y $RMSE$ asociadas a las estimaciones obtenidas en el punto a, e interprete los resultados obtenidos.</li>
+</ol>

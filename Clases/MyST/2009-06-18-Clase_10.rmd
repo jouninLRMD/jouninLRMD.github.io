@@ -1,0 +1,274 @@
+---
+layout: post
+title: "Clase 10"
+main-class: 'clase'
+permalink: /MuestreoySeriesdeTiempo/MyST:title.html
+tags:
+
+introduction: |
+  Ajuste de modelos AR, MA y ARMA. <br/>
+  Pruebas de significancia. <br/>
+  Validación de supuestos de los modelos.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../MuestreoySeriesdeTiempo/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+link-citations: yes
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../MuestreoySeriesdeTiempo/images/", "Clase10"),
+               cache.path = "../../MuestreoySeriesdeTiempo/cache/",
+               cache = FALSE)
+```
+
+<!-- Hay que mejorar esta clase, mirar el programa del curso para agregar los estadísticos allí planteados -->
+
+## Ajuste de modelos
+Para el ajuste y estimación de modelos ARMA(p,q) **no es conveniente emplear métodos de estimación de regresión lineal múltiple ordinarios**, tales como los presentados en la [Clase 09](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_09.html){:target="_blank"}, para la identificación de los ordenes p y q mediante el método propuesto por @Tsay1984, ya que las ecuaciones de minimización resultantes no son necesariamente lineales en los parámetros desconocidos, y por tanto, para el ajuste de lo modelos ARMA(p,q) **es más adecuado emplear métodos basados en máxima verosimilitud**, ya que permiten obtener resultados asintóticos cuando los tamaños de la serie son grandes.
+
+Dado lo anterior, existen diferentes funciones en <tt>R</tt> que permiten el ajuste de modelos ARMA(p,q), entre las cuales se destaca, la función `arima()` de la librería `stats` en la base de <tt>R</tt>, la función `Arima()` de la librería `forecast`, la función `FitAR()` de la librería `FitAR`, la función `FitARMA()` de la librería `FitARMA` y la función `sarima()` de la librería `astsa`.
+
+## Pruebas de significancia
+Una vez identificado y realizado el ajuste del modelo de interés, es necesario observar la significancia de los parámetros ajustados. Para ello se emplea los siguientes juegos de hipótesis.
+`\begin{align*}
+H_0: \theta_i = 0 & & \text{vs} & & H_1: \theta_i \neq 0 \\
+H_0: \phi_j = 0 & & \text{vs} & & H_1: \phi_j \neq 0
+\end{align*}`
+
+donde `$\theta_i$` son los parámetros de la parte autorregresiva, con `$i=0,1,\ldots,p$`, y `$\phi_j$` son los parámetros de la parte de media móvil, con `$j=0,1,\ldots,q$`.
+
+El estadístico de prueba empleado para tomar la decisión entre `$H_0$` y `$H_1$` estará dado por una distribución t-student, el cual tiene la forma
+`\begin{align*}
+t_c = \frac{\hat{\theta}_i}{se(\hat{\theta}_i)}
+\end{align*}`
+
+Para el caso de los parámetros de la parte autorregresiva (AR), y 
+`\begin{align*}
+t_c = \frac{\hat{\phi}_j}{se(\hat{\phi}_j)}
+\end{align*}`
+
+Para el caso de los parámetros de la parte de media móvil (MA).
+
+Además, la región crítica o región de rechazo que llevan al rechazo del estadístico de prueba está dado por
+`\begin{align*}
+RC:\{T|T<-t_{\frac{\alpha}{2}, n-k} \text{ o } T>t_{\frac{\alpha}{2}, n-k}\}
+\end{align*}`
+
+con `$k$` el número de parámetros en el modelo, y `$n-k$` el número de grados de libertad del modelo.
+
+Y finalmente, el P-valor asociado a cada uno de los estadísticos de prueba estará dado por
+`\begin{align*}
+\text{P-valor} = 2\mathbb{P}(t_{n-k}>|t_c|)
+\end{align*}`
+
+## Validación de supuestos del modelo
+Un aspecto importante a la hora de evaluar un modelo ARMA(p,q), es la fase de validación de los supuestos del modelo ARMA, a partir de los residuales obtenidos en el ajuste. La evaluación de los supuestos incluye, test de incorrelación, de normalidad y de homocedasticidad (varianza constante). 
+
+El objetivo de la evaluación de los supuestos **permite observar si el modelo propuesto es o no adecuado para modelar la serie de interés**, ya que de no cumplirse alguno de éstos, se tendrá clara evidencia sobre que el modelo propuesto no posee la capacidad de capturar algunos patrones o comportamientos que posee la serie. 
+
+Además, validar los supuestos de los modelos permitirá reducir la amplia gama de posibles modelos que pueden ajustarse, facilitando la escogencia del mejor modelo, **permitiendo seleccionar, aquel que ofrezca la mejor calidad en los ajustes y en los pronósticos obtenidos mediante el proceso de validación cruzada**.
+
+## Análisis gráfico
+Una alternativa para validar los supuestos de incorrelación, de normalidad y de homocedasticidad, **aunque un poco subjetiva en muchas ocasiones**, es mediante el empleo de diferentes gráficos que permitan observar si para el modelo evaluado se cumplen o no cada uno de los supuestos.
+
+### Correlograma y correlograma parcial
+Una alternativa gráfica para probar el supuesto de incorrelación, es mediante el empleo del correlograma y correlograma parcial, el cual indicará si los residuales de los modelos son o no ruido blanco. 
+
+**Para que los residuales del modelo puedan ser asumidos como ruido blanco, es necesario que todas las correlaciones y correlaciones parciales caigan dentro de las bandas de confianza de los gráficos**. Si se observa que existen correlaciones que se encuentren por encima o por debajo de las bandas de confianza, se tendrá evidencia sobre que, los residuales del modelo no son ruido blanco.
+
+La realización del correlograma y correlograma parcial en <tt>R</tt>, pueden realizarse mediante las funciones `acf()` y `pacf()`, de la librería `stats` de la base del <tt>R</tt>.
+
+### Gráfico cuantil-cuantil
+Para probar de forma gráfica si los residuales del modelo son o no normales, es mediante el empleo de los gráficos Q-Q, el cual gráfica los cuantiles muestrales de los residuales, y los compara con los cuantiles teóricos de la distribución normal.
+
+**Para que pueda asumirse que los residuales del modelo se distribuyen normales, es necesario observar que todo los puntos en el gráfico Q-Q, se encuentran cerca de la linea diagonal, sin salirse significativamente de las bandas de confianza**.
+
+La realización del gráfico cuantil-cuantil en <tt>R</tt>, pueden realizarse mediante la función `qqnorm()` para graficar los puntos asociados a los cuantiles y la función `qqline()` para graficar la linea sobre la cual debería estar el conjunto de puntos, ambas de la librería `stats` de la base del <tt>R</tt>. Alternativamente, puede usarse la función `qqPlot()` de la librería `car`, la cual gráfica los puntos, la recta diagonal y las bandas de confianza asociadas al conjunto de observaciones.
+
+### Gráfico de dispersión y de residuales
+Para probar si los residuales del modelo ajustado son homocedásticos, es mediante el gráfico de dispersión de los residuales contra los valores ajustados del modelo, o alternativamente es mediante el gráfico de los residuales, el cual se realiza contra el tiempo.
+
+**Para saber si los residuales son homocedásticos, es necesario observar que todo los puntos en el gráfico, se encuentran dentro de unas bandas**, es decir, no se observa una varianza constante a lo largo de todos los puntos graficados.
+
+El gráfico de dispersión o de residuales en <tt>R</tt>, puede realizarse mediante la función `plot()` o `plot.ts()` de las librerías `graphics` y `stats`, respectivamente, las cuales se encuentran en la base del <tt>R</tt>.
+
+## Pruebas estadísticas
+### Prueba de incorrelación
+Para probar si los residuales del modelo ajustado cumplen el supuesto de incorrelación, se debe probar el siguiente juego de hipótesis
+`\begin{align*}
+\begin{split}
+H_0: \rho(k) = 0 \\
+H_1: \rho(k) \neq 0 
+\end{split}
+\quad \quad \text{ para todo } k=1,2,\ldots, h
+\end{align*}`
+
+**en donde, si no se rechaza `$H_0$` para todo `$h = max(k) = \left\lceil\frac{T}{4}\right\rceil$` se tendrá evidencia para concluir que los residuales del modelo ajustado son incorrelacionados.**
+
+#### Prueba de independencia Box-Pierce
+Un estadístico de prueba para probar tal juego de hipótesis, es propuesto por @Box1970, el cual se conoce como prueba de independencia de Box-Pierce. Para realizar la prueba de hipótesis, se tendrá que el estadístico de prueba será de la forma
+`\begin{align*}
+Q_{BP}=n\sum_{k=1}^h \hat{\rho}^2_k
+\end{align*}`
+
+junto con una región crítica dada por
+`\begin{align*}
+RC:\{\chi^2| Q_{BP}>\chi_{1-\alpha,h} \}
+\end{align*}`
+
+y un P-valor de la forma
+
+`\begin{align*}
+\text{P-valor} = \mathbb{P}(\chi^2_{h}>Q_{BP})
+\end{align*}`
+
+La prueba de incorrelación de Box-Pierce puede realizarse en <tt>R</tt>, mediante la función `Box.test()` de la librería `stats` de la base del <tt>R</tt>, con el argumento `type = "Box-Pierce"`.
+
+#### Prueba de independencia Ljung-Box
+Posteriormente, a partir del trabajo propuesto por @Box1970, los autores George Box y Greta Ljung, deciden proponer una nueva prueba de independencia en su artículo @Ljung1978 la cual ofrece mejores resultados que la prueba Box-Pierce.
+
+Esta prueba posee un estadístico de prueba dado por
+`\begin{align*}
+Q_{LB}=n(n+2)\sum_{k=1}^h \frac{\hat{\rho}^2_k}{n-k}
+\end{align*}`
+
+con una región crítica 
+`\begin{align*}
+RC:\{\chi^2| Q_{LB}>\chi_{1-\alpha,h} \}
+\end{align*}`
+
+y un P-valor
+`\begin{align*}
+\text{P-valor} = \mathbb{P}(\chi^2_{h}>Q_{LB})
+\end{align*}`
+
+En <tt>R</tt>, pueden realizarse la prueba de incorrelación Ljung-Box mediante la función `Box.test()` de la librería `stats` de la base del <tt>R</tt>, con el argumento `type = "Ljung-Box"`.
+
+### Prueba de normalidad
+Con el fin de probar si los residuales del modelo ajustado cumplen el supuesto de normalidad, es necesario probar el siguiente juego de hipótesis
+`\begin{align*}
+H_0: \varepsilon_t \sim Normal \\
+H_1: \varepsilon_t \not\sim Normal
+\end{align*}`
+
+**en donde, si no se rechaza `$H_0$` se tendrá evidencia para concluir que los residuales ajustados provienen de una distribución normal.**
+
+#### Prueba de normalidad Kolmogorov-Smirnov
+La prueba Kolmogorov-Smirnov es una de las pruebas de bondad de ajuste más empleadas en la práctica, aunque ésta no sea la que ofrezca los mejores resultados. Esta prueba posee un estadístico de prueba dado por
+`\begin{align*}
+KS = \sup|\hat{F}_n(x_i) - F_0(x_i)|
+\end{align*}`
+
+donde `$x_i$` es el `$i$`-ésimo valor observado en la muestra, cuyos valores son ordenados de forma ascendente, |`$\hat{F}_n(x_i)$` es la función de distribución acumulada empírica evaluada en `$x_i$`, y `$F_0(x_i)$` es la función de distribución acumulada bajo `$H_0$` es cierta, evaluada en `$x_i$`.
+
+Además, se tendrá que si `$K$` es una variable aleatoria tal que
+`\begin{align*}
+K = \sup_{t\in[0,1]}|B(t)|
+\end{align*}`
+
+siendo `$B(t)$` conocido como un puente browniando, con función de distribución acumulada dada por
+`\begin{align*}
+P(K\leq x) = \frac{\sqrt{2\pi}}{x} \sum_{k=1}^\infty e^{-\frac{(2k-1)^2\pi^2}{8x^2}}
+\end{align*}`
+
+entonces, se tendrá que la región crítica del estadístico de prueba estará dada por
+`\begin{align*}
+RC:\{K| KS>\frac{K_\alpha}{\sqrt{T}} \}
+\end{align*}`
+
+con un P-valor dado por
+`\begin{align*}
+\text{P-valor} = \mathbb{P}(K>KS)
+\end{align*}`
+
+La prueba Kolmogorov-Smirnov puede realizarse en <tt>R</tt>, mediante la función `ks.test()` de la librería `stats` de la base del <tt>R</tt>,  y de la librería `truncgof`.
+
+#### Prueba de normalidad Shapiro-Wilk
+Una alternativa, considerada la mejor prueba para detectar normalidad, es propuesta por @Shapiro1965. A diferencia de la prueba Kolmogorov-Smirnov, la prueba Shapiro-Wilk es ua prueba especializada para probar normalidad, pues no es posible probar con ésta, si el conjunto de observaciones siguen otro tipo de distribución.
+
+El estadístico de prueba del test Shapiro-Wilk está dado por
+`\begin{align*}
+W = \frac{(\sum_i=1^T a_ix_{(i)})^2}{\sum_i=1^T (x_{i} - \bar{x})^2}
+\end{align*}`
+
+con un P-valor dado por
+`\begin{align*}
+\text{P-valor} = \mathbb{P}(W<W_\alpha)
+\end{align*}`
+
+La prueba Shapiro-Wilk puede realizarse en <tt>R</tt>, mediante la función `shapiro.test()` de la librería `stats` de la base del <tt>R</tt>.
+
+### Prueba de homocedasticidad
+Para probar si los residuales del modelo ajustado cumplen el supuesto de homocedasticidad, es necesario probar el siguiente juego de hipótesis
+`\begin{align*}
+\begin{split}
+H_0: Var(\varepsilon_t) = \sigma^2 \\
+H_1: Var(\varepsilon_t) \neq \sigma^2
+\end{split} 
+\quad \quad \text{ para todo } t
+\end{align*}`
+
+**en donde, si no se rechaza `$H_0$` se tendrá evidencia para concluir que los residuales ajustados son homocedásticos.**
+
+#### Prueba de Breusch-Pagan
+La prueba Breusch-Pagan fue propuesta por Trevor Breusch y Adrian Pagan en su artículo @Breusch1979, y es empleada para probar heterocedasticidad en los residuales de un modelos de regresión lineal. 
+
+Para realizar la prueba, se emplea el valor obtenido por el coeficiente de determinación `$R^2$` de una regresión auxiliar el cual tiene la forma
+`\begin{align*}
+e_i^2 = \gamma_1 + \gamma_2z_{2i} + \ldots + \gamma_jz_{ji} + \eta_i
+\end{align*}`
+
+donde `$Z_t$` son algunas (o todas) las variables explicativas del vector `$X_t$` y/o funciones conocidas de ellas, `$\eta_i$` es un término de error que suponemos tiene esperanza cero y `$j$` es el número de variables explicativas (incluyendo la constante) en el modelo de regresión lineal auxiliar. Una vez calculado el coeficiente de terminación, es posible calcular el estadístico de prueba de la forma
+`\begin{align*}
+BP = TR^2\sim\chi^2_{j-1}
+\end{align*}`
+
+siendo `$T$` el total de observaciones que se poseen. Además, el P-valor asociado será de la forma
+`\begin{align*}
+\text{P-valor} = \mathbb{P}(BP<BP_\alpha)
+\end{align*}`
+
+La prueba Breusch-Pagan puede realizarse en <tt>R</tt>, mediante la función `bptest()` de la librería `lmtest`, o su versión mejorada conocida como la prueba Cook-Weisberg, que puede realizarse mediante la función `ncvTest()` de la librería `car`.
+
+#### Prueba de Goldfeld-Quandt
+Similar a la prueba Breusch-Pagan, esta prueba que tiene por objetivo comprobar si los residuales de un modelo de regresión lineal son o no heterocedásticos. Para tal propósito, la prueba consiste en dividir el total de observaciones en dos grupos, para luego comprobar si la varianza de los dos grupos es o no significativamente diferente.
+
+Para ello, ordena los residuales en base a una de las variables independientes `$X_t$`, dividir el total de observaciones en dos grupos, y cada uno de ellos calcular la suma de los cuadrados de los errores `$SCE$`, para luego calcular un estadístico de prueba `$F$` que tiene la forma
+`\begin{align*}
+F_c = \frac{SCE_1/df_1}{SCE_2/df_2} \sim F_{df_1,df_2}
+\end{align*}`
+
+donde `$df$` representa los grados de libertad del grupo 1 y 2, respectivamente. Además, se tendrá que la región crítica asociada al estadístico de prueba será de la forma 
+`\begin{align*}
+RC:\{F| F<F_{1- (\alpha/2), df_1, df_2} o F>F_{\alpha/2, df_1, df_2}\}
+\end{align*}`
+
+y un P-valor
+`\begin{align*}
+\text{P-valor} = (2\mathbb{P}(F_{df_1,df_2}>F_c) \wedge 2\mathbb{P}(F_{df_1,df_2}<F_c) 
+\end{align*}`
+
+donde `$(a\wedge b) = min(a,b)$`. La prueba Goldfeld-Quandt puede realizarse en <tt>R</tt>, mediante la función `gqtest()` de la librería `lmtest`.
+
+
+## Bibliografía
