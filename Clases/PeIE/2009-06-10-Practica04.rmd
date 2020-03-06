@@ -1,0 +1,42 @@
+---
+layout: post
+title: "Práctica 04"
+main-class: 'practica'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: Ejercicio sobre variables aleatorias y distribuciones de probabilidad.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Práctica04"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Lista de ejercicios
+En construcción D: D: (Se los mandé al correo :D)

@@ -1,0 +1,59 @@
+---
+layout: post
+title: "Clase 15"
+main-class: 'clase'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: |
+  Estimación por intervalos. <br>
+  - Intervalos de confianza para diferencia de medias. <br>
+  - Intervalos de confianza para una proporción. <br>
+  - Intervalos de confianza para razón de varianzas.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all")})
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Clase15"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Estimación por intervalos
+## Intervalos de confianza para diferencia de medias `$\mu_1 - \mu_2$`
+Sea `$X_{1,1}, X_{1,2}, \ldots, X_{1,n_1}$` y `$X_{2,1}, X_{2,2}, \ldots, X_{2,n_1}$` dos muestras aleatorias *iid* de tamaños `$n_1$`, y `$n_2$` con medias desconocidas `$\mathbb{E}(X_{1})=\mu_1$` y `$\mathbb{E}(X_{2})=\mu_2$`, y varianzas `$Var(X_{1})=\sigma_1^2<\infty$` y `$Var(X_{2})=\sigma^2_2<\infty$`, respectivamente, entonces dependiendo de las condiciones, se tendrán los siguientes intervalos de confianza para la diferencia de medias `$\mu_1 - \mu_2$`.
+
+
+![](../../ProbabilidadeInferencia/images/Intervalos2.jpg)
+
+## Intervalos de confianza para una proporción `$p$` 
+Sea `$X_1,X_2, \ldots, X_n$` una muestra aleatoria *iid* de tamaño `$n$`, tal que `$X\sim b(n,p)$` entonces si `$n$` es suficientemente grande tal que `$n\geq30$`, y la proporción desconocida `$p$` no se encuentre cercana a `$0$` o `$1$`, tal que `$np>5$` y `$n(1-p)>5$`, entonces un intervalo de confianza para la proporción `$p$` es de la forma
+![](../../ProbabilidadeInferencia/images/Intervalos3.jpg)
+
+## Intervalos de confianza para razón de varianzas `$\sigma^2_1/\sigma^2_2$`
+Sea `$X_{1,1}, X_{1,2}, \ldots, X_{1,n_1}$` y `$X_{2,1}, X_{2,2}, \ldots, X_{2,n_1}$` dos muestras aleatorias normales de tamaños `$n_1$`, y `$n_2$` con medias `$\mathbb{E}(X_{1})=\mu_1$` y `$\mathbb{E}(X_{2})=\mu_2$`, y varianzas desconocidas `$Var(X_{1})=\sigma_1^2<\infty$` y `$Var(X_{2})=\sigma^2_2<\infty$`, respectivamente, entonces un intervalo de confianza del `$100(1-\alpha)\%$` para `$\sigma^2_1/\sigma^2_2$` estará dada por
+
+![](../../ProbabilidadeInferencia/images/Intervalos4.jpg)

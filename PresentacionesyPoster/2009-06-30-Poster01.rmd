@@ -1,0 +1,335 @@
+---
+layout: presentation
+title: "Stop-Loss estimation via Single Loss Approximation (Poster)"
+main-class: 'presentaciones'
+permalink: /Poster01
+tags:
+
+introduction: 
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../PresentacionesyPoster/_posts/", output_format = "all"  ) })
+bibliography: "../referencias.bib"
+csl: "../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../PresentacionesyPoster/images/", "Poster01"),
+               cache.path = "../Poster/cache/",
+               cache = FALSE)
+```
+
+<br>
+
+## Objective
+
+We calculate the actuarial price and optimum retention point of a Stop-Loss reinsurance for the costs associated with high-cost illiness (*HCI* onwards) medical services, with emphasis on surgery services. We apply Single Loss Analysis @Albrecher2017. And we discuss the validity of the LogNormal assumption used in some works for the valuation of this kind of services.
+
+## Introduction
+
+We assume the classical Cramer-Lundberg collective risk model, for the aggregate loss as
+`\begin{align*} \label{ALD}
+	S= \sum_{i=1}^N X_i \tag{1}
+\end{align*}`
+	where, `$X_1,X_2,\ldots,X_N$` is a sequence of random variables *iid* `$X_i\geq 0$`, with cumulative distribution `$F_X(x)=\mathbb{P}(X\le x)$` with support `$[0,\infty)$`, such that `$F_{X}(x)<1$`, `$\forall x>0$`, `$F_{X}(0_+)=0$`, and with `$\mathbb{E}(X_{i})<\infty$`. `$N$` and `$X_{i}$` are asumed mutually independent random variables `$\forall i=1,2,\ldots$`. [@Bowers1997, p. 367].
+		
+The variable `$N$` represents the number of surgery claims in one year of *HCI*, with a mass function `$p_{n}(x) = \mathbb{P}(N=x)$`. We employ several models included in <tt>R</tt> library <tt>gamlss</tt> from @Rigby2014, which **include several Mixed Poisson distributions**. 
+	
+The variable `$X$` represent the severities of individual surgeries in *HCI*. Their distribution is model by mixtures of light and heavy-tailed distributions, **also called spliced distribution**, defined as
+`\begin{align*}
+		F_X(x)=F_L(x)1_{\{x\leq u\}}+ F_H(x)1_{\{x>u\}} \tag{2}
+\end{align*}`
+
+where `$1_{x\leq u}$` and `$1_{x>u}$` are indicator variables, `$u$` is a threshold, `$F_L$` and `$F_H$` are light and heavy-tailed distributions, respectively. A requisite is that `$1-F_H$` is a regular varying function with index `$-\alpha$`, i.e, `$1-F_H\in \mathcal{R}_{-\alpha}$`.
+	
+The aggregate loss distributions `$F_{S}(x)$` is defined as
+`\begin{align*} 
+	F_{S}(x) & =\sum_{n=0}^{\infty}p_{n}F_{X}^{*n}(x) \tag{3}
+\end{align*}`
+
+where `$p_{n}=\mathbb{P}(N=n)$` is the probability distribution of `$N$` evaluated in `$n$` and `$F_{X}^{*n}(x)=\mathbb{P}(X_{1}+X_{2}+\ldots+X_{n}\le x)$` is the `$n$`-th convolution of `$F_X$` with itself. 
+	
+**The calculation of the distribution and the quantil for `$S$` is known a difficult task**. Some authors have proposed algorithms and methods for their approximation. Some are described in @Kaas2008[, ch. 2-3], and @Albrecher2017[, ch. 6].  
+		
+For this approximation are use for the calculation of the optimal retention point and Stop-Loss reinsurance premium, defined later, we use two alternatives proposed in the literature:
+
+* The methodology **Single Loss Approximation** (*SLA* onwards).
+* The assumption of the **Black-Scholes methodology** on which `$S\sim LogNormal(\mu,\sigma^2)$`
+	
+## Frequency Model	
+### Mixed Poisson Law
+
+The Mixed Poisson Law is applied when **the variance of the random variable `$N$` is significantly greater than its expected value**. We assume that the mass function of `$N$`, follows a Poisson Law with random parameter `$\lambda$` (replaced by `$\theta$`), and *mixing distribution function* `$U$` (also called *risk structure function*), such that
+`\begin{align*}
+			\mathbb{P}(N=x) = \int_{0}^{\infty} \frac{e^{-\theta t}(\theta t)^x}{x!}dU(\theta) \tag{4}
+\end{align*}`
+
+```{r echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
+library(plotly)
+require(gamlss)
+library(ggplot2)
+library(evmix)
+library(htmltools)
+
+surgery <- read.table("../Dataset/surgery.dat", header = T)
+surgery$cost <- surgery$cost/1000000
+
+FitN_surg1 <- fitDist(y = table(surgery$year), type = "counts")
+### Estimation of second and third distribution with best fit
+FitN_surg2 <- gamlssML(formula = table(surgery$year), family = PIG)
+FitN_surg3 <- gamlssML(formula = table(surgery$year), family = GPO)
+FitN_surg4 <- gamlssML(formula = table(surgery$year), family = PO)
+FitN_surg5 <- gamlssML(formula = table(surgery$year), family = NBI)
+FitN_surg6 <- gamlssML(formula = table(surgery$year), family = SICHEL)
+
+secu <- seq(from = 0, to = 250, length.out = 100)
+DenDEL <- pDEL(secu, mu = FitN_surg1$mu, sigma = FitN_surg1$sigma,
+               nu = FitN_surg1$nu)
+DenPIG <- pPIG(secu, mu = FitN_surg2$mu, sigma = FitN_surg2$sigma)
+DenGPO <- pGPO(secu, mu = FitN_surg3$mu, sigma = FitN_surg3$sigma)
+DenPO <- pPO(secu, mu = FitN_surg4$mu)
+DenNBI <- pNBI(secu, mu = FitN_surg5$mu, sigma = FitN_surg5$sigma)
+DenSIC <- pSICHEL(secu, mu = FitN_surg6$mu, sigma = FitN_surg6$sigma,
+                  nu = FitN_surg6$nu)
+ecdfN <- ecdf(table(surgery$year))
+ecdfN2 <- data.frame(x = environment(ecdfN)$x, y = environment(ecdfN)$y)
+```
+
+<pre class="plotlyCuadrito">
+```{r echo=FALSE}
+tagList(plot_ly(x = ~secu, y = ~DenDEL, mode = 'lines',
+        text = paste("Value =", round(DenDEL, 3)),
+        width = 600, height = 400, type = "scatter", name = "Delaporte (DEL)") %>%
+  add_lines(x = ~secu, y = ~DenPIG, name = "Poisson-Inverse Gaussian (PIG)") %>%
+  add_lines(x = ~secu, y = ~DenGPO, name = "Generalized Poisson(GPO)") %>%
+  add_lines(x = ~secu, y = ~DenSIC, name = "Sichel(SCH)") %>% 
+  add_lines(x = ~secu, y = ~DenNBI, name = "Negative Binomial(NB)") %>% 
+  add_lines(x = ~secu, y = ~DenPO, name = "Poisson(PO)") %>% 
+  add_lines(x = 0, y = 0, mode = 'markers', name = "Empirical Cumulative Distribution", line=list(color = "black")) %>%
+  layout(title="Adjustment cumulative frequencies distribution",
+         xaxis = list(title ="Sample quantiles"),
+         yaxis = list(title = TeX("F_N(x)"))) %>% config(mathjax = 'cdn') %>% 
+  layout(legend = list(x = 0.5, y = 0.1)) %>%
+  add_markers(x = ecdfN2[1,1], y = ecdfN2[1,2], name = "ecdf", marker=list(color = "black"), showlegend = FALSE) %>%
+  add_markers(x = ecdfN2[2,1], y = ecdfN2[2,2], name = "ecdf", marker=list(color = "black"), showlegend = FALSE) %>%
+  add_markers(x = ecdfN2[3,1], y = ecdfN2[3,2], name = "ecdf", marker=list(color = "black"), showlegend = FALSE) %>%
+  add_markers(x = ecdfN2[4,1], y = ecdfN2[4,2], name = "ecdf", marker=list(color = "black"), showlegend = FALSE) %>%
+  add_markers(x = ecdfN2[5,1], y = ecdfN2[5,2], name = "ecdf", marker=list(color = "black"), showlegend = FALSE) %>%
+  add_markers(x = ecdfN2[6,1], y = ecdfN2[6,2], name = "ecdf", marker=list(color = "black"), showlegend = FALSE) %>%
+  layout(shapes=list(
+    list(type='line', x0 = 0, x1 = ecdfN2[1,1], y0 = 0, y1 = 0),
+    list(type='line', x0 = ecdfN2[1,1], x1 = ecdfN2[2,1], y0 = ecdfN2[1,2], y1 = ecdfN2[1,2]),
+    list(type='line', x0 = ecdfN2[2,1], x1 = ecdfN2[3,1], y0 = ecdfN2[2,2], y1 = ecdfN2[2,2]),
+    list(type='line', x0 = ecdfN2[3,1], x1 = ecdfN2[4,1], y0 = ecdfN2[3,2], y1 = ecdfN2[3,2]),
+    list(type='line', x0 = ecdfN2[4,1], x1 = ecdfN2[5,1], y0 = ecdfN2[4,2], y1 = ecdfN2[4,2]),
+    list(type='line', x0 = ecdfN2[5,1], x1 = ecdfN2[6,1], y0 = ecdfN2[5,2], y1 = ecdfN2[5,2]),
+    list(type='line', x0 = ecdfN2[6,1], x1 = 250, y0 = ecdfN2[6,2], y1 = ecdfN2[6,2])
+  )) %>%
+  layout(margin = list(l = 60, r = 30, b = 60, t = 60, pad = 4)))
+```
+</pre>
+
+obtaining goodness of fit tests
+
+```{r echo=FALSE}
+library(kableExtra)
+
+tabla <- data.frame(c("0.25", "0.00", "0.01", "0.01", "0.00", "0.00"), c("0.18", "0.00", "0.00", "0.00", "0.00", "0.00"),
+  c("0.54", "0.04", "0.07", "0.15", "0.02", "0.00"))
+colnames(tabla) <- c("Kolmogorov-Smirnov", "Cramer-von Mises", "Kuiper")
+rownames(tabla) <- c("DEL", "PIG", "GPO", "SCH", "NB", "PO")
+
+kable(data.frame(t(tabla)), 
+  format = "html", booktabs = T) %>%
+kable_styling("striped", full_width = F) 
+```
+
+## Severity Model
+### Spliced distribution
+@Albrecher2017[, p. 50] defines a *m-component spliced distribution* with a probability density function as
+`\begin{align*}
+		\begin{split}
+		f_{X}(x) = \begin{cases} \pi_{1} \frac{f_{1}(x)}{F_{1}(c_{1})-F_{1}(c_{0})} & c_{0} < x \leq c_{1} \\
+		\pi_{2} \frac{f_{2}(x)}{F_{2}(c_{2})-F_{2}(c_{1})} & c_{1} < x \leq c_{2} \\
+		\quad \quad \quad \vdots & \quad \quad \ \vdots \\
+		\pi_{m} \frac{f_{m}(x)}{F_{m}(c_{m})-F_{m}(c_{{m-1}})}& c_{{m-1}} < x \leq c_{m}
+		\end{cases}
+		\end{split} \tag{5}
+\end{align*}`
+		
+where `$f_{i}(x)$` and `$F_{i}(x)$` are the *pdf* and *cdf* of the `$i$`-th interval of a random variable `$X$`, respectively. `$\pi_{i}>0$` are the weights of each of the categories, with `$\sum_{i=1}^m \pi_{i} = 1$`. `$c_{k_i}$` are the intervals for which the random variable `$X$` is defined in each category or also called union points. 
+
+```{r echo = FALSE}
+FitX_surg1 <- fweibullgpd(x = surgery$cost)
+FitX_surg2 <- gamlssML(formula = surgery$cost, family = BCPEo)
+FitX_surg3 <- gamlssML(formula = surgery$cost, family = WEI)
+FitX_surg4 <- gamlssML(formula = surgery$cost, family = GG)
+FitX_surg5 <- gamlssML(formula = surgery$cost, family = GU)
+FitX_surg6 <- gamlssML(formula = surgery$cost, family = GP)
+
+FnXs <- ecdf(surgery$cost)
+sortXs <- sort(surgery$cost)
+survXs <- 1 - FnXs(sortXs)
+
+DenWP <- pweibullgpd(q = sortXs, phiu = FitX_surg1$phiu, 
+                     wshape = FitX_surg1$wshape, wscale = FitX_surg1$wscale,
+                     u = FitX_surg1$u, xi = FitX_surg1$xi,
+                     sigmau = FitX_surg1$sigmau)
+DenWP2 <- 1 - DenWP
+
+DenBCPEo <- pBCPEo(sortXs, mu = FitX_surg2$mu,
+                   sigma = FitX_surg2$sigma, nu = FitX_surg2$nu,
+                   tau = FitX_surg2$tau)
+DenBCPEo2 <- 1 - DenBCPEo
+
+DenWEI <- pWEI(sortXs, mu = FitX_surg3$mu,
+               sigma = FitX_surg3$sigma)
+DenWEI2 <- 1 - DenWEI
+
+DenGG <- pGG(sortXs, mu = FitX_surg4$mu,
+             sigma = FitX_surg4$sigma, nu = FitX_surg4$nu)
+DenGG2 <- 1 - DenGG
+
+DenGU <- pGU(sortXs, mu = FitX_surg5$mu,
+             sigma = FitX_surg5$sigma)
+DenGU2 <- 1 - DenGU
+
+DenGP <- pGP(sortXs, mu = FitX_surg6$mu,
+             sigma = FitX_surg6$sigma)
+DenGP2 <- 1 - DenGP
+```
+
+<pre class="plotlyCuadrito">
+```{r echo = FALSE}
+tagList(plot_ly(x = ~log(sortXs), y = ~log(DenWP2), mode = 'lines',
+        text = paste("Value =", round(DenWP2, 3)),
+        width = 600, height = 400, type = "scatter",
+        name = "Weibull-Generalized Pareto (W-GP)") %>%
+  layout(xaxis = list(zeroline = FALSE, title ="log(Sample quantiles)"),
+         yaxis = list(zeroline = FALSE, range = c(-7, 0), title = TeX("log(1- F_X(x))")),
+         title="Adjustment of log−survival severities distribution") %>%  config(mathjax = 'cdn') %>%
+  add_lines(x = ~log(sortXs), y = ~log(DenBCPEo2), name = "Box-Cox Power Exponential (BCPE)") %>%
+  add_lines(x = ~log(sortXs), y = ~log(DenWEI2), name = "Weibull (WEI)") %>%
+  add_lines(x = ~log(sortXs), y = ~log(DenGG2), name = "Generalized Gamma (GG)") %>%
+  add_lines(x = ~log(sortXs), y = ~log(DenGU2), name = "Gumbel (GU)") %>% 
+  add_lines(x = ~log(sortXs), y = ~log(DenGP2), name = "Generalized Pareto (GP)") %>%
+  add_lines(x = 0, y = 0, mode = 'markers', name = "Empirical Log-Survival Distribution", line=list(color = "black")) %>%
+  add_trace(x = ~log(sortXs), y = ~log(survXs), line=list(color = "black"), name = "Empirical Log-Survival Distribution", showlegend=FALSE) %>%
+  layout(margin = list(l = 60, r = 30, b = 60, t = 60, pad = 4),
+         legend = list(x = 0.1, y = 0.1)))
+```
+</pre>
+
+obtaining goodness of fit tests
+
+```{r echo=FALSE}
+tabla2 <- data.frame(c("0.22", "0.28", "0.00", "0.01", "0.00", "0.00"), c("0.29", "0.30", "0.00", "0.01", "0.00", "0.00"),
+  c("0.33", "0.24", "0.00", "0.00", "0.00", "0.00"),
+  c("0.27", "0.38", "0.02", "0.20", "0.19", "0.24"),
+  c("0.03", "0.21", "0.00", "0.01", "0.00", "0.06"))
+colnames(tabla2) <- c("Kolmogorov-Smirnov", "Cramer-von Mises", "Kuiper", "Supremum Class Upper Tail Anderson-Darling", "Quadratic Class Upper Tail Anderson-Darling")
+rownames(tabla2) <- c("W-GP", "BCPE", "WEI", "GG", "GU", "GP")
+
+kable(data.frame(t(tabla2)), 
+  format = "html", booktabs = T) %>%
+kable_styling("striped", full_width = F) %>%
+column_spec(1, width = "5cm") 
+```
+
+## Single Loss Approximation
+For the implementation of this approach, we start with the **@Bocker2005** result, where the authors point out that, if `$F_{X_k}$` could be classified within Subexponential class distributions, such that
+`\begin{align*}
+		\lim_{x\to\infty}\frac{1-F_{X}^{*n}(x)}{1-F_{X}(x)}=\lim_{x\to\infty}\frac{\bar{F}_{X}^{*n}(x)}{\bar{F}_{X}(x)}=n \tag{6}
+\end{align*}`
+and assuming that `$p_{n}$` satisfies
+`\begin{align*}
+		\sum_{n=0}^\infty (1+\varepsilon)^np_{n}<\infty \text{ for some } \varepsilon>0 \tag{7}
+\end{align*}`
+then, it is said that `$F_{S}$` is classify within the Subexponential class, when its tail behavior is given by
+`\begin{align*} \label{BK}
+		\bar{F}_{S}(x) \sim \mathbb{E}(N)\bar{F}_{X}(x); \quad \quad x\to\infty \tag{8}
+\end{align*}`
+
+## Risk Measures
+### Value at Risk (VaR)
+From the equation (\\ref{BK}) **@Bocker2005[, p. 91]**, present the first approximation of the *VaR* by *SLA* method, for a level `$\kappa$`, with `$0<\kappa<1$` and defined as
+`\begin{align*} \label{VaR1}
+			VaR_{S}(\kappa) = F_{X}^{-1}\left(1 - \frac{1-\kappa}{\mathbb{E}(N)})\right); \quad \quad \kappa\to1 \tag{9}
+\end{align*}`
+
+Although the equation (\\ref{VaR1}) has a very attractive structure, in **@Bocker2006[, p. 96]**, the authors point out that this equation must be used carefully **because this approximation underestimate the *VaR*,** since the aproximation does not take into account all loss events `$X_i$` which contribute to the aggregate loss `$S$`. 
+
+In order to overcome such an inconvenience and give analytical support to the *SLA* method, from **@Albrecher2017[, p.199]** we can obtain a corrected expression for *VaR*
+`\begin{align*} \label{VaR2}
+			VaR_S(\kappa)\approx F_{X}^{-1}\left(1 - \frac{1-\kappa}{\mathbb{E}(N)}\right)+ \mathbb{E}(X)\left(\frac{\mathbb{E}(N^2)}{\mathbb{E}(N)}-1\right); \quad \kappa\to1 \tag{10}
+\end{align*}`
+			
+### Expected Shortfall (ES/TVaR/AVaR/CVaR)
+For the calculation of the *ES*, we use the basic definition of *ES* in @Kaas2008[, p. 129] 
+`\begin{align*} \label{VaR3}
+			ES_{S}(\kappa)= \frac{1}{1-\kappa}\int_\kappa^1 VaR_{S}(\theta)\text{d}\theta \tag{11}
+\end{align*}`
+
+### Stop-Loss Premium
+Finally, from *VaR* and *ES*, it is possible to define the Stop-Loss premium by the identity [Kaas2008, p. 129]
+`\begin{align*} \label{VaR4}
+			\pi(\kappa)=(1-\kappa) \left[ES_{S}(\kappa) - VaR_{S}(\kappa)\right] \tag{12}
+\end{align*}`
+
+## Reinsurance
+If we define the aggregate costs `$S$` as the equation (\\ref{ALD}), for the validity period of a policy (usually one year). Then a **reinsurance contract for a *HCI* **can be defined as
+`\begin{align*} \label{RE1}
+		S= & D + R  \tag{13}
+\end{align*}`
+
+where `$D$` represents the amount deductible or retained by the insurer and `$R$` represents the amount paid by the reinsurer.
+		
+In order to define the reinsurance premium `$\delta(\kappa)$`, we assume the **expected value principle**, defined as
+`\begin{align*} \label{RE2}
+		\delta(M^*)=(1+\rho)\pi(M^*) \tag{14}
+\end{align*}`
+
+where `$M^*=VaR_S(\rho*)$` is the optimal retention point, `$\rho^*=\frac{1}{1+\rho}$` is the optimal condition for the retention, `$\rho>0$` is defined as the **reinsurer's relative safety load factor**, which can be interpreted as a risk premium rateand `$\pi(.)$` is the Stop-Loss premium.
+
+## Optimum Retention Point Estimation
+From the equations (\\ref{VaR2}), (\\ref{VaR3}), (\\ref{VaR4}), (\\ref{RE1}), (\\ref{RE2}) and the adjusted distribution *DEL* for `$N$` and *W-GP* for `$X$`, we calculate **optimal retention points** and **optimal premiums** for different levels of `$\rho$`.
+
+```{r echo=FALSE}
+tabla3 <- data.frame(c("0.1", "0.5", "1.0", "5.0", "10.0", "20.0", "50.0"), c("0.090909", "0.333333", "0.500000", "0.833333", "0.909091", "0.952381", "0.980392"),
+  c("1112.357", "1118.603", "1126.077", "1179.411", "1238.787", "1347.044", "1636.039"),
+  c("199.564", "156.130", "119.829", "509.51", "854.577", "1483.711", "3163.199"))
+colnames(tabla3) <- c("$\\rho$", "$\\kappa_{\\rho^*}$", "$M^*$", "$\\delta(M^*)$")
+
+kable(tabla3, 
+  format = "html", booktabs = T) %>%
+kable_styling("striped", full_width = F) 
+```
+
+## Discussion of the validity of the LogNormal assumption for the aggregated costs
+* To justify the LogNormal assumption for the aggregated cost `$S= \sum_{i=1}^N X_i$` requires that a least the first two moments of `$S$` exists, in order to specify a LogNormal distribution. And then calculate `$VaR_S(\kappa)$`, `$ES_S(\kappa)$`, and `$\pi(\kappa)$`.
+* As LogNormal distribution is belongs to the Subexponential class of heavy-tailed distributions. The problem is, to guarantee that `$S$` is LogNormal without any other kind of information. We do not know of any kind of conditions on severities `$X_i$` which guarantee that `$S$` is LogNormal. 
+* Based on this considerations and the results exposed, we consider that **the assumption of LogNormal for the aggegated costs is not justified**. As a conclusion several studies which expose valuation of the medical services in surgery or another *HCI*, based on Black-Scholes methodology, used for instance in (@Chicaiza2009, and @Giron2015), **are lacking a more rigurous justification**.
+
+## Conclusions
+* **The *spliced distributions* present a better adjustment** in the adjustment of the severities than the other adjusted distributions. 
+* Although the goodness-of-fit tests may have higher values in their *P-values* for some distributions, it does not mean that these are the ones that offer a better adjustment. Therefore, it is always recommended to accompany these measures with a support graphic.
+* For the calculation of the reinsurance premium, we assume the expected value principle, which depends on the reinsurer's relative safety load factor `$\rho$`, but different principles can be used to calculate the optimal retention point. 
+* It is **not correct to make assumptions of distributions**, if you do not have a strict justification for making such assumptions.

@@ -1,0 +1,110 @@
+---
+layout: post
+title: "Clase 11"
+main-class: 'clase'
+permalink: /EstadisticaI/EstI:title.html
+tags:
+
+introduction: |
+  Distribuciones de probabilidad discreta: </br>
+  - Distribución Binomial </br>
+  - Distribución Hipergeométrica </br>
+  - Distribución Geométrica
+  
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../EstadisticaI/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../EstadisticaI/images/", "Clase11"),
+               cache.path = "../../EstadisticaI/cache/",
+               cache = FALSE)
+
+```
+
+## Distribuciones de probabilidad discretas
+### Proceso Bernoulli
+Un proceso Bernoulli es aquel que cumple
+
+1. El experimento consta de ensayos repetidos.
+2. Cada ensayo produce un resultado que se puede clasificar como éxito o fracaso.
+3. La probabilidad de éxito se denota por `$p$`, mientras que la probabilidad de fracaso se denota por `$q=1-p$`, y estas probabilidades permanecen constante de un ensayo a otro.
+4. Los ensayos repetidos son independientes.
+
+### Ensayo de Bernoulli
+Si la probabilidad de éxito de un experimento es `$p$`, entonces se tendrá que la probabilidad de fallo será `$1-p$`, y por tanto, la función de probabilidad de la variable aleatoria `$X\sim Be(p)$` de un ensayo Bernoulli es
+`\begin{align*}
+f(x) = p^x(1-p)^{1-x} \quad \quad x=0,1
+\end{align*}`
+
+#### Teorema
+Si `$X\sim Be(p)$`, entonces se puede probar que la media y la varianza de la variable aleatoria `$X$` están dadas por 
+`\begin{align*}
+\mathbb{E}(X)=p \quad \quad Var(X)=p(1-p)
+\end{align*}`
+
+### Distribución Binomial
+Si `$X$` es la variable aleatoria del número de éxitos de `$n$` ensayos de Bernoulli, con probabilidad de éxito `$p$`, entonces se dice que `$X\sim b(n,p)$` tal que
+`\begin{align*}
+f(x) = \left(\begin{array}{c}n\\ x\end{array}\right)p^x(1-p)^{n-x} \quad \quad x=0,1,\ldots,n
+\end{align*}`
+
+**Nota:** Esta distribución es usada cuando se realiza muestreo **con reemplazo** o en poblaciones infinitas en donde es posible **suponer que la probabilidad de éxito `$p$` es la misma** en cada ensayo Bernoulli.
+
+#### Teorema
+Si `$X\sim b(n,p)$`, entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=np \quad \quad Var(X)=np(1-p)
+\end{align*}`
+
+### Distribución Hipergeométrica
+Si `$X$` es el número de éxitos de una muestra completamente aleatoria de tamaño `$n$` extraída de una población `$N$` compuesta por `$M$` éxitos y `$(N-M)$` fracasos, entonces la distribución de probabilidad de `$X$`, denotada por `$h(N,M,n)$`, está dado por 
+`\begin{align*}
+h(N,M,n)=\frac{\left(\begin{array}{c}M\\ x\end{array}\right) \left(\begin{array}{c}N-M\\ n-x\end{array}\right)}{\left(\begin{array}{c}N\\ n\end{array}\right)}
+\end{align*}`
+
+con `$x$` un entero que satisface la condición `$\max\{0, M-(N-n)\} \leq x \leq \min\{M,n\}$`.
+
+**Nota:** Esta distribución es usada cuando se realiza muestreo **sin reemplazo**, en poblaciones finitas donde hay `$M$` éxitos de un total de `$N$` objetos, de los cuales se seleccionan `$n$` objetos a la vez.
+
+#### Teorema
+Si `$X\sim h(N,M,n)$`, entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=n\frac{M}{N} \quad \quad Var(X)=\left(\frac{N-n}{N-1}\right)\left(\frac{M}{N}\right)\left(1-\frac{M}{N}\right)
+\end{align*}`
+
+### Experimento Binomial Negativo
+Consideremos un experimento con las mismas propiedades de un experimento binomial, solo que en este caso, las pruebas se repetirán hasta que ocurra un número fijo de éxitos. Por lo tanto en vez de encontrar la probabilidad de `$X$` éxitos en `$n$` pruebas, donde `$n$` es fija, ahora nos interesa la probabilidad de que ocurra el `$k$`-ésimo éxito en la `$X$`-ésima prueba.
+
+### Distribución Geométrica
+Sea  `$X$` el número de ensayos necesarios para generar un éxito (`$k=1$`), entonces se dice que `$X\sim g(p)$` si su función de probabilidad es de la forma
+`\begin{align*}
+g(p) = p(1-p)^{x-1} \quad \quad x = 1,2,\ldots
+\end{align*}`
+
+#### Teorema
+Si `$X\sim g(p)$`, entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=\frac{1}{p} \quad \quad Var(X)=\frac{1-p}{p^2}
+\end{align*}`

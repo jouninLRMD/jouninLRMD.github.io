@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-cobalt fixed-top mediumnavigation nav-down">
+  <div class="container pr-0">
+    <a class=navbar-brand>
+      <img src=/assets/images/logo.png alt="Luis Roberto Mercado Díaz"> Luis Roberto Mercado Díaz
+    </a>
+    <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarMediumish aria-controls=navbarMediumish aria-expanded=false aria-label="Toggle navigation">
+      <span class=navbar-toggler-icon></span>
+    </button>
+    <div class="collapse navbar-collapse" id=navbarMediumish>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class=nav-link href=/index.html>
+            <i class="fas fa-home"></i>&nbsp;&nbsp;Página principal
+          </a>
+        </li>
+        <li class=nav-item>
+          <a class=nav-link href="javascript:history.back()">
+            <i class="fas fa-chevron-circle-left"></i>&nbsp;&nbsp;Página anterior
+          </a>
+        </li>
+        <li class=nav-item>
+          <a class=nav-link href=/paginadeinteres.html>
+            <i class="far fa-file-alt"></i>&nbsp;&nbsp;Páginas de interés
+          </a>
+        </li>
+        <li class=nav-item>
+          <a class=nav-link href=/acercade>
+            <i class="fas fa-user"></i>&nbsp;&nbsp;Acerca de
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+            <i class="far fa-address-card"></i>&nbsp;&nbsp;Contacto
+          </a>
+          <div class=dropdown-menu aria-labelledby=navbarDropdown>
+            <a target=_blank class=nav-link href=mailto:lrmercadod@gmail.com>
+              <i class="fas fa-envelope"></i>&nbsp;&nbsp;Correo
+            </a>
+            <div class=dropdown-divider></div>
+            <a target=_blank class=nav-link href="https://github.com/jouninLRMD/">
+              <i class="fab fa-github"></i>&nbsp;&nbsp;GitHub
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="header-post" role="banner">
+  <div class="content">
+    <h1 class="post-title" itemprop="name">{{ page.title }}</h1>
+    <p itemprop="description" class="subtitle">{{ page.description }}</p>
+  </div>
+  <script src=/assets/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script>
+  <script src=/assets/js/bootstrap.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script>
+  <script src=/assets/js/ie10-viewport-bug-workaround.js></script>
+  <script src=/assets/js/mediumish.js></script>
+  <script id=dsq-count-scr src=/assets/js/count.js></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+  </style>
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } },
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'], // removed 'code' entry
+      processEscapes: true
+      },
+      styles: { ".MathJax": { color: "#FFFFFF" } }
+  });
+  MathJax.Hub.Queue( 
+    ["setRenderer",MathJax.Hub,"HTML-CSS"], 
+    ["Typeset",MathJax.Hub,"id-for-html-css"], 
+    ["setRenderer",MathJax.Hub,"SVG"], 
+    ["Typeset",MathJax.Hub,"id-for-SVG"] 
+  ); 
+  </script>
+  <script type="text/javascript" src="/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  {% include plotly.html %}
+
+
+
+</header>

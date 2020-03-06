@@ -1,0 +1,131 @@
+---
+layout: post
+title: "Clase 13"
+main-class: 'clase'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: |
+  Distribuciones muestrales: </br>
+  - Distribución muestral para proporciones. </br>
+  - Distribución muestral chi-cuadrado. </br>
+  - Distribución muestral t de Student. </br>
+  - Distribución mustral F de Fisher. </br>
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all")})
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Clase13"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Distribuciones muestrales
+### Distribución muestral para proporciones `$p$`
+Sea `$X_1, X_2, \ldots, X_n$` una muestra aleatoria *iid* de tamaño `$n$`, tal que `$X\sim b(n,p)$`. Entonces si `$n$` es suficientemente grande, y la proporción `$p$` no está muy cercana a `$0$` o a `$1$`, tal que `$np$` y `$n(1-p)>5$`, entonces se puede probar que
+`\begin{align*}
+\hat{p}  = \frac{x}{n} \stackrel{a}{\sim} N\left(p, \frac{p(1-p)}{n}\right)
+\end{align*}`
+donde por teorema de estandarización se obtendrá que
+`\begin{align*}
+Z = \frac{\hat{p}-p}{\sqrt{\frac{p(1-p)}{n}}} \stackrel{a}{\sim} N(0,1)
+\end{align*}`
+
+### Teorema
+Sea `$X_1, X_2, \ldots, X_n$` una muestra aleatoria *iid* de una distribución `$N(\mu,\sigma^2)$` de tamaño `$n$`, entonces `$Z_i = (x_i - \mu)/\sigma$`, para `$i =1,2,\ldots,n$` serán una variables aleatorias normales estándar independientes, y 
+`\begin{align*}
+\sum_{i=1}^n Z_i^2 = \sum_{i=1}^n\left(\frac{x_i-\mu}{\sigma}\right)^2 \sim \chi^2_n
+\end{align*}`
+tiene una distribución chi-cuadrado con `$n$` grados de libertad.
+
+### Teorema
+Si `$X\sim \chi^2_\nu$` entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=\nu \quad \quad Var(X)=2\nu
+\end{align*}`
+
+### Distribución muestral `$\chi^2$`
+Sea `$X_1, X_2, \ldots, X_n$` una muestra aleatoria *iid* de una distribución `$N(\mu,\sigma^2)$` de tamaño `$n$`, entonces se tendrá qué
+`\begin{align*}
+\chi^2_c = \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}
+\end{align*}`
+tiene una distribución chi-cuadrado con `$n-1$` grados de libertad.
+
+#### Propiedades
+Si `$X_1, X_2, \ldots, X_n$` una muestra aleatoria *iid* de una distribución `$N(\mu,\sigma^2)$` de tamaño `$n$`, y se tiene que `$\bar{X}$` y `$S^2$` son la media y varianza muestrales, entonces
+
+1. Las variables aleatorias `$\bar{X}$` y `$S^2$` son independientes.
+2. la esperanza y la varianza de la variable aleatoria `$S^2$` estarán dadas por
+`\begin{align*}
+\mathbb{E}(S^2)= \sigma^2 \quad \text{ y } \quad Var(S^2) = \frac{2(\sigma^2)^2}{n-1}
+\end{align*}`
+
+### Distribución muestral `$t$` de Student
+Sea `$Z$` una variable aleatoria distribuida `$N(0,1)$` y `$W$` una variable aleatoria distribuida `$\chi^2_v$`, entonces si `$Z$` y `$W$`son independientes, se tendrá que 
+`\begin{align*}
+t_c = \frac{Z}{\sqrt{W/v}} \sim t_v
+\end{align*}`
+tiene una distribución `$t$` con `$v$` grados de libertad.
+
+Ahora, si `$X_1, X_2, \ldots, X_n$` es una muestra aleatoria de una población normal con media `$\mu$` y varianza `$\sigma^2$`, se tendrá
+`\begin{align*}
+Z_c = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim N(0,1) \quad \text{ y } \quad W =\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}
+\end{align*}`
+serán variables aleatorias independientes puesto que `$\bar{X}$` y `$S^2$` son independientes, entonces
+`\begin{align*}
+t_c = \frac{\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}}{\sqrt{\left(\frac{(n-1)S^2}{\sigma^2}\right)/(n-1)}}
+\end{align*}`
+obteniendo como resultado luego de simplificar
+`\begin{align*}
+t_c = \frac{\bar{X}-\mu}{S/\sqrt{n}} \sim t_{n-1}
+\end{align*}`
+
+tiene una distribución `$t$` con `$(n-1)$` grados de libertad.
+
+### Distribución muestral `$F$` de Fisher-Snedecor
+Sea `$W_1$` una variable aleatoria `$\chi^2_{v_1}$` y `$W_2$` una variable aleatoria `$\chi^2_{v_2}$`, entonces si `$W_1$` y `$W_2$` son independientes.
+`\begin{align*}
+F_c = \frac{W_1/v_1}{W_2/v_2}\sim F_{v_1, v_2}
+\end{align*}`
+tiene una distribución `$F$` con `$v_1$` grados de libertad en el númerador y `$v_2$` grados de libertad en el denominador.
+Ahora si `$X_{1,1}, X_{1,2}, \ldots, X_{1,n_1}$` y `$X_{2,1}, X_{2,2}, \ldots, X_{2,n_2}$` son dos muestras aleatorias independientes de poblaciones normales con medias `$\mu_1, \mu_2$` y varianzas `$\sigma^2_1, \sigma^2,2$`, respectivamente, entonces
+`\begin{align*}
+W_1 = \frac{(n_1-1)S_1^2}{\sigma^2_1} \sim N(0,1) \quad \text{ y } \quad W_2 =\frac{(n_1-1)S_1^2}{\sigma^2_1}\sim \chi^2_{n_2-1}
+\end{align*}`
+tienen distribuciones chi-cuadrado independientes con `$v_1=(n_1-1)$` y `$v_2 = (n_2-1)$` grados de libertad, respectivamente. Y por tanto
+`\begin{align*}
+F_c = \frac{\left(\frac{(n_1-1)S_1^2}{\sigma^2_1}\right)/(n_1-1)}{\left(\frac{(n_1-1)S_1^2}{\sigma^2_1}\right)/(n_2-1)} = \frac{S_1^2/\sigma^2_1}{S_2^2/\sigma^2_2} = \frac{S^2_1\sigma^2_2}{S^2_2\sigma^2_1} \sim F_{n_1-1, n_2-1}
+\end{align*}`
+
+tienen una distribución `$F$` con `$n_1-1$` grados de libertad en el numerador y `$n_2-1$` grados de libertad en el denominador.
+
+### Teorema
+Para encontrar la probabilidad de la cola izquierda para `$\alpha$` de la distribución F, usamos la siguiente formula
+`\begin{align*}
+f_{1-\alpha,v_1,v_2} = \frac{1}{f_{\alpha, v_2, v_1}}
+\end{align*}`
+
+

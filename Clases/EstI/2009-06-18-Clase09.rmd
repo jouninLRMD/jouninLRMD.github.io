@@ -1,0 +1,83 @@
+---
+layout: post
+title: "Clase 09"
+main-class: 'clase'
+permalink: /EstadisticaI/EstI:title.html
+tags:
+
+introduction: |
+  Esperanza matemática <br/>
+  Propiedades de la esperanza matemática <br/>
+  Esperanza condicional <br/>
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../EstadisticaI/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../EstadisticaI/images/", "Clase09"),
+               cache.path = "../../EstadisticaI/cache/",
+               cache = FALSE)
+
+```
+
+## Esperanza matemática
+
+### Caso univariado
+Sea `$X$` una variable aleatoria con *fmp* dada por `$p(x)$` o *fdp* dada por `$f(x)$`, entonces la media o valor esperado de `$X$`, denotado por `$\mathbb{E}(X)$` o `$\mu$` está dado por
+`\begin{align*}
+\mathbb{E}(X) = \mu =\begin{cases} \sum_{x}xp(x) & \text{ si } X \text{ es discreta}  \\
+\int_{-\infty}^\infty xf(x) dx & \text{ si } X \text{ es continua} \end{cases}
+\end{align*}`
+
+### Propiedades de la esperanza matemática
+Sea `$a$` y `$b$` números reales (constantes) y `$X$` una variable aleatoria con *fmp* dada por `$p(x)$` o *fdp* dada por `$f(x)$`, entonces
+
+1. `$\mathbb{E}(a) = a$`
+2. `$\mathbb{E}(bX) = b\mathbb{E}(X)$`
+3. `$\mathbb{E}(a+bX) = a+ b\mathbb{E}(X)$`
+4. Si `$m(X)$` es una función de `$X$`, entonces
+`\begin{align*}
+\mathbb{E}(m(X))=\begin{cases} \sum_{x}m(x)p(x) & \text{ si } X \text{ es discreta}  \\
+\int_{-\infty}^\infty m(x)f(x) dx & \text{ si } X \text{ es continua} \end{cases}
+\end{align*}`
+
+### Caso multivariado
+Sea `$X, Y$` variables aleatorias con *fmpc* dada por `$p(x,y)$` o *fdpc* dada por `$f(x,y)$`, entonces el valor esperado de una función `$m(X,Y)$` es de la forma
+`\begin{align*}
+\mathbb{E}(m(X,Y))=\begin{cases} \sum_{y}\sum_{x}m(x,y)p(x,y) & \text{ si } X,Y \text{ son discretas}  \\
+\int_{-\infty}^\infty \int_{-\infty}^\infty m(x,y)f(x,y) dxdy & \text{ si } X,Y \text{ son continuas} \end{cases}
+\end{align*}`
+
+## Esperanza matemática condicional
+Sean `$X,Y$` variables aleatorias con *fmpc* dada por `$p(x,y)$` o *fdpc* dada por `$f(x,y)$`, entonces la esperanza condicional de `$Y$` dado `$X$` se define como
+`\begin{align*}
+\mathbb{E}(Y|X)=\begin{cases} \sum_{y}yp(y|x) & \text{ si } X,Y \text{ son discretas}  \\
+\int_{-\infty}^\infty yf(y|x) dy & \text{ si } X,Y \text{ son continuas} \end{cases}
+\end{align*}`
+
+Analogamente, la esperanza condicional de `$X$` dado `$Y$` se define como
+`\begin{align*}
+\mathbb{E}(X|Y)=\begin{cases} \sum_{x}xp(x|y) & \text{ si } X,Y \text{ son discretas}  \\
+\int_{-\infty}^\infty xf(x|y) dx & \text{ si } X,Y \text{ son continuas} \end{cases}
+\end{align*}`

@@ -1,0 +1,142 @@
+/* Cajitas */
+.box-item{-ms-flex:1 0 300px;flex:1 0 300px;margin:0 .938rem 3.125rem;display:inline-block;border:1px solid #eee;border-radius:5px;min-height:15rem;transition:all .3s;position:relative;cursor:pointer; background-color: #FFFFFF; opacity: 0.8}
+.box-item:hover{box-shadow:1px 2px 10px #eee; background-color: #FFFFFF; border-color: #b2b2b2; opacity: 1}
+.box-item a{text-decoration:none}
+.box-item a:hover .box-item{box-shadow:10px 10px 10px #eee}
+.box-item .box-body{padding:1.563rem}
+.box-item .box-body time{font-size:.875rem;color:#b2bac2}
+.box-item .box-body h2{margin:.313rem 0 .938rem;font-size:1.25rem;font-family:'Open Sans',sans-serif;font-weight:800;font-style:normal;color:#005f97}
+.box-item .box-body p{margin:0 0 1.25rem;color:#576366;font-size:.875rem;line-height:1.375rem}
+.box-item .box-body .tags a{color:#005f97;padding:.313rem .625rem;border-radius:3px;display:inline-block;margin:0 0 .313rem;z-index:50}
+
+/* Cinticas */
+.ribbon{position:absolute;right:-5px;top:-5px;z-index:1;overflow:hidden;width:75px;height:75px;text-align:right;}
+.ribbon span{font-size:.75rem;font-weight:bold;color:#fff;text-transform:uppercase;text-align:center;line-height:20px;-webkit-transform:rotate(45deg);transform:rotate(45deg);-webkit-transform:rotate(45deg);width:100px;display:block;background:#b31917;position:absolute;top:19px;right:-21px;}
+.ribbon span:before{content:"";position:absolute;left:0;top:100%;z-index:-1;border-left:3px solid #005f97;border-right:3px solid transparent;border-bottom:3px solid transparent;border-top:3px solid #005f97}
+.ribbon span:after{content:"";position:absolute;right:0;top:100%;z-index:-1;border-left:3px solid transparent;border-right:3px solid #005f97;border-bottom:3px solid transparent;border-top:3px solid #005f97}
+
+/* Color Banda y recuadritos tags */
+
+/* Clase Clases */
+.post-clase .title-category{color:#0088FF; text-shadow:2px 2px 3px #FFFFFF}
+.post-clase .post-content h1,.post-clase .post-content h2,.post-clase .post-content h3,.post-clase .post-content h4{color:#0088FF}
+.post-clase .post-content a{color:#ff9d00;}
+.post-clase .post-content a:hover{background-color:#0088FF;color:#fff}
+.post-clase .post-content strong{color:#0088FF}
+.post-clase .post-content blockquote{border-left:.313rem solid #0088FF; background:rgba(255,255,255,0.15);}
+.post-clase .header-post,.post-clase .header-site{background-color:#0088FF;}
+.post-clase .header-post h1,.post-clase .header-site h1{text-shadow:3px 3px #005199}
+.post-clase .bar-header .logo a{color:#0088FF}
+.post-clase .author .email,.post-clase .author .github{color:#0088FF} .post-clase .share a:hover svg{fill:#0088FF}@media only screen and (max-width:37.5rem){.post-clase body.search-overlay:after{background-color:#0088FF}}
+.post-clase .icon-menu{fill:#0088FF}.post-clase .box-body h2{color:#0088FF}
+.post-clase .box-body .tags a{color:#0088FF;border:1px solid #0088FF;}
+.post-clase .box-body .tags a:hover{color:#fff;background:#0088FF}
+.post-clase aside{background-color:#0088FF;}
+.post-clase aside nav li a:hover{color:#0088FF}
+.post-clase .ribbon span{background-color:#0088FF;}
+.post-clase .ribbon span:before{border-left:3px solid #455565;border-top:3px solid #455565}
+.post-clase .ribbon span:after{border-right:3px solid #455565;border-top:3px solid #455565}
+.post-clase nav[data-toggle=toc] .nav-link, .post-clase nav[data-toggle=toc] .nav-link:focus, .post-clase nav[data-toggle=toc] .nav-link:hover {color: #FFF; background-color: transparent}
+.post-clase nav[data-toggle=toc] .nav>li>a:focus, .post-clase nav[data-toggle=toc] .nav>li>a:hover{padding-left:19px;color:#0088FF;text-decoration:none;background-color:transparent;border-left:1px solid #0088FF}
+.post-clase nav[data-toggle=toc] .nav-link.active, .post-clase nav[data-toggle=toc] .nav-link.active:focus, .post-clase nav[data-toggle=toc] .nav-link.active:hover {padding-left: 18px; font-weight: 800; color: #0088FF; background-color: transparent; border-left: 2px solid #0088FF;}
+
+
+/* Clase Practicas */
+.post-practica .title-category{color:#b31917; text-shadow:2px 2px 3px #FFFFFF}
+.post-practica .post-content h1,.post-practica .post-content h2,.post-practica .post-content h3,.post-practica .post-content h4{color:#b31917}
+.post-practica .post-content a{color:#ff9d00;}
+.post-practica .post-content a:hover{background-color:#b31917;color:#fff}
+.post-practica .post-content strong{color:#b31917}
+.post-practica .post-content blockquote{border-left:.313rem solid #b31917}
+.post-practica .header-post,.post-practica .header-site{background-color:#b31917;}
+.post-practica .header-post h1,.post-practica .header-site h1{text-shadow:3px 3px #8f1412}
+.post-practica .bar-header .logo a{color:#b31917}
+.post-practica .author .email,.post-practica .author .github{color:#b31917} .post-practica .share a:hover svg{fill:#b31917}@media only screen and (max-width:37.5rem){.post-practica body.search-overlay:after{background-color:#b31917}}
+.post-practica .icon-menu{fill:#b31917}.post-practica .box-body h2{color:#b31917}
+.post-practica .box-body .tags a{color:#b31917;border:1px solid #b31917;}
+.post-practica .box-body .tags a:hover{color:#fff;background:#b31917}
+.post-practica aside{background-color:#b31917;}
+.post-practica aside nav li a:hover{color:#b31917}
+.post-practica .ribbon span{background-color:#b31917;}
+.post-practica .ribbon span:before{border-left:3px solid #7d1210;border-top:3px solid #7d1210}
+.post-practica .ribbon span:after{border-right:3px solid #7d1210;border-top:3px solid #7d1210}
+.post-practica nav[data-toggle=toc] .nav-link, .post-practica nav[data-toggle=toc] .nav-link:focus, .post-practica nav[data-toggle=toc] .nav-link:hover {color: #FFF; background-color: transparent}
+.post-practica nav[data-toggle=toc] .nav>li>a:focus, .post-practica nav[data-toggle=toc] .nav>li>a:hover{padding-left:19px;color:#b31917;text-decoration:none;background-color:transparent;border-left:1px solid #b31917}
+.post-practica nav[data-toggle=toc] .nav-link.active, .post-practica nav[data-toggle=toc] .nav-link.active:focus, .post-practica nav[data-toggle=toc] .nav-link.active:hover {padding-left: 18px; font-weight: 800; color: #b31917; background-color: transparent; border-left: 2px solid #b31917;}
+
+
+/* Clase Presentaciones */
+.post-presentacion .title-category{color:#808080; text-shadow:2px 2px 3px #FFFFFF}
+.post-presentacion .post-content h1,.post-presentacion .post-content h2,.post-presentacion .post-content h3,.post-presentacion .post-content h4{color:#808080}
+.post-presentacion .post-content a{color:#ff9d00;}
+.post-presentacion .post-content a:hover{background-color:#808080;color:#fff}
+.post-presentacion .post-content strong{color:#808080}
+.post-presentacion .post-content blockquote{border-left:.313rem solid #808080}
+.post-presentacion .header-post,.post-presentacion .header-site{background-color:#808080;}
+.post-presentacion .header-post h1,.post-presentacion .header-site h1{text-shadow:3px 3px #545454}
+.post-presentacion .bar-header .logo a{color:#808080}
+.post-presentacion .author .email,.post-presentacion .author .github{color:#808080} .post-presentacion .share a:hover svg{fill:#808080}@media only screen and (max-width:37.5rem){.post-presentacion body.search-overlay:after{background-color:#808080}}
+.post-presentacion .icon-menu{fill:#808080}.post-presentacion .box-body h2{color:#808080}
+.post-presentacion .box-body .tags a{color:#808080;border:1px solid #808080;}
+.post-presentacion .box-body .tags a:hover{color:#fff;background:#808080}
+.post-presentacion aside{background-color:#808080;}
+.post-presentacion aside nav li a:hover{color:#808080}
+.post-presentacion .ribbon span{background-color:#808080;}
+.post-presentacion .ribbon span:before{border-left:3px solid #545454;border-top:3px solid #545454}
+.post-presentacion .ribbon span:after{border-right:3px solid #545454;border-top:3px solid #545454}
+.post-presentacion nav[data-toggle=toc] .nav-link, .post-presentacion nav[data-toggle=toc] .nav-link:focus, .post-presentacion nav[data-toggle=toc] .nav-link:hover {color: #FFF; background-color: transparent}
+.post-presentacion nav[data-toggle=toc] .nav>li>a:focus, .post-presentacion nav[data-toggle=toc] .nav>li>a:hover{padding-left:19px;color:#808080;text-decoration:none;background-color:transparent;border-left:1px solid #808080}
+.post-presentacion nav[data-toggle=toc] .nav-link.active, .post-presentacion nav[data-toggle=toc] .nav-link.active:focus, .post-clase nav[data-toggle=toc] .nav-link.active:hover {padding-left: 18px; font-weight: 800; color: #808080; background-color: transparent; border-left: 2px solid #808080;}
+
+/* Clase Presentaciones */
+.post-presentaciones .title-category{color:#28c74c; text-shadow:2px 2px 3px #FFFFFF}
+.post-presentaciones .post-content h1,.post-presentaciones .post-content h2,.post-presentaciones .post-content h3,.post-presentaciones .post-content h4{color:#28c74c}
+.post-presentaciones .post-content a{color:#ff9d00;}
+.post-presentaciones .post-content a:hover{background-color:#28c74c;color:#fff}
+.post-presentaciones .post-content strong{color:#28c74c}
+.post-presentaciones .post-content blockquote{border-left:.313rem solid #28c74c}
+.post-presentaciones .header-post,.post-presentaciones .header-site{background-color:#28a745;}
+.post-presentaciones .header-post h1,.post-presentaciones .header-site h1{text-shadow:3px 3px #545454}
+.post-presentaciones .bar-header .logo a{color:#28c74c}
+.post-presentaciones .author .email,.post-presentaciones .author .github{color:#28c74c} .post-presentaciones .share a:hover svg{fill:#28c74c}@media only screen and (max-width:37.5rem){.post-presentaciones body.search-overlay:after{background-color:#28c74c}}
+.post-presentaciones .icon-menu{fill:#28c74c}.post-presentaciones .box-body h2{color:#28c74c}
+.post-presentaciones .box-body .tags a{color:#28c74c;border:1px solid #28c74c;}
+.post-presentaciones .box-body .tags a:hover{color:#fff;background:#28c74c}
+.post-presentaciones aside{background-color:#28c74c;}
+.post-presentaciones aside nav li a:hover{color:#28c74c}
+.post-presentaciones .ribbon span{background-color:#28c74c;}
+.post-presentaciones .ribbon span:before{border-left:3px solid #b05110;border-top:3px solid #b05110}
+.post-presentaciones .ribbon span:after{border-right:3px solid #b05110;border-top:3px solid #b05110}
+.post-presentaciones nav[data-toggle=toc] .nav-link, .post-presentaciones nav[data-toggle=toc] .nav-link:focus, .post-presentaciones nav[data-toggle=toc] .nav-link:hover {color: #FFF; background-color: transparent}
+.post-presentaciones nav[data-toggle=toc] .nav>li>a:focus, .post-presentaciones nav[data-toggle=toc] .nav>li>a:hover{padding-left:19px;color:#28c74c;text-decoration:none;background-color:transparent;border-left:1px solid #28c74c}
+.post-presentaciones nav[data-toggle=toc] .nav-link.active, .post-presentaciones nav[data-toggle=toc] .nav-link.active:focus, .post-presentaciones nav[data-toggle=toc] .nav-link.active:hover {padding-left: 18px; font-weight: 800; color: #28c74c; background-color: transparent; border-left: 2px solid #28c74c;}
+
+/* Clase Guias */
+.post-guia .title-category{color:#eb7728; text-shadow:2px 2px 3px #FFFFFF}
+.post-guia .post-content h1,.post-guia .post-content h2,.post-guia .post-content h3,.post-guia .post-content h4{color:#eb7728}
+.post-guia .post-content a{color:#ff9d00;}
+.post-guia .post-content a:hover{background-color:#eb7728;color:#fff}
+.post-guia .post-content strong{color:#eb7728}
+.post-guia .post-content blockquote{border-left:.313rem solid #eb7728}
+.post-guia .header-post,.post-guia .header-site{background-color:#eb7728;}
+.post-guia .header-post h1,.post-guia .header-site h1{text-shadow:3px 3px #545454}
+.post-guia .bar-header .logo a{color:#eb7728}
+.post-guia .author .email,.post-guia .author .github{color:#eb7728} .post-guia .share a:hover svg{fill:#eb7728}@media only screen and (max-width:37.5rem){.post-guia body.search-overlay:after{background-color:#eb7728}}
+.post-guia .icon-menu{fill:#eb7728}.post-guia .box-body h2{color:#eb7728}
+.post-guia .box-body .tags a{color:#eb7728;border:1px solid #eb7728;}
+.post-guia .box-body .tags a:hover{color:#fff;background:#eb7728}
+.post-guia aside{background-color:#eb7728;}
+.post-guia aside nav li a:hover{color:#eb7728}
+.post-guia .ribbon span{background-color:#eb7728;}
+.post-guia .ribbon span:before{border-left:3px solid #b05110;border-top:3px solid #b05110}
+.post-guia .ribbon span:after{border-right:3px solid #b05110;border-top:3px solid #b05110}
+.post-guia nav[data-toggle=toc] .nav-link, .post-guia nav[data-toggle=toc] .nav-link:focus, .post-guia nav[data-toggle=toc] .nav-link:hover {color: #FFF; background-color: transparent}
+.post-guia nav[data-toggle=toc] .nav>li>a:focus, .post-guia nav[data-toggle=toc] .nav>li>a:hover{padding-left:19px;color:#eb7728;text-decoration:none;background-color:transparent;border-left:1px solid #eb7728}
+.post-guia nav[data-toggle=toc] .nav-link.active, .post-guia nav[data-toggle=toc] .nav-link.active:focus, .post-guia nav[data-toggle=toc] .nav-link.active:hover {padding-left: 18px; font-weight: 800; color: #eb7728; background-color: transparent; border-left: 2px solid #eb7728;}
+
+
+
+
+
+
+

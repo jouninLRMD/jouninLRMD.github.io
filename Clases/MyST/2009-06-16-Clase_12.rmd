@@ -1,0 +1,200 @@
+---
+layout: post
+title: "Clase 12"
+main-class: 'clase'
+permalink: /MuestreoySeriesdeTiempo/MyST:title.html
+tags:
+
+introduction: |
+  Introducción a modelos SARIMA. </br>
+  Operador de diferencias estacionales.</br>
+  Raices unitarias estacionales.
+
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../MuestreoySeriesdeTiempo/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+link-citations: yes
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../MuestreoySeriesdeTiempo/images/", "Clase12"),
+               cache.path = "../../MuestreoySeriesdeTiempo/cache/",
+               cache = FALSE)
+```
+
+## Introducción a modelos SARIMA
+Existen situaciones en las que es posible enfrentarse a series temporales que poseen entre sus componentes, un comportamiento estacional, lo cual hace que tanto la media como otras estadísticas dadas en un periodo **no sean estacionarias a lo largo del tiempo**. Y a causa de ello, se tendrá que los métodos de modelación presentados hasta el momento no resulten ser apropiados para el ajuste del conjunto de observaciones asociados a la serie de interés.
+
+La componente estacional de una serie temporal se ha definido hasta ahora como fluctuaciones que se repiten anualmente o en periodos que poseen duración menor al año, las cuales se encuentran relacionadas con fenómenos económicos, ambientales o sociales, que hacen que el comportamiento de la serie tome un comportamiento repetitivo a través de los años.
+
+La periodicidad de la componente estacional es usualmente denotada por la letra `$s$`, y define la longitud o número de periodos en los cuales se observa que se repite el comportamiento de la serie. Ahora bien, dado que la estacionalidad es una señal de que la serie de tiempo no es estacionaria, **es necesario eliminar dicha componente con el fin de poder modelar la serie temporal**.
+
+## Operador de diferencia estacional
+Con tal propósito en mente, la forma más usual de eliminación de la estacionalidad de una serie temporal, es mediante **la diferencia de la serie temporal con respecto a la serie rezagada `$s$` periodos en el tiempo**. Éste procedimiento es conocido como **diferencia estacional** y se define como
+`\begin{align*}
+\Delta_s Y_t = Y_t - Y_{t-s}
+\end{align*}`
+
+siendo `$\Delta_s = (1-L^s)$`. **Note que `$\Delta_s \neq \Delta^s$`, pues `$\Delta^s = (1-L)^s$` representa el operador de diferencias presentado en la** [Clase 11](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_11.html){:target="_blank"}. En general, el operador de diferencias estacionales de periodo `$s$` se define como 
+`\begin{align*}
+\Delta_s^D = (1-L^s)^D
+\end{align*}`
+
+Siendo `$D$` el parámetro que indica el número de diferencias estacionales. Ahora, al aplicar dicho operador a la serie temporal `$Y_t$` se tiene que
+`\begin{align*}
+  \Delta_s^D Y_t = (1-L^s)^D Y_t = \sum_{j=0}^D\binom{D}{j}(-1)^jY_{t-js}
+\end{align*}`
+
+## Modelos autorregresivos integrados de media móvil estacionales (SARIMA)
+Se dice que una serie de tiempo `$\widetilde{Y}_t=Y_t-\mu$` posee una estructura SARIMA(p,d,q)(P,D,Q)[s] si se cumple que
+`\begin{align*}
+\Phi_{P} (L^s) \Phi_p (L) \Delta^D_s \Delta^d \widetilde{Y}_t = \Theta_{Q} (L^s) \Theta_q (L)\varepsilon_t
+\end{align*}`
+
+con `$\varepsilon_t \sim RB(0, \sigma_{\varepsilon}^2)$` y donde
+`\begin{align*}
+\Phi_p(z) = 1 - \sum_{j=1}^p\phi_j z^j \\
+\Theta_q(z) = 1 + \sum_{j=1}^q\theta_j z^j
+\end{align*}`
+
+son los polinomios de rezagos autorregresivos y de medias móviles, regulares, respectivamente, **sin raíces comúnes y cada uno con módulo mayor a 1**, y `$\Delta^d=(1-L)^d$` es el operador de diferencias, con `$L$` el operador de rezagos. Además, 
+`\begin{align*}
+\Phi_{P}(z^s) = 1 - \sum_{j=1}^{P}\phi_{s,j} z^{js} \\
+\Theta_{Q}(z^s) = 1 + \sum_{j=1}^{Q}\theta_{s,j} z^{js}
+\end{align*}`
+
+ambos polinomios de rezagos autorregresivos y de medias móviles, estacionales, respectivamente, **sin raíces comunes y con módulo mayor a 1**, y `$\Delta^D_s=(1-L^s)^D$` es el operador de diferencias estacionales.
+
+Además, se podrán derivar varios casos particulares de los modelos SARIMA(p,d,q)(P,D,Q)[s]. Uno de ellos es el modelo ARIMA puramente estacional, los cuales corresponden a los casos SARIMA(0,0,0)(P,D,Q)[s] = SARIMA(P,D,Q)[s], con ecuación
+`\begin{align*}
+\Phi_{P} (L^s) \Delta^D_s \widetilde{Y}_t = \Theta_{Q}(L^s) \varepsilon_t
+\end{align*}`
+
+si `$D=0, Q=0$` se tendrá un modelo AR(P)[s], donde
+`\begin{align*}
+\Phi_{P}(L^s) \widetilde{Y}_t & = \varepsilon_t \\
+\left(1 - \sum_{j=1}^{P}\phi_{s,j} L^{js}\right) \widetilde{Y}_t & = \varepsilon_t \\
+\widetilde{Y}_t & = \sum_{j=1}^{P}\phi_{s,j} L^{js} \widetilde{Y}_t + \varepsilon_t \\
+                                 & = \phi_{1,s}\widetilde{Y}_{t-s} + \phi_{2,s}\widetilde{Y}_{t-2s} + \ldots + \phi_{P,s}\widetilde{Y}_{t-Ps} + \varepsilon_t
+\end{align*}`
+
+en este caso se tendrá un modelo autorregresivo estacional de orden `$P$`, AR(P)[s]. **En este modelo se puede observar que la PACF tendrá autocorrelaciones parciales significativas en los rezagos `$s, 2s, \ldots, Ps$`, y una ACF que decae sinusoidalmente o exponencialmente en sus rezagos estacionales**.
+
+si `$P=0, D=0$` se tendrá un modelo MA(Q)[s], donde
+`\begin{align*}
+\widetilde{Y}_t & = \Theta_{Q}(L^s) \varepsilon_t \\
+\widetilde{Y}_t & = \sum_{j=1}^{Q}\theta_{s,j} L^{js} \varepsilon_t \\
+                                 & = \varepsilon_t - \theta_{1,s} \varepsilon_{t-s} - \theta_{2,s} \varepsilon_{t-2s} - \ldots - \theta_{Q,s} \varepsilon_{t-Qs}
+\end{align*}`
+
+en este caso se tendrá un modelo de media móvil estacional de orden `$Q$`, SMA(Q)[s]. **En este modelo se puede observar que la ACF tendrá autocorrelaciones parciales significativas en los rezagos `$s, 2s, \ldots, Qs$`, y una PACF que decae sinusoidalmente o exponencialmente en sus rezagos estacionales**.
+
+Otro de los modelos son aquellos donde `$d=D=0$`, lo cual genera un modelo ARIMA(p,0,q)(P,0,Q)[s] = ARMA(p,q)(P,Q)[s] el cual está dado por
+`\begin{align*}
+\Phi_{P} (L^s) \Phi_p (L) \widetilde{Y}_t = \Theta_{Q}(L^s) \Theta_q (L)\varepsilon_t
+\end{align*}`
+con `$\Phi_{P} (z^s)$` y `$\Phi_p (z)$` los polinomios de rezago autorregresivo regular y estacional, cada uno **sin raíces unitarias en `$z$` y `$z^s$`**, respectivamente.
+
+### Raices unitarias estacionales
+Como se señala en @Guerrero2003[, p. 216], existen diferentes métodos de evitar los efectos estacionales en las series de tiempo, pero estas pueden generar que las pruebas de raíces unitarias se vean sesgadas hacia el no rechazo de la hipótesis nula de raíz unitaria. 
+
+Debido a esto, @Guerrero2003[, p. 216] recomienda trabajar la serie sin ningún ajuste estacional, tratando de incorporar la componente estacional como un elemento adicional del modelo de la serie, y para hacerlo, es necesario contar con una metodología que permita probar la existencia de raíces unitarias estacionales.
+
+Para introducir la idea de las pruebas de raíz unitaria estacional, recordemos de lo presentado en la [Clase 11](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_11.html){:target="_blank"}, en donde se señala que si `$Y_t \sim ARMA(p,q)$` posee una raíz unitaria en su polinomio autorregresivo `$\Phi_{p}(z)$`, entonces se tendrá que el polinomio se puede factorizar de la forma `$(1-z)\Phi_{p-1}(z)$`.
+
+Basado en ésto, se tendrá que si la serie temporal `$Y_t\sim ARMA(p,q)$` es integrada estacional, de periodo `$s=2,3,\ldots$`, entonces se cumplirá que alguna o todas las raíces de `$z^s=1$`, serán raíces unitarias del polinomio autorregresivo `$\Phi_{p}(z)$`.
+
+### Prueba HEGY
+**Con el fin de identificar si una serie temporal `$Y_t$` posee raices unitarias estacionales**, se introduce la prueba HEGY, la cual fue propuesta por @Hylleberg1990, como una generalización de la prueba aumentada de Dickey-Fuller.
+Esta prueba permite identificar cuáles frecuencias estacionales poseen raíces estacionales significativas.
+
+Si se detecta al menos una raíz unitaria estacional, exceptuando la frecuencia que corresponde a cero, se concluirá que la serie en cuestión esá integrada
+estacionalmente.
+
+La prueba HEGY puede realizarse en <tt>R</tt>, mediante la función `hegy.test()` de la librería `uroot`.
+
+Alternativamente, puede observarse el número de diferencias estacionales recomendadas <tt>R</tt> mediante la función `nsdiffs` de la librería `forecast` con argumento `test="hegy"`.
+<!-- Completar! -->
+
+### Prueba Canova-Hansen
+En @Gonzalez2018[, pp. 364-366] se presenta este test, como una herramienta para determinar si los patrones estacionales presentes en una serie son determinísticos, y por tanto estables en el tiempo, o por el contrario, siguen un proceso estocástico y por tanto no son estables a lo largo del tiempo, específicamente, un proceso con raíz unitaria estacional. Así la hipótesis nula de este test establece la estabilidad estructural de la componente estacional. El procedimiento considera el siguiente modelo de regresión
+`\begin{align*}
+Y_t = \beta_0 + \beta_1 t + \sum_{j=1}^k \left[\alpha_j sin\left(\frac{2\pi jt}{s}\right) + \gamma_j cos\left(\frac{2\pi jt }{s}\right)\right] + \varepsilon_t
+\end{align*}`
+
+con `$k = s/2$` con `$s$` par, donde el `$j$`−ésimo par `$\left(sin\left(\frac{2\pi jt}{s}\right), cos\left(\frac{2\pi jt }{s}\right)\right)$` corresponde a la `$j$`−ésima frecuencia estacional armónica `$\lambda_j=2\pi j/s$`. Se requiere además que `$Y_t$` no tenga raíces unitarias en la frecuencia cero con el fin de distinguir la no estacionariedad en las frecuencias estacionales y en la frecuencia cero. Pues de existir raíces unitarias en la fracuencia cero, se tendrá que `$\Delta Y_t = Y_t- Y_{t-1}$` como la variable dependiente.
+
+Bajo la hipótesis alterna, un patrón estacional cambiante puede conducir a la variación en los vectores de coeficientes `$\boldsymbol{\alpha}$` y `$\boldsymbol{\gamma}$` a lo largo del tiempo según una caminata aleatoria, es decir, `$\boldsymbol{\alpha}_t = \boldsymbol{\alpha}_{t-1} + \mathbf{u}_t$` y `$\boldsymbol{\gamma}_t = \boldsymbol{\gamma}_{t-1} + \mathbf{v}_t$`, donde `$\mathbf{u}_t$` y `$\mathbf{v}_t$` son vectores aleatorios *iid* de media cero e independientes de `$\varepsilon_t$`. Para probar la estabilidad de los parámetros estacionales se prueba que las autocovarianzas de `$\mathbf{u}_t$` y `$\mathbf{v}_t$`, respectivamente es cero mientras que bajo la hipótesis alterna, en cada caso, es mayor que cero, o equivalentemente
+`\begin{align*}
+H_0: \boldsymbol{\alpha}_t = \boldsymbol{\alpha} \quad \text{vs} \quad  H_1: \boldsymbol{\alpha}_t = \boldsymbol{\alpha}_{t-1} + \mathbf{u}_t\\
+H_0: \boldsymbol{\gamma}_t = \boldsymbol{\gamma} \quad \text{vs} \quad  H_1: \boldsymbol{\gamma}_t = \boldsymbol{\gamma}_{t-1} + \mathbf{v}_t
+\end{align*}`
+
+El estadístico de la prueba denominado `$L$` sugerido por Canova y Hansen no
+tiene una distribución estándar (como la t-Student, la normal estándar, la F-Fisher) pero tiene `$p$` grados de libertad, donde `$p$` se deriva del número
+posible de raíces unitarias.
+
+La prueba Canova-Hansen puede realizarse en <tt>R</tt>, mediante la función `ch.test()` de la librería `uroot`. Para aplicar el test Canova-Hansen **es necesario eliminar** la tendencia de la serie en caso de existir, lo cual puede hacerse eliminando la componente de tendencia estimada `$T_t$` mediante las funciones `stl()` o `decompose()`, vistas en la [Clase 01](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_01.html){:target="_blank"} y aplicamos el test sobre `$W_t = Y_t − T_t = S_t + \varepsilon_t$`, con los argumentos `lag1=FALSE`, `pvalue = "raw"`.
+
+Alternativamente, puede observarse el número de diferencias estacionales recomendadas <tt>R</tt> mediante la función `nsdiffs` de la librería `forecast` con argumento `test="ch"`.
+
+### Prueba OCSB
+En @Giraldo2018[, pp. 304-305] se presenta la prueba de raíces unitarias estacionales de prueba Osborn,Chui, Smith, y Birchenhall, la cual se basa en una prueba de regresión dada por
+`\begin{align*}
+\Delta\Delta_sY_t = \beta_1\Delta_sY_{t-1} + \beta_2 Y_{t-s} + \varepsilon_t
+\end{align*}`
+utilizando la identidad
+`\begin{align*}
+I-L^s = (I-L)(I+L+\ldots+L^{s-1})
+\end{align*}`
+se tiene que 
+`\begin{align*}
+\Delta_sY_{t-1} = (I+L+\ldots+L^{s-1})\Delta Y_{t-1}
+\end{align*}`
+
+entonces, al reemplazar en la primera ecuación se tiene que la regresión de interés estará dada por
+`\begin{align*}
+\Delta\Delta_sY_t = \beta_1 (I+L+\ldots+L^{s-1})\Delta Y_{t-1} + \beta_2\Delta Y_{t-s} + \varepsilon_t
+\end{align*}`
+
+A partir de esta regresión se trata de probar el siguiente juego de hipótesis
+`\begin{align*}
+H_0: Y_t \sim I(1,1) \quad \text{vs} \quad H_1: Y_t \sim I(0,0) \vee I(0,1) \vee I(1,0)
+\end{align*}`
+
+El estadístico de la prueba se define similar al de la prueba Dickey-Fuller aumentada, pero en donde, los valores críticos de la prueba Dickey-Fuller aumentada no son estrictamente válidos para ésta prueba, y por tanto, para la prueba OCSB se requieren valores críticos sean calculados mediante simulación.
+La hipótesis equivale en este caso a la prueba de cola izquierda será de la forma
+`\begin{align*}
+H_0: \beta_2 = 0 \quad \text{vs} \quad H_1: \beta_2 < 0
+\end{align*}`
+
+La prueba OCSB puede realizarse en <tt>R</tt>, mediante la función `ocsb.test()` de la librería `forecast`, y cálcula solamente el estadístico de prueba asociado al parámetro `$\beta_2$`, junto al valor crítico para el nivel de significación de `$5\%$`. En donde, **si el estadísitico de prueba cae por debajo del valor crítico** se rechaza la hipótesis nula a favor de alguna de sus alternativas.
+
+Alternativamente, puede observarse el número de diferencias estacionales recomendadas <tt>R</tt> mediante la función `nsdiffs` de la librería `forecast` con argumento `test="ocsb"`.
+
+## Ajuste del modelo SARIMA
+Para el proceso de identificación de los modelos SARIMA o ARIMA estacionales, se emplean los mismos procedimientos vistos en la [Clase 09](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_09.html){:target="_blank"}, aunque su identificación es un poco más complicada debido a que el número de modelos posibles que pueden ser ajustados para una serie de tiempo es considerablemente grande.
+
+Cabe notar, que para lograr un proceso estacionario, la serie puede requerir ser diferenciada regular y/o estacionalmente dependiendo de las componentes que presente y el estudio de su ACF y PACF muestral. Así mismo, para la validación de los supuestos del modelo, se emplean los mismos métodos explicados en la [Clase 10](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_10.html){:target="_blank"}.
+
+## Bibliografía

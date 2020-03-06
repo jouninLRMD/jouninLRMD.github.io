@@ -1,0 +1,98 @@
+---
+layout: post
+title: "Clase 07"
+main-class: 'clase'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: |
+  Distribuciones de probabilidad discreta: <br/>
+  - Ensayos Bernoulli. <br/>
+  - Distribución binomial. <br/>
+  - Distribución Poisson.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all")})
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Clase07"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Distribuciones de probabilidad discreta
+### Proceso Bernoulli
+Un proceso Bernoulli es aquel que cumple
+
+1. El experimento consta de ensayos repetidos bajo las mismas condiciones.
+2. Cada ensayo produce un resultado que se puede clasificar como éxito o fracaso.
+3. La probabilidad de éxito se denota por `$p$` y permanece constante de un ensayo a otro.
+4. Los ensayos repetidos son independientes entre si.
+
+### Ensayo de Bernoulli
+Si la probabilidad de éxito de un experimento es `$p$`, entonces la probabilidad de fallo debe ser `$1-p$` y la función de probabilidad de la variable aleatoria `$X\sim Be(p)$` para un ensayo Bernoulli será
+`\begin{align*}
+f(x) = p^x(1-p)^{1-x} \quad \quad x=0,1
+\end{align*}`
+
+#### Teorema
+Si `$X\sim Be(p)$`, entonces se puede probar que la media y la varianza de la variable aleatoria `$X$` están dadas por 
+`\begin{align*}
+\mathbb{E}(X)=p \quad \quad Var(X)=p(1-p)
+\end{align*}`
+
+### Distribución Binomial
+Si `$X$` es la variable aleatoria del número de éxitos de `$n$` ensayos de Bernoulli, con probabilidad de éxito `$p$`, entonces se dice que `$X\sim b(n,p)$` tal que
+`\begin{align*}
+f(x) = \left(\begin{array}{c}n\\ x\end{array}\right)p^x(1-p)^{n-x} \quad \quad x=0,1,\ldots,n
+\end{align*}`
+
+**Nota:** Esta distribución es usada cuando se realiza muestreo con reemplazo o en poblaciones infinitas en donde es posible **suponer que la probabilidad de éxito `$p$` es la misma** en cada ensayo Bernoulli.
+
+#### Teorema
+Si `$X\sim b(n,p)$`, entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=np \quad \quad Var(X)=np(1-p)
+\end{align*}`
+
+### Proceso Poisson
+Un proceso Poisson es aquel que cumple
+
+1. El número de resultados que ocurren en un intervalo o región específica es independiente del número que ocurre en cualquier otro intervalo de tiempo o región del espacio disjunto.
+2. La probabilidad de que ocurra un solo resultado durante un intervalo de tiempo corto o región pequeña es proporcional a la longitud del intervalo o al tamaño de la región, y no depende del número de resultados que ocurren por fuera de este intervalo de tiempo o región.
+3. La probabilidad de que ocurra más de un resultado en tal intervalo o región pequeña es insignificante.
+
+### Distribución Poisson
+El número de sucesos que ocurren en un intervalo de tiempo o región específica, es una variable aleatoria `$X$` con distribución de probabilidad Poisson, tal que
+`\begin{align*}
+f(x) = \frac{e^{-\lambda}\lambda^x}{x!} \quad \quad x=0,1,\ldots
+\end{align*}`
+donde `$\lambda$` es el parámetro de la distribución y representa el número promedio de sucesos por unidad de tiempo o región específica.
+
+#### Teorema
+Si `$X\sim P(\lambda)$` entonces se puede probar que la media y varianza de la variable aleatoria `$X$` están dadas por
+`\begin{align*}
+\mathbb{E}(X)=\lambda \quad \quad Var(X)=\lambda
+\end{align*}`

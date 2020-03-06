@@ -1,0 +1,151 @@
+---
+layout: post
+title: "Clase 10"
+main-class: 'clase'
+permalink: /EstadisticaI/EstI:title.html
+tags:
+
+introduction: |
+  Varianza. <br/>
+  Covarianza. <br/>
+  Independencia. <br/>
+  Propiedades de la varianza y la covarianza. <br/>
+  Teorema de Chebyshev
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../EstadisticaI/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../EstadisticaI/images/", "Clase10"),
+               cache.path = "../../EstadisticaI/cache/",
+               cache = FALSE)
+
+```
+
+## Varianza
+
+### Caso univariado
+Sea `$X$` una variable aleatoria con *fmp* `$p(x)$` o *fdp* `$f(x)$`, entonces si `$m(X) = (X - \mathbb{E}(X))^2$`, se tendrá que la varianza de `$X$` que se denota `$Var(X)$` o `$\sigma^2$` estará dada por
+`\begin{align*}
+Var(X) = \sigma^2 = \mathbb{E}\left[\left(X-\mathbb{E}(X)\right)^2\right] = \begin{cases}\sum_x(x-\mathbb{E}(X))^2p(x) & \text{ si } X \text{ es discreta}  \\ \int_{-\infty}^\infty(x-\mathbb{E}(X))^2f(x)dx & \text{ si } X \text{ es continua} \end{cases}
+\end{align*}`
+
+Puede demostrarse a partir de la ecuación anterior, que una alternativa para el cálculo de la `$Var(X,Y)$` es de la forma
+`\begin{align*}
+Var(X) = \mathbb{E}(X^2) - \mathbb{E}(X)^2
+\end{align*}`
+
+además, la raíz cuadrada de la varianza de `$X$` se llama desviación estándar de `$X$`, se denota por `$Sd(X)$` o `$\sigma$` y se define como
+`\begin{align*}
+Sd(X) = \sigma = \sqrt{Var(X)}
+\end{align*}`
+
+### Caso multivariado
+Sean `$X,Y$` variables aleatorias con *fmpc* o *fdpc*, con distribuciones marginales `$g(x)$` y `$h(y)$`,  entonces si `$m(X) = (X - \mathbb{E}(X))^2$` se tendrá que la varianza de `$X$` que se denota `$Var(X)$` o `$\sigma_x^2$` estará dada por
+`\begin{align*}
+Var(X) = \sigma_x^2 = \mathbb{E}\left[\left(X-\mathbb{E}(X)\right)^2\right] = \begin{cases}\sum_x(x-\mathbb{E}(X))^2g(x) & \text{ si } X,Y \text{ son discretas}  \\ \int_{-\infty}^\infty(x-\mathbb{E}(X))^2g(x)dx & \text{ si } X,Y \text{ son continuas} \end{cases}
+\end{align*}`
+
+mientras que si `$m(Y) = (Y - \mathbb{E}(Y))^2$` se tendrá que la varianza de `$Y$` que se denota `$Var(Y)$` o `$\sigma_y^2$` estará dada por
+`\begin{align*}
+Var(Y) = \sigma_y^2= \mathbb{E}\left[\left(Y-\mathbb{E}(Y)\right)^2\right] = \begin{cases}\sum_y(y-\mathbb{E}(Y))^2h(y) & \text{ si } X,Y \text{ son discretas}  \\ \int_{-\infty}^\infty(y-\mathbb{E}(Y))^2h(y)dy & \text{ si } X,Y \text{ son continuas} \end{cases}
+\end{align*}`
+
+## Covarianza
+Sean `$X,Y$` variables aleatorias con *fmpc* dada por `$p(x,y)$` o *fdpc* dada por `$f(x,y)$`, entonces la covarianza de `$X$` y `$Y$`, denotada por `$Cov(X,Y)$` o `$\sigma_{xy}$` está dada por
+`\begin{align*}
+Cov(X,Y) &= \sigma_{xy} = \mathbb{E}\left[\left(X-\mathbb{E}(X)\right)\left(Y-\mathbb{E}(Y)\right)\right] \\ Cov(X,Y) &=  \begin{cases}\sum_x\sum_y(x-\mathbb{E}(X))(y-\mathbb{E}(Y))p(x,y) & \text{ si } X,Y \text{ son discretas}  \\ \int_{-\infty}^\infty \int_{-\infty}^\infty (x-\mathbb{E}(X))(y-\mathbb{E}(Y))f(x,y)dxdy & \text{ si } X,Y \text{ son continuas} \end{cases}
+\end{align*}`
+
+Puede demostrarse a partir de la ecuación anterior, que una alternativa para el cálculo de la `$Cov(X,Y)$` es de la forma
+`\begin{align*}
+Cov(X,Y) = \mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)
+\end{align*}`
+
+### Nota
+La covarianza entre dos variables aleatorias `$X,Y$` es una medida de asociación entre ambas, que describe la relación lineal entre las dos variables aleatorias. El signo de la `$Cov(X,Y)$` indicará el tipo de dependencia lineal que hay entre las variables.
+
+* `$Cov(X,Y) > 0$` indica que hay dependencia lineal positiva entre las variables, es decir, cuando aumenta una variable, la otra también aumenta.
+* `$Cov(X,Y) < 0$` indica que hay dependencia lineal negativa entre las variables, es decir, cuando aumenta una variable, la otra disminuye.
+* `$Cov(X,Y) \approx 0$` indica que no existencia dependencia lineal entre las dos variables.
+
+## Correlación
+Sean `$X,Y$` variables aleatorias con covarianza `$Cov(X,Y)$`, y desviaciones estándar `$Sd(X)$` y `$Sd(Y)$`, entonces la correlación de `$X$` y `$Y$`, denotada por `$Cor(X,Y)$` o `$\rho_{xy}$` está dada por
+`\begin{align*}
+Cor(X,Y) = \rho_{xy} = \frac{Cov(X,Y)}{Sd(X)Sd(Y)}
+\end{align*}`
+
+### Nota
+La correlación entre dos variables aleatorias `$X,Y$` es una medida de asociación entre ambas, que describe la fuerza de la relación lineal entre las dos variables aleatorias. 
+El valor de `$\rho_{xy}$` indica el tipo y fuerza de la dependencia lineal que hay entre las variables
+
+* `$\rho_{xy} = 1$` indica que existe dependencia lineal positiva exacta entre las variables, es decir, cuando aumenta una variable, la otra aumenta proporcionalmente en la misma cantidad. Este aumento es de la forma `$Y = a + bX$`, siendo `$a$` y `$b$` dos constantes, con `$b>0$`.
+* `$\rho_{xy} = -1$` indica que existe dependencia lineal negativa exacta entre las variables, es decir, cuando aumenta una variable, la otra disminuye proporcionalmente en la misma cantidad. Este aumento es de la forma `$Y = a + bX$` con `$a$` y `$b$` dos constantes, y `$b<0$`.
+* `$\rho_{xy} = 0$` No existe dependencia lineal entre las variables.
+
+## Independencia
+Si las variables aleatorias `$X, Y$` son independientes, entonces se debe cumplir que `\begin{align*}
+\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)
+\end{align*}`
+
+y por tanto se tendrá que 
+`\begin{align*}
+Cov(X,Y) = 0
+\end{align*}`
+
+**Nota:** La situación opuesta, sin embargo, no se cumple por lo general, es decir, existen situaciones en las cuales las variables aleatorias tienen covarianza cero pese a que no son independientes.
+
+### Propiedades de la varianza y la covarianza
+Sea `$a$` y `$b$` números reales (constantes) y `$X$` y `$Y$` dos variables aleatorias discretas o continuas, entonces
+
+1. `$Var(a)=0$`
+2. `$Var(aX)=a^2Var(X)$`
+3. `$Var(a+bX) = b^2Var(X)$`
+4. `$Var(X+Y) = Var(X) + Var(Y) + 2 Cov(X,Y)$` 
+5. `$Var(X-Y) = Var(X) + Var(Y) - 2 Cov(X,Y)$`
+6. Si `$X, Y$` son independientes entonces `$Var(X+Y) = Var(X) + Var(Y)$`
+7. Si `$X, Y$` son independientes entonces `$Var(X-Y) = Var(X) + Var(Y)$`
+8. `$Cov(aX,bX) = abCov(X,Y)$`
+9. Si `$X, Y$` son independientes entonces `$Cov(aX,bX) = 0$`
+
+## Desigualdad de Chebyshev
+### Desigualdad de Markov
+Sea `$q(x)$` una función no negativa de la variable aleatoria `$X$`. Entonces, si `$\mathbb{E}(q(x))$` existe, se tendrá que para todo `$\tau>0$`
+`\begin{align*}
+\mathbb{P}(q(x)\geq \tau)\leq \frac{\mathbb{E}(q(X))}{\tau}
+\end{align*}`
+
+### Desigualdad de Chebyshev
+Sea `$X$` una variable aleatoria que tiene una distribución de probabilidad para la cual solo se supone que existe la varianza `$\sigma^2$`. Entonces, si `$\tau = k^2$` y `$q(x)=(x-\mu)^2/\sigma^2$`, donde `$\mu=\mathbb{E}(X)$` y `$\sigma^2=Var(X)$`, se tendrá que
+`\begin{align*}
+\mathbb{P}\left(\frac{(x-\mu)^2}{\sigma^2}\geq k^2\right) \leq \frac{1}{k^2}\mathbb{E}\left(\frac{(x-\mu)^2}{\sigma^2}\right)
+\end{align*}`
+
+en donde, puede demostrarse que la expresión anterior es igual a 
+`\begin{align*}
+\mathbb{P}\left(\mu - k\sigma \leq x \leq \mu + k\sigma \right) \geq 1 - \frac{1}{k^2}
+\end{align*}`
+
+
+

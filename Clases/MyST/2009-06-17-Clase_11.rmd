@@ -1,0 +1,196 @@
+---
+layout: post
+title: "Clase 11"
+main-class: 'clase'
+permalink: /MuestreoySeriesdeTiempo/MyST:title.html
+tags:
+
+introduction: |
+  Introducción a modelos ARIMA. </br>
+  Operador de diferencias.</br>
+  Procesos integrados. </br>
+  Raíces unitarias.
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../MuestreoySeriesdeTiempo/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+link-citations: yes
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../MuestreoySeriesdeTiempo/images/", "Clase11"),
+               cache.path = "../../MuestreoySeriesdeTiempo/cache/",
+               cache = FALSE)
+```
+
+## Introducción a modelos ARIMA
+En alguno casos, cuandos nos enfrentamos a diferentes series temporales puede ocurrir situaciones en las cuales la serie de interés no posee un comportamiento estacionario en covarianza, debido a que éstas pueden poseer estructuras de tendencia, estacionalidad o variabilidad no constante, que hacen que los métodos de ajuste de modelos ARMA no sea adecuado.
+
+<!-- Hay que meter transformación log y box-cox, mediante las funciones lambda = BoxCox.lambda(BD$GasEspaña) y BoxCox(BD$GasEspaña, lambda = lambda)  de la librería forecast-->
+
+Debido a lo anterior, en ocasiones la respuesta a tales estructuras, **es emplear transformaciones** que permitan llevar a la serie temporal a una estructura estacionaria, para así poder modelarla.
+
+## Operador de diferencias
+El operador de diferencias denotado por el simbolo `$\Delta$`, es aquel que calcula la diferencia entre la serie original y la serie rezagada un periodo, tal que si se requiere calcula la primera diferencia del `$Y_t$`, entonces se simbolizamos esta como `$\Delta Y_t$`,y la calculamos como la diferencia entre `$Y_t$` con `$Y_{t-1}$` para `$t=2,\ldots,T$`.
+
+Por su parte, la segunda diferencia de `$Y_t$`, se simboliza por `$\Delta^2 Y_t$` y estará dado por la diferencia entre `$\Delta Y_t$` y `$\Delta Y_{t-1}$` para `$t=3,\ldots,T$`. en donde se puede observar que
+`\begin{align*}
+\Delta^2 Y_t & = \Delta(\Delta Y_t) \\
+             & = \Delta Y_t - \Delta Y_{t-1} \\
+             & = Y_t- 2(Y_{t-1})+Y_{t-2} \\
+             & = (1-L)^2 Y_t
+\end{align*}`
+
+siendo `$L$` el operador de rezagos explicado en la clase [Clase 08](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_08.html){:target="_blank"}. En general, se tendrá que un proceso diferenciado de orden `$d$` se simbolizará por `$\Delta^d Y_t = $` y estará dado por 
+`\begin{align*}
+\Delta^d Y_t = (1-L)^d Y_t
+\end{align*}`
+
+Además, si al diferenciar una serie temporal `$d$` veces, con `$d \in \mathbb{Z}^+$`, y se obtiene un serie estacionaria como resultado, entonces se podrá decir que el proceso original es homogéneo de orden `$d$`.
+
+<!-- Por ejemplo, el proceso $Y_t = \beta_0 + \beta_1t + \varepsilon_t$, siendo $\varepsilon_t$ estacionario, entonces se tendrá que `$Y_t$` es un proceso homogéneo de orden 1, ya que al diferenciarlo se tendrá que 
+`\begin{align*}
+\Delta Y_t & = \Delta Y_t - \Delta Y_{t-1} \\
+           & = \beta_0 + \beta_1t + \varepsilon_t - [\beta_0 + \beta_1(t-1) + \varepsilon_{t-1}]
+           & = \beta_1 + \varepsilon_{t} - \varepsilon_{t-1}
+           & = \beta_1 + U_t
+\end{align*}`
+donde $U_t = \varepsilon_{t} - \varepsilon_{t-1}$ es estacionario. Además, si $\varepsilon_t$ es ruido blanco entones $\Delta Y_t$ es un proceso MA(1) de media $\beta_1$ y con parámetro $\theta = -1$. En general, procesos generados como una tendencia polinómica de orden $d$ más un proceso estacionario cualquiera $\varepsilon_t$, será homogéneo de orden d:
+`\begin{align*}
+Y_t = \beta_0 + \beta_1t + beta_2t^2 + \ldots + beta_dt^d + \varepsilon_t 
+\end{align*}`
+con \varepsilon_t un proceso estacionario.
+
+En el caso de un proceso $Y_t = \beta_0 + \beta_1t + \beta_2t^2 + \varepsilon_t$ con $\varepsilon_t$ estacionario y de media cero, entonces 
+`\begin{align*}
+\Delta Y_t & = \beta_0 + \beta_1t + \beta_2t^2 + \varepsilon_t - [\beta_0 + \beta_1(t-1) + \beta_2(t-1)^2  + \varepsilon_{t-1}]
+           & = (\beta_1 - \beta_2) + 2\beta_2t + \varepsilon_{t} - \varepsilon_{t-1}
+           & = (\beta_1 - \beta_2) + 2\beta_2t + U_t
+\end{align*}`
+
+En donde se observa que \Delta Y_t no es un proceso estacionario. Ahora si calculamos la segunda diferencia
+`\begin{align*}
+\Delta^2 Y_t & = (\beta_1 - \beta_2) + 2\beta_2t + U_t - [(\beta_1 - \beta_2) + 2\beta_2(t-1) + U_{t-1}]
+           & = 2\beta_2 + U_{t} - U_{t-1}
+           & = 2\beta_2 + W_{t}
+\end{align*}`
+
+siendo, $\Delta^2 Y_t$ es un proceso estacionario, y $W_{t} = \varepsilon_t - 2\varepsilon_{t-1} + \varepsilon_{t-2}$ . Además, si $\varepsilon_t$ es ruido blanco, se tendrá que  $\Delta^2 Y_t$ es un proceso MA(2) de media dada y parámetros $\theta_1 = -2$ y $\theta_2 = 1$.
+-->
+
+## Procesos integrados
+@Diebold2007[, p. 289] define a los procesos integrados como aquellas series `$Y_t$` que no poseen una estructura estacionaria, pero que al ser diferenciadas, obtienen dicha estructura.
+
+Dado lo anterior, se tendrá que si una serie temporal requiere una (1) diferencia para obtener una estructura estacionaria, entonces la serie se denomina como integrada de orden `$1$` y se denotará por `$I(1)$`. En general, si la serie temporal requiere ser diferenciada `$d$` veces para obtener una estructura estacionaria, con `$d\in \mathbb{Z}^+$`, entonces se dirá que la serie se denomina como integrada de orden `$d$` y es denotada como `$I(d)$`.
+
+## Modelos autorregresivos integrados de media móvil (ARIMA)
+Se dice que una serie de tiempo `$\widetilde{Y}_t=Y_t-\mu$` posee una estructura ARIMA(p,d,q) si se tiene que al realizar la `$d$`-ésima diferencia, se obtiene que `$\Delta^d Y_t$`posee la estructura de un proceso ARMA estacionario, tal que
+`\begin{align*}
+\Phi_p (L) \Delta^d \widetilde{Y}_t = \Theta_q (L)\varepsilon_t
+\end{align*}`
+donde `$\Phi_p(z) = 1 - \sum_{j=1}^p\phi_j z^j$` y `$\Theta_q(z) = 1 + \sum_{j=1}^q\theta_j z^j$` son los polinomios de rezagos autorregresivo y de medias móviles, respectivamente, **cada uno con módulo mayor a 1**, `$\Delta^d=(1-L)^d$` es el operador de diferencias, con `$L$` el operador de rezagos y `$\varepsilon_t \sim RB(0, \sigma_{\varepsilon}^2)$`.
+
+De acuerdo a lo anterior, se podrán derivar dos casos particulares de los modelos ARIMA(p,d,q). El primero será un proceso en el cual se tiene un orden autorregresivo `$p = 0$`, en este caso se tendrá lo que se conoce como un proceso integrado de media móvil ARIMA(0,d,q) = IMA(d,q), mientras el segundo será un proceso en el cual se tiene un orden de media móvil `$q = 0$`, obteniendo lo que se conoce como un proceso autorregresivo integrado ARIMA(p,d,0)=ARI(p,d).
+
+### Raices unitarias
+Suponga un modelo ARMA(p,q) tal que 
+`\begin{align*}
+\Phi_p (L)\widetilde{Y}_t = \Theta_q (L)\varepsilon_t
+\end{align*}`
+
+con `$\varepsilon_t \sim RB(0, \sigma_{\varepsilon}^2)$`, entonces, si una de las `$p$` raices de la ecuación `$\Phi_p(z) = 1 - \sum_{j=1}^p=\phi_j z^j = 0$` es `$z = 1$` entonces se tendrá que `$Y_t$` tiene una raíz unitaria.
+
+En dicho caso, podremos factorizar el polinomio `$\Phi_p(z)$` como `$\Phi_p(z) = (1-z)\Phi_{p-1}(z)$`, un polinomio de grado `$p-1$`, obteniendo con ello
+`\begin{align*}
+\Phi_{p-1}(L)(1-L)\widetilde{Y}_t = \Theta_q (L)\varepsilon_t
+\end{align*}`
+
+Entonces, si `$Y_t\sim ARMA(p,q)$` con una raíz unitaria, entonces se tendrá que `$\Delta Y_t\sim ARMA(p-1,q)$` o equivalentemente `$Y_t\sim ARIMA(p,1,q)$`, siendo `$d=1$`.
+
+<!-- Ver Econometría Financiera Norman página 282 para ejemplo. -->
+
+### Prueba Dickey-Fuller aumentada
+**Con el fin de identificar si una serie temporal `$Y_t$` posee raices unitarias**, se introduce la prueba Dickey-Fuller Aumentada, la cual asume que es posible aproximar a `$Y_t\sim AR(p)$` asumiendo tres casos, media cero, media diferente de cero y tendencia lineal.
+
+el primer tipo, es un modelo lineal con media cero y sin tendencia lineal con respecto al tiempo.
+`\begin{align*}
+\Delta Y_t = \gamma Y_{t-1} + \sum_{j=2}^p \phi_j \Delta Y_{T-j+1} + \varepsilon_t
+\end{align*}`
+
+con `$\gamma = \phi_1 - 1$`. Entonces is hay raices unitarias se cumplirá que `$\phi_1 = 1$` o equivalentemente `$\gamma=0$`.
+
+El segundo tipo, es un modelo lineal con media diferente de cero y sin tendencia lineal respecto al tiempo.
+`\begin{align*}
+\Delta Y_t = \mu + \gamma Y_{t-1} + \sum_{j=2}^p \phi_j \Delta Y_{T-j+1} + \varepsilon_t
+\end{align*}`
+
+y el tercer tipo, es un modelo lineal con media diferente de cero y con tendencia lineal respecto al tiempo.
+`\begin{align*}
+\Delta Y_t = \mu + \beta t +  \gamma Y_{t-1} + \sum_{j=2}^p \phi_j \Delta Y_{T-j+1} + \varepsilon_t
+\end{align*}`
+
+En general se buscará probar el siguiente juego de hipótesis 
+`\begin{align*}
+H_0: Y_t \text{ posee raices unitarias (no es estacionaria)} \\
+H_1: Y_t \text{ no posee raices unitarias (es estacionaria)} 
+\end{align*}`
+
+la cual, como se señaló es equivalente a probar 
+`\begin{align*}
+H_0: \gamma = 0 \\
+H_1: \gamma < 0
+\end{align*}`
+
+El estadístico de prueba, se define entonces como
+`\begin{align*}
+\tau = \frac{\hat{\gamma}}{se(\hat{\gamma})}
+\end{align*}`
+
+siendo `$\hat{\gamma}$` el coeficiente estimado, y `$se(\hat{\gamma})$` el error estándar del coeficiente estimado. Además, el P-valor de la prueba se define como
+
+con un P-valor dado por
+`\begin{align*}
+\text{P-valor} = \mathbb{P}(\tau<\tau_\alpha)
+\end{align*}`
+
+La prueba Dickey-Fuller puede realizarse en <tt>R</tt>, mediante la función `adf.test()` de la librería `aTSA` o la función `adfTest()` de la librería `fUnitRoots` o la función `adf.test()` de la librería `tseries`.
+
+Alternativamente, puede observarse el número de diferencias recomendadas <tt>R</tt> mediante la función `ndiffs` de la librería `forecast` con argumento `test="adf"`.
+
+## Prueba Phillips-Perron 
+
+La prueba Phillips-Perron puede realizarse en <tt>R</tt>, mediante la función `pp.test` de la librería `aTSA`.
+
+Alternativamente, puede observarse el número de diferencias recomendadas <tt>R</tt> mediante la función `ndiffs` de la librería `forecast` con argumento `test="pp"`.
+
+## Prueba Kwiatkowski-Phillips-Schmidt-Shin
+
+La prueba Kwiatkowski-Phillips-Schmidt-Shin puede realizarse en <tt>R</tt>, mediante la función `kpss.test` de la librería `aTSA`.
+
+Alternativamente, puede observarse el número de diferencias recomendadas <tt>R</tt> mediante la función `ndiffs` de la librería `forecast` con argumento `test="kpss"`.
+
+## Ajuste de modelo ARIMA
+Una vez identificado el orden apropiado de diferenciación, d, asociado a la serie de tiempo `$Y_t$`, se realiza el mismo procedimiento explicado en la [Clase 09](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_09.html){:target="_blank"} para identificar el orden p y q que posee la serie de diferencias. 
+
+**Finalmente, identificados satisfactoriamente los ordenes p,d,q del modelo ARIMA, es posible realizar la estimación del modelo ARIMA(p,d,q) para la serie original**, mediante el procedimiento explicado en la [Clase 09](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_09.html){:target="_blank"}, junto con la validación de los correspondientes supuestos que debe cumplir el modelo ajustado, los cuales se fueron explicados en la [Clase 10](https://jouninlrmd.github.io/MuestreoySeriesdeTiempo/MySTClase_10.html){:target="_blank"}.
+
+## Bibliografía

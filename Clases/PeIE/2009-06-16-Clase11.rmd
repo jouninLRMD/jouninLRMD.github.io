@@ -1,0 +1,75 @@
+---
+layout: post
+title: "Clase 11"
+main-class: 'clase'
+permalink: /ProbabilidadeInferencia/PeIE:title.html
+tags:
+
+introduction: |
+  Teoremas de Aproximación: <br/>
+  - Binomial a Poisson <br/>
+  - Binomial a Normal
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../ProbabilidadeInferencia/_posts/", output_format = "all")})
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../ProbabilidadeInferencia/images/", "Clase11"),
+               cache.path = "../../ProbabilidadeInferencia/cache/",
+               cache = FALSE)
+
+```
+
+## Teoremas de Aproximación
+### Teorema de Aproximación Binomial a Poisson
+Si `$X\sim b(n,p)$` con `$n$` grande `$(n\geq 100)$` y `$p$` pequeña `$(p\leq 0.01)$` entonces se dice que `$X\stackrel{a}{\sim}P(\lambda)$` donde `$\lambda = np$`
+
+### Teorema de Aproximación Binomial a Normal
+Si `$X\sim b(n,p)$` con `$n$` grande `$(n\geq 30)$` y `$p$` cercano a 0.5 `$(p\approx 0.5)$` entonces se dice que `$X\stackrel{a}{\sim}N(\mu,\sigma^2)$` donde `$\mu = np$` y `$\sigma^2 = np(1-p)$`.
+
+Además, se tendrá que `$Z\stackrel{a}{\sim}N(0,1)$`, tal que
+`\begin{align*}
+Z=\frac{x-np}{\sqrt{np(1-p)}}\stackrel{a}{\sim}N(0,1)
+\end{align*}`
+
+La aproximación será buena si `$np$` y `$n(1-p)>5$`.
+
+**Nota:** 
+Para realizar la aproximación de binomial a normal, se debe usar un factor de corrección de continuaidad de 0.5, así
+`\begin{align*} 
+\text{Binomial} & & & & \text{Normal} \quad \quad \quad \quad \quad \\
+\mathbb{P}(X\leq a) & & & & \mathbb{P}(X\leq a + 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X<a) & & & & \mathbb{P}(X\leq a - 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X\geq a) & & & & \mathbb{P}(X\geq a - 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X>a) & & & & \mathbb{P}(X\geq a + 0.5) \quad \quad \quad \quad \; \\
+\mathbb{P}(X=a) & & & & \mathbb{P}(a - 0.5 \leq X\leq a + 0.5)
+\end{align*}`
+
+
+
+
+
+
+
+

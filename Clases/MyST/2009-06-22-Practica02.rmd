@@ -1,0 +1,56 @@
+---
+layout: post
+title: "Práctica 02"
+main-class: 'practica'
+permalink: /MuestreoySeriesdeTiempo/MyST:title.html
+tags:
+
+introduction: |
+  Ejercicios sobre modelos no paramétricos <br>
+  - Series estacionarias en media. <br>
+  - Series con tendencia. <br>
+  - Series estacionales. 
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../MuestreoySeriesdeTiempo/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../MuestreoySeriesdeTiempo/images/", "Práctica02"),
+               cache.path = "../../MuestreoySeriesdeTiempo/cache/",
+               cache = FALSE)
+
+```
+
+## Lista de ejercicios
+
+Suponga las siguientes series de tiempo suministradas en el archivo de los siguientes enlaces
+[Serie 1](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/MySTSim1.xlsx){:target="_blank"}, [Serie 2](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/MySTSim2.xlsx){:target="_blank"}, [Serie 3](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/MySTSim3.xlsx){:target="_blank"}, [Serie 4](https://github.com/jouninLRMD/jouninlrmd.github.io/raw/master/Dataset/MySTSim4.xlsx){:target="_blank"} y con cada una de ellas 
+<ol type = "a">
+<li> Identifique mediante el gráfico de la serie y su ACF las componentes que posee la serie de tiempo, con el fin de seleccionar de forma apropiada el modelo no-paramétrico más apropiado. </li>
+<li> Proponga los dos modelos no-paramétricos que mejor se podrían ajustar a las componentes de cada serie de tiempo y explique la razón de la selección de estos modelos. </li>
+<li> Si la serie posee tendencia o estacionalidad, realice las estimaciones de los modelos planteados usando sólo el 90% de los datos iniciales y deje el resto de períodos para evaluar su modelo (es decir, para poder calcular el error del pronóstico).  En caso de ser estacionaria la serie, realice la estimación de los $T+1$ periodos, y posteriormente divida el conjunto de datos en dos grupos. El primer grupo, compuesto por el 90% de los datos iniciales serán considerados como los datos de ajuste, y el 10% restante será considerado como los datos de evaluación.  </li>
+<li> Realice el gráfico de la serie original junto a sus valores ajustados y pronósticados </li>
+<li> Calcular el MAPE y el MSE de los datos de ajuste y pronóstico para cada modelo. Busque (en lo posible) los valores de los parámetros $k$, $\alpha, \beta$ y $\gamma$ que minimizan el MAPE y el MSE.</li>
+<li> Determine en cada caso, si los residuales obtenidos por el modelo planteado son ruido blanco. </li>
+</ol>

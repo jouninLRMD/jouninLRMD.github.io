@@ -1,0 +1,116 @@
+---
+layout: post
+title: "Práctica 05"
+main-class: 'practica'
+permalink: /EstadisticaI/EstI:title.html
+tags:
+
+introduction: | 
+              Ejercicios sobre: <br>
+              - Distribución Uniforme Continua <br>
+              - Distribución Gamma <br>
+              - Distribución Exponencial <br>
+              - Distribución Normal <br>
+              - Teoremas de Aproximación <br>
+              - Momentos  <br>
+              - Función generadora de momentos
+              
+header-includes:
+   - \usepackage{amsmath,amssymb,amsthm,amsfonts}
+   - \usepackage[sectionbib]{natbib}
+   - \usepackage[hidelinks]{hyperref}
+output:
+  md_document:
+    variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash
+    preserve_yaml: TRUE
+always_allow_html: yes   
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../../EstadisticaI/_posts/", output_format = "all"  ) })
+bibliography: "../../referencias.bib"
+csl: "../../apa.csl"
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+               cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               fig.path = paste0("../../EstadisticaI/images/", "Práctica05"),
+               cache.path = "../../EstadisticaI/cache/",
+               cache = FALSE)
+
+```
+
+## Lista de ejercicios
+1. Suponga que por Ley, la vida máxima de la patente para un nuevo medicamento es `$17$` años. Si restamos el tiempo requerido por la FDA para someter a pruebas y aprobar el medicamento, se obtiene la vida real de la patente para el medicamento, es decir, el tiempo que la compañía tiene para recuperar los costos de investigación, desarrollo y obtener una utilidad. La distribución de los tiempos de vida reales de las patentes para nuevos medicamentos se da a continuación:
+```{r echo=FALSE}
+library(kableExtra)
+tabla1 <- data.frame(c("Años, $x$", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"),
+              c("$f(x)$", "0.03", "0.05", "0.07", "0.10", "0.14", "0.20", "0.18", "0.12", "0.07", "0.04"))
+tabla1 <- data.frame(t(tabla1))
+
+kable(tabla1, align = c("c", "l", "l", "l", "l"),
+  format = "html", booktabs = T, row.names = FALSE, col.names = NULL) %>%
+kable_styling("striped", full_width = F)
+```
+<ol type ="a">
+<li> Calcule el primer momento alrededor del origen. </li>
+<li> Calcule el segundo momento alrededor del origen. </li>
+<li> Calcule el segundo momento central. </li>
+</ol>
+2. La cantidad diaria de café, en litros, que sirve la maquina de las burbujas, es una variable aleatoria uniforme en el intervalo de 6.8 hasta 10 litros. ¿Cuál es la probabilidad de que en un día cualquiera, la maquina sirva más de 8 litros?
+3. 	Suponga que a partir de gran cantidad de datos históricos se sabe que `$X$`, el número de automóviles que llegan a una intersección específica durante un periodo de `$20$` segundos, se determina mediante la siguiente función de probabilidad discreta
+`\begin{align*}
+	f(x)=\frac{e^{-\lambda} \lambda^x}{x!} \text{  para  } x=0,1,2,\dots
+\end{align*}`
+<ol type ="a">
+<li> Encuentre su función generadora de momentos de la variable aleatoria $X$. </li>
+<li> Encuentre la media, varianza y asimetría de la variable aleatoria $X$ mediante la función generadora de momentos. </li>
+</ol>
+4. Suponga que el número de llamadas telefónicas que entran a un conmutador  particular siguen un proceso de Poisson con un promedio de `$5$` llamadas entrantes por minuto. ¿Cuál es la probabilidad de que transcurra hasta un minuto en el momento en que han entrado `$3$` llamadas al conmutador? 
+5. Sea `$X$` una variable aleatoria con función de masa de probabilidad dada por 
+`\begin{align*}
+	f(x)=p(1-p)^{x-1} \text{  para  }  x=1,2,3,\ldots
+\end{align*}`
+<ol type ="a">
+<li> Encuentre su función generadora de momentos de la variable aleatoria $X$. </li>
+<li> Encuentre la varianza de la variable aleatoria $X$ mediante la función generadora de momentos. </li>
+</ol>
+6. Considere a `$X$` la variable aleatoria que representa la suma de las caras para el lanzamiento de dos dados, con función de masa de probabilidad dada por
+`\begin{align*}
+	f(x)=\frac{6-|7-x|}{36} \text{  para  } x = 2,3,\ldots,12 
+\end{align*}`
+Calcule el segundo momento central.
+7. El tiempo entre arribos de taxis al acopio de una estación del metro tiene una media de 60 segundos. ¿Cuál es la probabilidad de que la llegada del próximo taxi sea en al menos 40 segundos?
+8. Demuestre que el `$r$`-ésimo momento respecto al origen de la distribución gamma es
+`\begin{align*}
+	\mu'_r=\frac{\beta^r\Gamma(\alpha + r)}{\Gamma(\alpha)}
+\end{align*}`
+9. Se sabe que los resultados en cierto examen de estadística, tienen una distribución normal, con media `$3.1$` y varianza `$0.1225$`. ¿Cuál es la probabilidad de que un estudiante obtenga una nota entre `$3$` y `$3.5$`?
+10. Una variable aleatoria `$X$` tiene la siguiente distribución uniforme discreta
+`\begin{align*}
+	f(x) = \frac{1}{k} \text{  para  } x = 1,2, \ldots, k
+\end{align*}`
+<ol type = "a">
+Encuentre su función generadora de momentos de la variable aleatoria $X$.
+11. El sistema de puntuación Elo es un método matemático empleado para calcular la habilidad relativa de los jugadores en algunos deportes tales como el Ajedrez. Suponga que el puntaje Elo promedio de los jugadores de cierta categoría es de 1556 con una desviación estándar de 14. Si pruebas estadísticas han sugerido que el rendimiento de los ajedrecistas se distribuye normalmente. ¿Cuál es la probabilidad de que un ajedrecista de dicha categoría tenga un puntaje Elo superior a 1603?.
+12. La función generadora de momentos de cierta variable aleatoria de Poisson X es dada por
+`\begin{align*}
+	M_x(t) = e^{4(e^t-1)}
+\end{align*}`
+Calcule `$\mathbb{P}(\mu - 1.3\sigma<X< \mu + 2.3\sigma)$`.
+13. Suponga que en una universidad se realizan pruebas de aptitud anuales para observar las habilidades y competencias de sus profesores. Si se sabe que el puntaje de estas pruebas se distribuye gamma con un promedio de de 76.2 y una varianza de 1935.48. ¿Cuál es la probabilidad de que un profesor obtenga un puntaje superior a 79 puntos?
+14. Sea `$X$` una variable aleatoria con función de densidad de probabilidad dada por 
+`\begin{align*}
+	f(x) = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}x^{\frac{\nu}{2}-1}e^{-\frac{x}{2}} \text{  para  } x>0
+\end{align*}`
+<ol type = "a">
+<li> Encuentre su función generadora de momentos de la variable aleatoria $X$. </li>
+<li> Encuentre la media, varianza, de la variable aleatoria $X$ mediante la función generadora de momentos. </li>
+</ol>
