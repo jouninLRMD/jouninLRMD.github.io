@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis R. Mercado-Diaz, Ph.D. Candidate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        header {
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.2s;
+        }
+
+        .contact-links a:hover {
+            color: #0052a3;
+            text-decoration: underline;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            margin-top: 30px;
+            color: #2c2c2c;
+        }
+
+        .project-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .project-card h4 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .project-card p {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .project-intro {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 6px;
+        }
+
+        .paper {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .paper:hover {
+            background: #f0f0f0;
+        }
+
+        .paper-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+
+        .paper-venue {
+            color: #888;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .paper a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .paper a:hover {
+            text-decoration: underline;
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .news-date {
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+
+        .news-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .experience-item {
+            margin-bottom: 25px;
+        }
+
+        .experience-period {
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 8px;
+        }
+
+        .experience-description {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .emoji {
+            font-style: normal;
+        }
+
+        ul.feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.feature-list li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        ul.feature-list li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Luis R. Mercado-Diaz, Ph.D. Candidate</h1>
+            <p class="tagline">
+                I am a Research Scientist @ UConn, where I advance next-generation AI systems and Graph Signal Processing methods. With over 8 years of research experience, I work across human-centered AI, Graph understanding, multimodal large language models, foundation models, Graph Neural Networks, wearable AI, and health-focused applications. I focus on bridging fundamental AI and real-world impact, developing technologies that advance foundational AI, accessibility, and human-AI interaction.
+            </p>
+            <div class="contact-links">
+                <a href="mailto:lrmercadod@gmail.com">📧 lrmercadod@gmail.com</a>
+                <a href="YOUR_LINKEDIN_URL" target="_blank">💼 LinkedIn</a>
+                <a href="https://github.com/jouninLRMD" target="_blank">💻 GitHub</a>
+                <a href="YOUR_GOOGLE_SCHOLAR_URL" target="_blank">📚 Google Scholar</a>
+            </div>
+        </header>
+
+        <section id="featured-projects">
+            <h2>Featured Research Projects</h2>
+            <p class="project-intro">
+                My strength lies in creativity, enabling me to devise novel solutions across various topics! Four selected featured research achievements:
+            </p>
+
+            <div class="project-card">
+                <h4>🔬 Pioneering Graph Signal Processing for Biomedical Signals (2022-2023)</h4>
+                <p>
+                    Developed the first Graph Signal Processing method to analyze biomedical signals, introducing a novel paradigm for understanding physiological data. This groundbreaking approach transforms traditional time-series biomedical signals into graph structures, enabling the extraction of spatial and temporal patterns that were previously inaccessible through conventional signal processing techniques. The method has been successfully applied to electrodermal activity (EDA) for emotion recognition, achieving state-of-the-art performance while providing interpretable features that align with physiological mechanisms.
+                </p>
+                <!-- [EDIT: Add image here - suggested: diagram showing signal-to-graph transformation or EDA-Graph architecture] -->
+            </div>
+
+            <div class="project-card">
+                <h4>🧠 Graph-Based Detection of Neurodevelopmental Disorders (2023-2024)</h4>
+                <p>
+                    Created an innovative Graph Signal Processing framework for analyzing electroretinogram (ERG) signals to detect neurodevelopmental disorders, including Autism Spectrum Disorder (ASD) and Attention Deficit Hyperactivity Disorder (ADHD). This approach leverages the unique graph-based representation of ERG waveforms to capture subtle abnormalities in retinal neural processing that serve as biomarkers for neurodevelopmental conditions. The method demonstrates high classification accuracy while significantly reducing computational complexity compared to traditional deep learning approaches, making it practical for clinical deployment.
+                </p>
+                <!-- [EDIT: Add image here - suggested: ERG signal visualization or classification results] -->
+            </div>
+
+            <div class="project-card">
+                <h4>🤖 Deep Learning for Multimodal Biomedical Signal Analysis (2020-2025)</h4>
+                <p>
+                    Developed and implemented advanced deep learning architectures for the comprehensive analysis of multimodal biomedical signals. This research encompasses autoencoders for nonlinear feature extraction from physiological signals, convolutional neural networks for time-frequency analysis, and multimodal fusion techniques that integrate diverse data sources including EDA, ERG, ECG, and photoplethysmography (PPG). The methods have been successfully applied to multiple clinical domains including emotion recognition, pain intensity classification, arrhythmia detection, and affective computing, demonstrating the versatility and robustness of deep learning in healthcare applications.
+                </p>
+                <!-- [EDIT: Add image here - suggested: multimodal architecture diagram or results comparison] -->
+            </div>
+
+            <div class="project-card">
+                <h4>🧩 Graph Neural Networks for Stroke Detection and Segmentation (2024-2025)</h4>
+                <p>
+                    Engineered a sophisticated Graph Neural Network (GNN) framework that integrates probabilistic attention mechanisms for detecting and segmenting stroke lesions from multimodal MRI data. This approach represents brain imaging data as graphs, where nodes correspond to brain regions and edges capture anatomical and functional connectivity. The probabilistic attention mechanism enables the model to focus on clinically relevant regions while accounting for uncertainty in lesion boundaries. The method achieves superior performance in stroke lesion detection while providing interpretable attention maps that align with clinical expertise, facilitating integration into diagnostic workflows.
+                </p>
+                <!-- [EDIT: Add image here - suggested: MRI visualization with attention maps or segmentation results] -->
+            </div>
+        </section>
+
+        <section id="publications">
+            <h2>Publications</h2>
+            
+            <h3>First-Author & Co-First-Author Publications</h3>
+            
+            <div class="paper">
+                <div class="paper-title">Graph-Based Multi-Modal MRI Analysis with Probabilistic Attention for Stroke Lesion Detection</div>
+                <div class="paper-authors"><strong>L. R. Mercado-Diaz</strong>, D. Aguiar, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">Neurocomputing, 131620, 2025</div>
+                <a href="https://doi.org/10.1016/j.neucom.2025.131620" target="_blank">DOI: 10.1016/j.neucom.2025.131620</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Detecting Autism Spectrum Disorder and Attention Deficit Hyperactivity Disorder Using Multimodal Time-Frequency Analysis with Machine Learning Using the Electroretinogram from Two Flash Strengths</div>
+                <div class="paper-authors">S. M. Manjur, <strong>L. R. Mercado-Diaz</strong>, I. O. Lee, et al.</div>
+                <div class="paper-venue">Journal of Autism and Developmental Disorders, 55, 1365–1378, 2025</div>
+                <a href="https://doi.org/10.1007/s10803-024-06290-w" target="_blank">DOI: 10.1007/s10803-024-06290-w</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Artificial Intelligence Approaches for the Detection of Normal Pressure Hydrocephalus: A Systematic Review</div>
+                <div class="paper-authors"><strong>L. R. Mercado-Diaz</strong>, N. Prakash, G. X. Gong, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">Applied Sciences, 15(7), 3653, 2025</div>
+                <a href="https://doi.org/10.3390/app15073653" target="_blank">DOI: 10.3390/app15073653</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">A Multimodal Deep Learning Exploration for Pain Intensity Classification</div>
+                <div class="paper-authors">J. O. Pinzon-Arenas, <strong>L. R. Mercado-Diaz</strong>, B. E. Faremi, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">Companion Proceedings of the 27th International Conference on Multimodal Interaction (ICMI '25), 2025</div>
+                <a href="https://doi.org/10.1145/3747327.3764783" target="_blank">DOI: 10.1145/3747327.3764783</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Fractal Analysis of Electrodermal Activity for Emotion Recognition: A Novel Approach Using Detrended Fluctuation Analysis and Wavelet Entropy</div>
+                <div class="paper-authors"><strong>L. R. Mercado-Diaz</strong>, Y. R. Veeranki, E. W. Large, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">Sensors, 24(24), 8130, 2024</div>
+                <a href="https://doi.org/10.3390/s24248130" target="_blank">DOI: 10.3390/s24248130</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">EDA-Graph: Graph Signal Processing of Electrodermal Activity for Emotional States Detection</div>
+                <div class="paper-authors"><strong>L. R. Mercado-Diaz</strong>, Y. R. Veeranki, F. Marmolejo-Ramos, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">IEEE Journal of Biomedical and Health Informatics, 28(8), 4599-4612, 2024</div>
+                <a href="https://doi.org/10.1109/JBHI.2024.3405491" target="_blank">DOI: 10.1109/JBHI.2024.3405491</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Emotional States Detection Using Electrodermal Activity and Graph Signal Processing</div>
+                <div class="paper-authors"><strong>L. R. Mercado-Diaz</strong>, Y. R. Veeranki, F. Marmolejo-Ramos, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">2024 IEEE 20th International Conference on Body Sensor Networks (BSN), 2024</div>
+                <a href="https://doi.org/10.1109/BSN63547.2024.10780627" target="_blank">DOI: 10.1109/BSN63547.2024.10780627</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Autoencoder Based Nonlinear Feature Extraction from EDA Signals for Emotion Recognition</div>
+                <div class="paper-authors">Y. R. Veeranki, <strong>L. R. Mercado-Diaz</strong>, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">2024 IEEE International Symposium on Medical Measurements and Applications (MeMeA), 2024</div>
+                <a href="https://doi.org/10.1109/MeMeA60663.2024.10596800" target="_blank">DOI: 10.1109/MeMeA60663.2024.10596800</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Nonlinear Signal Processing Methods for Automatic Emotion Recognition Using Electrodermal Activity</div>
+                <div class="paper-authors">Y. R. Veeranki, <strong>L. R. Mercado-Diaz</strong>, R. Swaminathan, and H. F. Posada-Quintero</div>
+                <div class="paper-venue">IEEE Sensors Journal, 24(6), 8079-8093, 2024</div>
+                <a href="https://doi.org/10.1109/JSEN.2024.3354553" target="_blank">DOI: 10.1109/JSEN.2024.3354553</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Deep Learning Analysis of Electrophysiological Series for Continuous Emotional State Detection</div>
+                <div class="paper-authors">J. O. Pinzon-Arenas, <strong>L. R. Mercado-Diaz</strong>, et al.</div>
+                <div class="paper-venue">2023 11th International Conference on Affective Computing and Intelligent Interaction Workshops and Demos (ACIIW), 2023</div>
+                <a href="https://doi.org/10.1109/ACIIW59127.2023.10388196" target="_blank">DOI: 10.1109/ACIIW59127.2023.10388196</a>
+            </div>
+
+            <h3>Co-Author Publications</h3>
+
+            <div class="paper">
+                <div class="paper-title">Multiclass Arrhythmia Classification using Multimodal Smartwatch Photoplethysmography Signals Collected in Real-life Settings</div>
+                <div class="paper-authors">D. Han, J. Moon, <strong>L. R. Mercado-Diaz</strong>, et al.</div>
+                <div class="paper-venue">IEEE Transactions on Biomedical Engineering, 2025</div>
+                <a href="https://doi.org/10.1109/TBME.2025.3613471" target="_blank">DOI: 10.1109/TBME.2025.3613471</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Spectral Analysis of Light-Adapted Electroretinograms in Neurodevelopmental Disorders: Classification with Machine Learning</div>
+                <div class="paper-authors">P. A. Constable, J. O. Pinzon-Arenas, <strong>L. R. Mercado Diaz</strong>, et al.</div>
+                <div class="paper-venue">Bioengineering, 12(1), 15, 2025</div>
+                <a href="https://doi.org/10.3390/bioengineering12010015" target="_blank">DOI: 10.3390/bioengineering12010015</a>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Smartwatch Photoplethysmogram-Based Atrial Fibrillation Detection with Premature Atrial and Ventricular Contraction Differentiation Using Densely Connected Convolutional Neural Networks</div>
+                <div class="paper-authors">D. Chen, D. Han, <strong>L. R. Mercado-Díaz</strong>, J. Moon, and K. H. Chon</div>
+                <div class="paper-venue">2024 IEEE 20th International Conference on Body Sensor Networks (BSN), 2024</div>
+                <a href="https://doi.org/10.1109/BSN63547.2024.10780734" target="_blank">DOI: 10.1109/BSN63547.2024.10780734</a>
+            </div>
+        </section>
+
+        <section id="research-experience">
+            <h2>Research Experience</h2>
+            
+            <div class="experience-item">
+                <div class="experience-period">[2022 - Current] Research Scientist @ UConn</div>
+                <div class="experience-description">
+                    Working as an AI research scientist during my Ph.D. program at the University of Connecticut. Developed the first Graph Signal Processing method to analyze biomedical signals and created a comprehensive framework for the analysis of biomedical signals using Graph Signal Processing techniques. Leading research initiatives in multimodal AI, graph neural networks, and their applications to healthcare and neuroscience.
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-period">[2014 - 2022] Research Student @ Intelligent Machines and Pattern Recognition Laboratory</div>
+                <div class="experience-description">
+                    Worked as a research student in the Intelligent Machines and Pattern Recognition Laboratory, associated with the research group on Automation, Electronics and Computational Science. Developed various analyses of proteins using graph-based methods and machine learning approaches. Contributed to research on protein interactions using Support Vector Machine-based techniques and metabolomics analysis using MAIT package and deep learning-based methods.
+                </div>
+            </div>
+        </section>
+
+        <section id="news">
+            <h2>Recent News</h2>
+
+            <div class="news-item">
+                <div class="news-date">[11/24/2025]</div>
+                <div class="news-content">Successfully defended my Dissertation Proposal in the Ph.D. in Biomedical Engineering. I'm a Ph.D. Candidate! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[10/13/2025]</div>
+                <div class="news-content">My co-first author paper, entitled "A Multimodal Deep Learning Exploration for Pain Intensity Classification" is accepted by 2025 Companion Proceedings of the 27th International Conference on Multimodal Interaction. Congrats to the first author Javier! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[09/30/2025]</div>
+                <div class="news-content">My first author paper, entitled "Graph-Based Analysis of Electroretinograms for Reducing Computational Complexity and Classifying Neurodevelopmental Disorders", is accepted by 2025 IEEE-EMBS 22nd International Conference on Body Sensor Networks (BSN).</div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[09/23/2025]</div>
+                <div class="news-content">My co-author paper, entitled "Multiclass arrhythmia classification using multimodal smartwatch photoplethysmography signals collected in real-life settings", is accepted by IEEE Transactions on Biomedical Engineering Journal. Congrats to the first author, Cassey! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[09/18/2025]</div>
+                <div class="news-content">My first author paper, entitled "Graph-Based Multi-Modal MRI Analysis with Probabilistic Attention for Stroke Lesion Detection" is accepted by Neurocomputing Journal. Thank you! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[06/25/2025]</div>
+                <div class="news-content">My co-author paper, entitled "Big team science reveals promises and limitations of machine learning efforts to model physiological markers of affective experience", is accepted by Royal Society Open Science Journal. Congrats to the first author, Nicholas! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[05/30/2025]</div>
+                <div class="news-content">Successfully defended my Master Thesis in Computer Science. I'm a Master in Computer Science now! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[04/06/2025]</div>
+                <div class="news-content">My co-author paper, entitled "Multiclass Arrhythmia Classification using Smartwatch Photoplethysmography Signals Collected in Real-life Settings", is accepted by ICASSP 2025 - 2025 IEEE International Conference on Acoustics, Speech and Signal Processing. Congrats to the first author, Cassey! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[03/26/2025]</div>
+                <div class="news-content">My first author paper, entitled "Artificial Intelligence Approaches for the Detection of Normal Pressure Hydrocephalus: A Systematic Review" is accepted by Applied Science Journal. Thank you! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[12/28/2024]</div>
+                <div class="news-content">My co-author paper, entitled "Spectral analysis of light-adapted electroretinograms in neurodevelopmental disorders: Classification with machine learning", is accepted by Bioengineering Journal. Congrats to the first author, Paul!</div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[12/19/2024]</div>
+                <div class="news-content">My first author paper, entitled "Fractal analysis of electrodermal activity for emotion recognition: a novel approach using detrended fluctuation analysis and wavelet entropy" is accepted by Sensors Journal. Thank you! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[07/30/2024]</div>
+                <div class="news-content">My first author paper, entitled "Emotional States Detection Using Electrodermal Activity and Graph Signal Processing", is accepted by 2024 IEEE-EMBS 21st International Conference on Body Sensor Networks (BSN).</div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[07/30/2024]</div>
+                <div class="news-content">My co-author paper, entitled "Smartwatch Photoplethysmogram-Based Atrial Fibrillation Detection with Premature Atrial and Ventricular Contraction Differentiation Using Densely Connected Convolutional Neural Networks", is accepted by 2024 IEEE-EMBS 21st International Conference on Body Sensor Networks (BSN). Congrats to the first author, Darren!</div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[06/25/2024]</div>
+                <div class="news-content">My co-first author paper, entitled "Autoencoder Based Nonlinear Feature Extraction from EDA Signals for Emotion Recognition" is accepted by IEEE Sensors journal. Congratulations Rao! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[05/27/2024]</div>
+                <div class="news-content">My first author paper, entitled "EDA-graph: graph signal processing of electrodermal activity for emotional states detection" is accepted by IEEE Journal of Biomedical and Health Informatics. Thank you! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[02/23/2024]</div>
+                <div class="news-content">My co-first author paper, entitled "Detecting Autism Spectrum Disorder and Attention Deficit Hyperactivity Disorder Using Multimodal Time-Frequency Analysis with Machine Learning Using the Electroretinogram from Two Flash Strengths" is accepted by Journal of Autism and Developmental Disorders journal. Congratulations Sultan! <span class="emoji">🎉</span></div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">[01/23/2024]</div>
+                <div class="news-content">My co-first author paper, entitled "Nonlinear signal processing methods for automatic emotion recognition using electrodermal activity" is accepted by IEEE Sen
