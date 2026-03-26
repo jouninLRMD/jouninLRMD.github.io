@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navbar Scroll Effect (Sticky Header)
     // ==========================================
     const navbar = document.getElementById('navbar');
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('shadow-md', 'bg-white/90', 'dark:bg-darkCard/90', 'backdrop-blur-sm');
