@@ -2,9 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Current year for footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ==========================================
     // Dark/Light Mode Toggle
-    // ==========================================
     const themeToggleBtn = document.getElementById('theme-toggle');
     const themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
 
@@ -29,9 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggleBtn.addEventListener('click', toggleDarkMode);
     themeToggleBtnMobile.addEventListener('click', toggleDarkMode);
 
-    // ==========================================
     // Mobile Menu Toggle
-    // ==========================================
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -46,15 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ==========================================
     // Navbar Scroll Effect (Sticky Header)
-    // ==========================================
     const navbar = document.getElementById('navbar');
-<<<<<<< Updated upstream
 
-=======
 
->>>>>>> Stashed changes
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('shadow-md', 'bg-white/90', 'dark:bg-darkCard/90', 'backdrop-blur-sm');
@@ -68,9 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Trigger scroll event on load to set initial state
     window.dispatchEvent(new Event('scroll'));
 
-    // ==========================================
     // Publication Filters
-    // ==========================================
     const filterButtons = document.querySelectorAll('.pub-filter');
     const pubItems = document.querySelectorAll('.pub-item');
 
@@ -95,9 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ==========================================
     // Scroll Animations (Intersection Observer)
-    // ==========================================
     const faders = document.querySelectorAll('.fade-in');
 
     const appearOptions = {
@@ -120,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appearOnScroll.observe(fader);
     });
 
-    // ==========================================
     // ScrollSpy (Highlight active link)
-    // ==========================================
     const sections = document.querySelectorAll('section, header');
     const navLinks = document.querySelectorAll('.nav-link');
 
