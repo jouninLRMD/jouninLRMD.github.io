@@ -1,0 +1,96 @@
+/* style.css - Custom Additions for Tailwind CSS */
+
+/* Smooth fade-in animation classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 20px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #475569;
+}
+
+/* Navigation active state styling */
+.nav-link.active {
+    color: #0ea5e9;
+    font-weight: 600;
+}
+.nav-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #0ea5e9;
+    transition: width 0.3s;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Publication filters styling */
+.pub-filter {
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    color: #475569;
+}
+.dark .pub-filter {
+    border: 1px solid #334155;
+    background-color: #1e293b;
+    color: #94a3b8;
+}
+.pub-filter:hover {
+    border-color: #0ea5e9;
+    color: #0ea5e9;
+}
+.pub-filter.active {
+    background-color: #0ea5e9;
+    color: white;
+    border-color: #0ea5e9;
+}
+
+/* Social buttons styling */
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: transparent;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    transition: all 0.2s ease-in-out;
+}
+.dark .social-btn {
+    border-color: #334155;
+    color: #cbd5e1;
+}
+.social-btn:hover {
+    background-color: #0ea5e9;
+    border-color: #0ea5e9;
+    color: white;
+}
+
+/* Base styles for the entire document for smooth transitions */
+html {
+    scroll-padding-top: 5rem; /* Account for fixed header */
+}
