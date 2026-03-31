@@ -142,3 +142,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+// Carousel Functionality
+const carouselInner = document.getElementById('carousel-inner');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const indicators = document.querySelectorAll('.indicator-btn');
+let currentIndex = 0;
+const totalItems = indicators.length;
+
+function updateCarousel() {
+    if (!carouselInner) return;
+    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+    indicators.forEach((indicator, index) => {
+        if (index === currentIndex) {
+            indicator.classList.remove('bg-white/50');
+            indicator.classList.add('bg-white');
+        } else {
+            indicator.classList.remove('bg-white');
+            indicator.classList.add('bg-white/50');
+        }
+    });
+}
+
+if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex === 0) ? totalItems - 1 : currentIndex - 1;
+        updateCarousel();
+    });
+}
+
+if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex === totalItems - 1) ? 0 : currentIndex + 1;
+        updateCarousel();
+    });
+}
+
+indicators.forEach(indicator => {
+    indicator.addEventListener('click', (e) => {
+        currentIndex = parseInt(e.target.dataset.index);
+        updateCarousel();
+    });
+});
+
+// Auto-play
+if (carouselInner) {
+    setInterval(() => {
+        currentIndex = (currentIndex === totalItems - 1) ? 0 : currentIndex + 1;
+        updateCarousel();
+    }, 5000); // 5 seconds interval
+}
