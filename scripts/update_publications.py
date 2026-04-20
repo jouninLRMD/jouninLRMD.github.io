@@ -1,0 +1,401 @@
+#!/usr/bin/env python3
+"""Automatically refresh data/publications.json from OpenAlex (primary) and
+CrossRef (fallback).
+
+Flow:
+  1. Load data/config.json (author name + optional ORCID / OpenAlex ID).
+  2. Query OpenAlex for all works authored by the person. If ORCID or
+     OpenAlex author ID is missing, fall back to a name-filtered search.
+  3. If OpenAlex returns nothing, try CrossRef author search as a second
+     source (uses bibliographic query + author filter).
+  4. Merge the fetched works with data/publications.json, preserving any
+     manual curation (title/role overrides, manual entries, etc.).
+  5. Emit a stable, diff-friendly JSON file sorted by year desc / title asc.
+
+Environment:
+  * No secrets required. All APIs used are public.
+  * We set a descriptive User-Agent + mailto as a polite identifier so the
+    providers can contact us if we misbehave.
+
+Safety:
+  * Never deletes manually-added publications (entries with source=="manual").
+  * Only marks the file "dirty" when something actually changed, so the
+    GitHub Actions job can skip commits on no-op days.
+"""
+
+from __future__ import annotations
+
+import dataclasses
+import datetime as dt
+import json
+import logging
+import os
+import re
+import sys
+import time
+import unicodedata
+import urllib.parse
+import urllib.request
+import urllib.error
+from pathlib import Path
+from typing import Any, Iterable
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+CONFIG_PATH = REPO_ROOT / "data" / "config.json"
+PUBS_PATH = REPO_ROOT / "data" / "publications.json"
+
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "lrmercadod@gmail.com")
+USER_AGENT = (
+    f"jouninLRMD-site-updater/1.0 (+https://jouninlrmd.github.io; mailto:{CONTACT_EMAIL})"
+)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+log = logging.getLogger("update_publications")
+
+
+# ---------- Utilities ----------
+
+def http_get_json(url: str, *, retries: int = 4, backoff: float = 2.0) -> dict[str, Any]:
+    """GET JSON with retry + exponential backoff. Raises on final failure."""
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as exc:
+            last_err = exc
+            wait = backoff * (2 ** attempt)
+            log.warning("GET %s failed (%s); retrying in %.1fs", url, exc, wait)
+            time.sleep(wait)
+    assert last_err is not None
+    raise last_err
+
+
+def strip_accents(s: str) -> str:
+    return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+
+
+def normalize_name(name: str) -> str:
+    name = strip_accents(name).lower()
+    name = re.sub(r"[^a-z\s]", "", name)
+    return re.sub(r"\s+", " ", name).strip()
+
+
+def normalize_doi(doi: str | None) -> str | None:
+    if not doi:
+        return None
+    doi = doi.strip().lower()
+    doi = re.sub(r"^https?://(dx\.)?doi\.org/", "", doi)
+    return doi or None
+
+
+# ---------- Author matching ----------
+
+@dataclasses.dataclass
+class AuthorMatcher:
+    variants: list[str]
+    co_first: list[str]
+
+    def _normalized(self) -> list[str]:
+        return [normalize_name(v) for v in self.variants]
+
+    def is_author(self, raw_name: str) -> bool:
+        norm = normalize_name(raw_name)
+        for variant in self._normalized():
+            if not variant:
+                continue
+            if norm == variant:
+                return True
+            # Partial match: last name plus first initial is often enough
+            if self._same_person(norm, variant):
+                return True
+        return False
+
+    @staticmethod
+    def _same_person(a: str, b: str) -> bool:
+        a_parts, b_parts = a.split(), b.split()
+        if not a_parts or not b_parts:
+            return False
+        if a_parts[-1] != b_parts[-1]:
+            return False
+        # Require at least one more shared initial
+        a_initials = {p[0] for p in a_parts[:-1] if p}
+        b_initials = {p[0] for p in b_parts[:-1] if p}
+        return bool(a_initials & b_initials)
+
+
+# ---------- OpenAlex ----------
+
+def openalex_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[str, Any]]:
+    author = config["author"]
+    orcid = (author.get("orcid") or "").strip()
+    openalex_id = (author.get("openalex_id") or "").strip()
+
+    filters: list[str] = []
+    if orcid:
+        filters.append(f"author.orcid:{orcid}")
+    elif openalex_id:
+        filters.append(f"author.id:{openalex_id}")
+    else:
+        # Search by display name; we'll filter locally with matcher
+        primary = author["full_name"].replace(" ", "+")
+        filters.append(f"raw_author_name.search:{primary}")
+
+    min_year = int(config.get("fetch", {}).get("min_year", 2015))
+    filters.append(f"from_publication_date:{min_year}-01-01")
+
+    params = {
+        "filter": ",".join(filters),
+        "per-page": "100",
+        "mailto": CONTACT_EMAIL,
+    }
+
+    works: list[dict[str, Any]] = []
+    cursor = "*"
+    while True:
+        url = "https://api.openalex.org/works?" + urllib.parse.urlencode(
+            {**params, "cursor": cursor}
+        )
+        log.info("OpenAlex query: %s", url)
+        payload = http_get_json(url)
+        results = payload.get("results") or []
+        works.extend(results)
+        cursor = (payload.get("meta") or {}).get("next_cursor")
+        if not cursor or not results:
+            break
+
+    return [openalex_to_publication(w, matcher) for w in works if openalex_keep(w, matcher)]
+
+
+def openalex_keep(work: dict[str, Any], matcher: AuthorMatcher) -> bool:
+    authorships = work.get("authorships") or []
+    return any(matcher.is_author(a.get("author", {}).get("display_name", "")) for a in authorships)
+
+
+def openalex_to_publication(work: dict[str, Any], matcher: AuthorMatcher) -> dict[str, Any]:
+    doi = normalize_doi(work.get("doi"))
+    authors = work.get("authorships") or []
+    author_names = [a.get("author", {}).get("display_name", "") for a in authors]
+    title = (work.get("title") or "").strip()
+    venue = (
+        (work.get("primary_location") or {}).get("source", {}) or {}
+    ).get("display_name") or work.get("host_venue", {}).get("display_name") or ""
+    year = work.get("publication_year")
+    work_type = work.get("type") or "article"
+
+    role = _infer_role(author_names, matcher)
+    authors_str = _format_authors(author_names, matcher)
+    details = _format_details(venue, work, year)
+
+    return {
+        "id": doi or work.get("id"),
+        "title": title,
+        "authors": authors_str,
+        "venue": venue,
+        "details": details,
+        "year": year,
+        "doi": doi,
+        "url": f"https://doi.org/{doi}" if doi else (work.get("id") or ""),
+        "role": role,
+        "type": _map_type(work_type),
+        "source": "openalex",
+    }
+
+
+# ---------- CrossRef fallback ----------
+
+def crossref_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[str, Any]]:
+    name = config["author"]["full_name"]
+    min_year = int(config.get("fetch", {}).get("min_year", 2015))
+    params = {
+        "query.author": name,
+        "rows": "100",
+        "filter": f"from-pub-date:{min_year}-01-01",
+        "mailto": CONTACT_EMAIL,
+    }
+    url = "https://api.crossref.org/works?" + urllib.parse.urlencode(params)
+    log.info("CrossRef query: %s", url)
+    payload = http_get_json(url)
+    items = ((payload.get("message") or {}).get("items") or [])
+    out: list[dict[str, Any]] = []
+    for item in items:
+        authors = [
+            " ".join(filter(None, [a.get("given"), a.get("family")]))
+            for a in item.get("author", [])
+        ]
+        if not any(matcher.is_author(a) for a in authors):
+            continue
+        doi = normalize_doi(item.get("DOI"))
+        title = (item.get("title") or [""])[0].strip()
+        year = None
+        for k in ("published-print", "published-online", "issued"):
+            parts = ((item.get(k) or {}).get("date-parts") or [[None]])[0]
+            if parts and parts[0]:
+                year = parts[0]
+                break
+        venue = (item.get("container-title") or [""])[0]
+        out.append({
+            "id": doi or item.get("URL"),
+            "title": title,
+            "authors": _format_authors(authors, matcher),
+            "venue": venue,
+            "details": _format_details(venue, item, year),
+            "year": year,
+            "doi": doi,
+            "url": f"https://doi.org/{doi}" if doi else item.get("URL", ""),
+            "role": _infer_role(authors, matcher),
+            "type": _map_type(item.get("type", "journal-article")),
+            "source": "crossref",
+        })
+    return out
+
+
+# ---------- Shared helpers ----------
+
+def _infer_role(authors: list[str], matcher: AuthorMatcher) -> str:
+    for idx, name in enumerate(authors):
+        if matcher.is_author(name):
+            return "first" if idx == 0 else "co"
+    return "co"
+
+
+def _format_authors(authors: Iterable[str], matcher: AuthorMatcher) -> str:
+    names = [a for a in authors if a]
+    if len(names) > 6:
+        names = names[:5] + ["et al."]
+    return ", ".join(names)
+
+
+def _format_details(venue: str, work: dict[str, Any], year: int | None) -> str:
+    pieces = [p for p in [venue, str(year) if year else None] if p]
+    return ", ".join(pieces)
+
+
+def _map_type(t: str) -> str:
+    t = (t or "").lower()
+    if "proceedings" in t or "conference" in t:
+        return "conference"
+    if "chapter" in t or "book" in t:
+        return "book"
+    if "preprint" in t or "posted-content" in t:
+        return "preprint"
+    return "journal"
+
+
+# ---------- Merge logic ----------
+
+def merge_publications(
+    existing: list[dict[str, Any]],
+    fetched: list[dict[str, Any]],
+    exclude: set[str],
+) -> tuple[list[dict[str, Any]], int]:
+    index: dict[str, dict[str, Any]] = {}
+    added = 0
+
+    # Keep manual/seed entries first so their curated metadata wins on merge
+    for entry in existing:
+        key = (normalize_doi(entry.get("doi")) or entry.get("id") or entry.get("title", "")).lower()
+        if not key:
+            continue
+        index[key] = dict(entry)
+
+    for entry in fetched:
+        doi = normalize_doi(entry.get("doi"))
+        if doi and doi in exclude:
+            continue
+        key = (doi or entry.get("id") or entry.get("title", "")).lower()
+        if not key:
+            continue
+        if key in index:
+            merged = dict(index[key])
+            # Prefer existing curated fields; only fill blanks from fetch.
+            for field, value in entry.items():
+                if field in {"authors", "role", "title", "details"} and merged.get(field):
+                    continue
+                if merged.get(field) in (None, "", []):
+                    merged[field] = value
+            # Always keep the latest source tag so we can tell what touched it
+            merged["source"] = merged.get("source") or entry.get("source")
+            index[key] = merged
+        else:
+            index[key] = entry
+            added += 1
+
+    merged_list = list(index.values())
+    merged_list.sort(
+        key=lambda p: (-(p.get("year") or 0), (p.get("title") or "").lower())
+    )
+    return merged_list, added
+
+
+# ---------- Main ----------
+
+def main() -> int:
+    if not CONFIG_PATH.exists():
+        log.error("Missing %s", CONFIG_PATH)
+        return 2
+
+    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    existing_payload = (
+        json.loads(PUBS_PATH.read_text(encoding="utf-8")) if PUBS_PATH.exists() else {"publications": []}
+    )
+    existing = existing_payload.get("publications", [])
+    exclude = {normalize_doi(d) for d in config.get("fetch", {}).get("exclude_dois", []) if d}
+
+    matcher = AuthorMatcher(
+        variants=config["author"].get("name_variants") or [config["author"]["full_name"]],
+        co_first=config.get("fetch", {}).get("co_first_author_aliases", []),
+    )
+
+    fetched: list[dict[str, Any]] = []
+    try:
+        fetched = openalex_fetch(config, matcher)
+        log.info("OpenAlex returned %d matching works", len(fetched))
+    except Exception as exc:  # noqa: BLE001 — we want to fall back
+        log.warning("OpenAlex failed (%s); attempting CrossRef", exc)
+
+    if not fetched:
+        try:
+            fetched = crossref_fetch(config, matcher)
+            log.info("CrossRef returned %d matching works", len(fetched))
+        except Exception as exc:  # noqa: BLE001
+            log.error("CrossRef also failed: %s", exc)
+            fetched = []
+
+    if not fetched and not existing:
+        log.error("No publications fetched and no existing data. Aborting.")
+        return 1
+
+    merged, added = merge_publications(existing, fetched, exclude)
+
+    payload = {
+        "generated_at": dt.date.today().isoformat(),
+        "source": "auto (openalex+crossref) merged with manual curation",
+        "author": {
+            "name": config["author"]["full_name"],
+            "name_variants": config["author"].get("name_variants", []),
+        },
+        "publications": merged,
+    }
+
+    previous = json.dumps(existing_payload.get("publications", []), sort_keys=True)
+    current = json.dumps(merged, sort_keys=True)
+    if previous == current:
+        log.info("No changes; %d publications tracked.", len(merged))
+        # Still write so generated_at advances only once per real change (skipped)
+        return 0
+
+    PUBS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    log.info(
+        "Wrote %s with %d publications (%d new vs. previous).",
+        PUBS_PATH, len(merged), added,
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
