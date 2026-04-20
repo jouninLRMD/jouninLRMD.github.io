@@ -1,0 +1,31 @@
+{
+  "author": {
+    "full_name": "Luis R. Mercado-Diaz",
+    "short_name": "L. R. Mercado-Diaz",
+    "name_variants": [
+      "Luis R. Mercado-Diaz",
+      "L. R. Mercado-Diaz",
+      "L. R. Mercado Diaz",
+      "L. R. Mercado-Díaz",
+      "Luis Mercado-Diaz",
+      "Luis Mercado"
+    ],
+    "orcid": "",
+    "openalex_id": "",
+    "google_scholar_id": "DY-wDFkAAAAJ",
+    "affiliations": [
+      "University of Connecticut"
+    ]
+  },
+  "fetch": {
+    "primary_source": "openalex",
+    "fallback_sources": ["crossref"],
+    "min_year": 2018,
+    "co_first_author_aliases": [
+      "L. R. Mercado-Diaz",
+      "Luis R. Mercado-Diaz"
+    ],
+    "exclude_dois": [],
+    "manual_overrides": {}
+  }
+}

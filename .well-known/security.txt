@@ -1,0 +1,5 @@
+Contact: mailto:lrmercadod@gmail.com
+Expires: 2030-01-01T00:00:00.000Z
+Preferred-Languages: en, es
+Canonical: https://jouninlrmd.github.io/.well-known/security.txt
+Policy: https://jouninlrmd.github.io/#security
