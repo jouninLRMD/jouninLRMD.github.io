@@ -1,0 +1,158 @@
+/* style.css — Custom additions on top of Tailwind.
+ *
+ * Kept small on purpose: Tailwind handles most of the surface area, and this
+ * file contains only the bits that are awkward to express with utility
+ * classes (scroll animation, scrollbar, skeleton pulse, credential chips).
+ */
+
+/* ---------- Scroll reveal ---------- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Respect reduced-motion preferences (accessibility) */
+@media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .fade-in.appear {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* ---------- Scrollbar ---------- */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 20px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #475569; }
+
+/* ---------- Navigation ---------- */
+#navbar { transition: background-color 0.3s, box-shadow 0.3s; }
+
+.nav-link.active { color: #0ea5e9; font-weight: 600; }
+.nav-link { position: relative; }
+.nav-link::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+
+/* ---------- Publication filter chips ---------- */
+.pub-filter {
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    color: #475569;
+}
+.dark .pub-filter {
+    border: 1px solid #334155;
+    background-color: #1e293b;
+    color: #94a3b8;
+}
+.pub-filter:hover { border-color: #0ea5e9; color: #0ea5e9; }
+.pub-filter.active {
+    background-color: #0ea5e9;
+    color: white;
+    border-color: #0ea5e9;
+}
+
+/* ---------- Social buttons (hero) ---------- */
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: transparent;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    transition: all 0.2s ease-in-out;
+}
+.dark .social-btn { border-color: #334155; color: #cbd5e1; }
+.social-btn:hover {
+    background-color: #0ea5e9;
+    border-color: #0ea5e9;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* ---------- Credential chips (hero) ---------- */
+.credential-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, rgba(14, 165, 233, 0.12), rgba(139, 92, 246, 0.12));
+    color: #0f172a;
+    border: 1px solid rgba(14, 165, 233, 0.25);
+}
+.dark .credential-chip {
+    background: linear-gradient(90deg, rgba(14, 165, 233, 0.18), rgba(139, 92, 246, 0.18));
+    color: #e2e8f0;
+    border-color: rgba(139, 92, 246, 0.35);
+}
+.credential-chip i { font-size: 0.7rem; opacity: 0.8; }
+
+/* ---------- Base ---------- */
+html { scroll-padding-top: 5rem; }
+
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* Subtle focus ring for keyboard users */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ---------- Featured Research cards ---------- */
+.research-card {
+    transform: translateZ(0);
+    will-change: transform;
+}
+.research-card:hover {
+    transform: translateY(-4px);
+}
+/* Touch devices: use a toggled class instead of :hover so the overlay
+   stays open after a tap. The JS in main.js sets .show on tap. */
+.research-card.show .research-overlay {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+/* A thin colored top-edge per accent */
+.research-card[data-accent="primary"]  { border-top: 3px solid #0ea5e9; }
+.research-card[data-accent="emerald"]  { border-top: 3px solid #10b981; }
+.research-card[data-accent="violet"]   { border-top: 3px solid #8b5cf6; }
+
+.research-overlay { transition: opacity .45s ease, transform .45s ease; }
+.research-overlay::-webkit-scrollbar      { width: 6px; }
+.research-overlay::-webkit-scrollbar-thumb { background: rgba(100,116,139,.35); border-radius: 4px; }

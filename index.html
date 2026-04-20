@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis R. Mercado-Diaz | Biomedical Engineer · Computer Scientist · AI Researcher</title>
+    <meta name="description" content="Personal site of Luis R. Mercado-Diaz — Ph.D. in Biomedical Engineering and M.S. in Computer Science & Engineering working at the intersection of graph-based AI, multimodal machine learning, and health.">
+    <meta name="author" content="Luis R. Mercado-Diaz">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#0ea5e9" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
+    <!-- Content Security Policy: restrict the origins the page can load from.
+         Tailwind Play CDN uses an inline <script>, so we need 'unsafe-inline'
+         for scripts; we keep everything else tightly scoped. -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
+        style-src  'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
+        font-src   'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+        img-src    'self' data:;
+        connect-src 'self';
+        frame-ancestors 'none';
+        base-uri 'self';
+        form-action 'self';
+    ">
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Luis R. Mercado-Diaz | Ph.D. BME · M.S. CSE">
+    <meta property="og:description" content="Graph-based AI, multimodal ML, and health-focused research by Luis R. Mercado-Diaz.">
+    <meta property="og:url" content="https://jouninlrmd.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://jouninlrmd.github.io/">
+    <!-- Tailwind CSS (Play CDN, pinned). For production consider a pre-built CSS bundle. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9', // Sky 500
+                        secondary: '#0284c7', // Sky 600
+                        accent:  '#8b5cf6', // Violet 500
+                        darkBg: '#0f172a', // Slate 900
+                        darkCard: '#1e293b', // Slate 800
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome (pinned + integrity hash for supply-chain safety) -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+    <!-- Preconnect for Google Fonts (privacy-conscious: only connect when used) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com"   crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Structured data for search engines / ORCID discovery -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Luis R. Mercado-Diaz",
+      "url": "https://jouninlrmd.github.io/",
+      "email": "mailto:lrmercadod@gmail.com",
+      "sameAs": [
+        "https://www.linkedin.com/in/lrmercadod/",
+        "https://github.com/jouninLRMD",
+        "https://scholar.google.com/citations?user=DY-wDFkAAAAJ"
+      ],
+      "jobTitle": "Research Scientist",
+      "alumniOf": [
+        {"@type": "CollegeOrUniversity", "name": "University of Connecticut"}
+      ],
+      "hasCredential": [
+        {"@type": "EducationalOccupationalCredential", "credentialCategory": "Ph.D.", "educationalLevel": "Doctorate", "name": "Ph.D. in Biomedical Engineering"},
+        {"@type": "EducationalOccupationalCredential", "credentialCategory": "M.S.",  "educationalLevel": "Master",    "name": "M.S. in Computer Science and Engineering"},
+        {"@type": "EducationalOccupationalCredential", "credentialCategory": "B.S.",  "educationalLevel": "Bachelor",   "name": "B.S. in Biomedical Engineering"}
+      ],
+      "knowsAbout": [
+        "Graph Signal Processing",
+        "Graph Neural Networks",
+        "Multimodal Machine Learning",
+        "Biomedical Signal Processing",
+        "Medical Imaging",
+        "Affective Computing",
+        "Human-Centered AI"
+      ]
+    }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-slate-200 font-['Inter'] transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="font-bold text-xl tracking-tight text-primary">LRMD</a>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="nav-link text-sm font-medium hover:text-primary transition-colors">About</a>
+                    <a href="#projects" class="nav-link text-sm font-medium hover:text-primary transition-colors">Projects</a>
+                    <a href="#publications" class="nav-link text-sm font-medium hover:text-primary transition-colors">Publications</a>
+                    <a href="#experience" class="nav-link text-sm font-medium hover:text-primary transition-colors">Experience</a>
+                    <a href="#skills" class="nav-link text-sm font-medium hover:text-primary transition-colors">Skills</a>
+                    <a href="#research" class="nav-link text-sm font-medium hover:text-primary transition-colors">Research</a>
+                    <a href="#news" class="nav-link text-sm font-medium hover:text-primary transition-colors">News</a>
+                    <a href="#gallery" class="nav-link text-sm font-medium hover:text-primary transition-colors">Gallery</a>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-slate-700 dark:text-slate-300 inline-block dark:hidden" id="theme-toggle-light-icon"></i>
+                        <i class="fas fa-sun text-slate-700 dark:text-slate-300 hidden dark:inline-block" id="theme-toggle-dark-icon"></i>
+                    </button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="theme-toggle-mobile" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-slate-700 dark:text-slate-300 inline-block dark:hidden" id="theme-toggle-light-icon-mobile"></i>
+                        <i class="fas fa-sun text-slate-700 dark:text-slate-300 hidden dark:inline-block" id="theme-toggle-dark-icon-mobile"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="text-slate-600 dark:text-slate-300 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-darkCard shadow-lg absolute w-full left-0 top-16">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">About</a>
+                <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Projects</a>
+                <a href="#publications" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Publications</a>
+                <a href="#experience" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Experience</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Skills</a>
+                <a href="#research" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Research</a>
+                <a href="#news" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">News</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="about" class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <!-- Decorative gradient mesh backdrop -->
+        <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+            <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/20 blur-3xl"></div>
+            <div class="absolute top-32 right-0 w-80 h-80 rounded-full bg-accent/20 blur-3xl"></div>
+            <div class="absolute bottom-0 left-1/3 w-96 h-96 rounded-full bg-emerald-400/10 blur-3xl"></div>
+        </div>
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div class="flex-1 space-y-6 fade-in">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Research Scientist @ UConn · Biomedical Engineering × Computer Science
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                Luis R. Mercado-Diaz <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-blue-600">Ph.D. &middot; M.S. &middot; B.S.</span>
+            </h1>
+            <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+                I am a dual-disciplinary researcher trained as a <span class="font-semibold text-slate-800 dark:text-slate-200">Biomedical Engineer (Ph.D.)</span> and a <span class="font-semibold text-slate-800 dark:text-slate-200">Computer Scientist & Engineer (M.S.)</span>. That pairing lets me move fluidly between the clinic and the data center&mdash;designing algorithms that respect physiology, and physiology-aware systems that scale like modern software.
+            </p>
+            <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+                My work spans <span class="font-semibold text-primary">graph signal processing</span>, <span class="font-semibold text-primary">graph neural networks</span>, <span class="font-semibold text-primary">multimodal &amp; foundation models</span>, wearable &amp; sensor AI, and medical imaging. I care about <span class="font-semibold text-slate-800 dark:text-slate-200">human-centered AI</span>, interpretability, and the software-engineering rigor that turns a research prototype into something a clinician or end-user can actually trust.
+            </p>
+            <div class="flex flex-wrap gap-2 pt-2" aria-label="Academic credentials">
+                <span class="credential-chip"><i class="fas fa-microscope"></i> Ph.D. Biomedical Engineering</span>
+                <span class="credential-chip"><i class="fas fa-laptop-code"></i> M.S. Computer Science &amp; Engineering</span>
+                <span class="credential-chip"><i class="fas fa-stethoscope"></i> B.S. Biomedical Engineering</span>
+            </div>
+            <div class="flex flex-wrap gap-4 pt-4">
+                <a href="mailto:lrmercadod@gmail.com" class="social-btn group">
+                    <i class="fas fa-envelope text-primary group-hover:text-white transition-colors"></i>
+                    <span>lrmercadod@gmail.com</span>
+                </a>
+                <a href="https://www.linkedin.com/in/lrmercadod/" target="_blank" rel="noopener noreferrer" class="social-btn group">
+                    <i class="fab fa-linkedin text-primary group-hover:text-white transition-colors"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/jouninLRMD" target="_blank" rel="noopener noreferrer" class="social-btn group">
+                    <i class="fab fa-github text-primary group-hover:text-white transition-colors"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://scholar.google.com/citations?hl=en&user=DY-wDFkAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer" class="social-btn group">
+                    <i class="fas fa-graduation-cap text-primary group-hover:text-white transition-colors"></i>
+                    <span>Google Scholar</span>
+                </a>
+            </div>
+            <div class="pt-4">
+                <a href="assets/docs/Luis_Mercado_AI_Resume_extended.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-secondary transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                    <i class="fas fa-download"></i> Download CV
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+
+    <!-- Featured Projects -->
+    <section id="projects" class="py-20 bg-white dark:bg-darkCard border-y border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Featured Research Projects</h2>
+                <div class="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-slate-600 dark:text-slate-400 italic max-w-2xl mx-auto">
+                    My strength lies in creativity, enabling me to devise novel solutions across various topics! Four selected featured research achievements:
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all fade-in">
+                    <div class="h-64 overflow-hidden bg-white dark:bg-slate-900 flex items-center justify-center p-4">
+                        <img src="images/Fig_2_step_by_step_graph.jpg" alt="EDA-Graph Generation Methodology" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-primary font-semibold mb-2">2022 - 2023</div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Pioneering Graph Signal Processing for Biomedical Signals</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                            Developed the first Graph Signal Processing method to analyze biomedical signals, introducing a novel paradigm for understanding physiological data. This approach transforms traditional time-series signals into graph structures, enabling the extraction of spatial and temporal patterns. Applied to EDA for emotion recognition, achieving state-of-the-art performance with interpretable features.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all fade-in" style="transition-delay: 100ms;">
+                    <div class="h-64 overflow-hidden bg-white dark:bg-slate-900 flex items-center justify-center p-4">
+                        <img src="images/Final_methodology_figure.png" alt="ERG-Graph Methodology" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-primary font-semibold mb-2">2023 - 2024</div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Graph-Based Detection of Neurodevelopmental Disorders</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                            Created an innovative GSP framework for analyzing ERG signals to detect ASD and ADHD. This approach leverages graph-based representation of ERG waveforms to capture subtle abnormalities in retinal neural processing. The method demonstrates high classification accuracy while significantly reducing computational complexity, making it practical for clinical deployment.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all fade-in">
+                    <div class="h-64 overflow-hidden bg-white dark:bg-slate-900 flex items-center justify-center p-4">
+                        <img src="images/posad1-3291955-large.gif" alt="Deep Learning For Multimodal analysis of Emotions" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-primary font-semibold mb-2">2020 - 2025</div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Deep Learning for Multimodal Biomedical Signal Analysis</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                            Developed advanced deep learning architectures for multimodal biomedical signal analysis, encompassing autoencoders for nonlinear feature extraction, CNNs for time-frequency analysis, and multimodal fusion techniques integrating EDA, ERG, ECG, and PPG. Applied to emotion recognition, pain intensity classification, and arrhythmia detection.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all fade-in" style="transition-delay: 100ms;">
+                    <div class="h-64 overflow-hidden bg-white dark:bg-slate-900 flex items-center justify-center p-4">
+                        <img src="images/GAT_Architecture_for_stroke.jpg" alt="Graph Neural Networks for Stroke Detection" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-primary font-semibold mb-2">2024 - 2025</div>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Graph Neural Networks for Stroke Detection & Segmentation</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                            Engineered a sophisticated GNN framework with probabilistic attention mechanisms for detecting and segmenting stroke lesions from multimodal MRI data. It represents brain imaging data as graphs and achieves superior performance in stroke lesion detection while providing interpretable attention maps that align with clinical expertise.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications -->
+    <section id="publications" class="py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12 fade-in">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Publications</h2>
+                    <div class="w-20 h-1 bg-primary rounded-full"></div>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 max-w-md md:text-right">
+                    Auto-synced daily from <a href="https://openalex.org" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">OpenAlex</a>
+                    (with <a href="https://www.crossref.org" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">CrossRef</a> fallback) via GitHub Actions.
+                    Last updated: <span id="publications-updated-at" class="font-mono">&mdash;</span>.
+                </p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-3 mb-8">
+                <button class="pub-filter active px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="all">All Publications</button>
+                <button class="pub-filter px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="first">First / Co-First Author</button>
+                <button class="pub-filter px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="co">Co-Author</button>
+                <div class="flex-1 min-w-[12rem] md:max-w-sm ml-auto">
+                    <label for="pub-search" class="sr-only">Search publications</label>
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input id="pub-search" type="search" placeholder="Search title, venue, DOI…"
+                               class="w-full pl-8 pr-3 py-2 text-sm rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-darkCard focus:outline-none focus:ring-2 focus:ring-primary/40"
+                               autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skeleton loaders (replaced on fetch) -->
+        <div class="space-y-6" id="publications-list" aria-live="polite" aria-busy="true">
+            <div class="pub-skeleton p-6 bg-white dark:bg-darkCard rounded-lg shadow-sm border-l-4 border-slate-200 dark:border-slate-700 animate-pulse">
+                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-3"></div>
+                <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
+                <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+            </div>
+            <div class="pub-skeleton p-6 bg-white dark:bg-darkCard rounded-lg shadow-sm border-l-4 border-slate-200 dark:border-slate-700 animate-pulse">
+                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3 mb-3"></div>
+                <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
+                <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
+            </div>
+            <div class="pub-skeleton p-6 bg-white dark:bg-darkCard rounded-lg shadow-sm border-l-4 border-slate-200 dark:border-slate-700 animate-pulse">
+                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-4/5 mb-3"></div>
+                <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-2/5 mb-2"></div>
+                <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+            </div>
+        </div>
+        <!-- Empty state (shown if fetch fails) -->
+        <div id="publications-empty" class="hidden p-6 bg-white dark:bg-darkCard rounded-lg border border-dashed border-slate-300 dark:border-slate-700 text-center text-slate-500 dark:text-slate-400 text-sm">
+            Could not load publications. Please check back shortly or browse my
+            <a href="https://scholar.google.com/citations?user=DY-wDFkAAAAJ" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Google Scholar</a>.
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="py-20 bg-slate-100 dark:bg-slate-800/50 transition-colors">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 fade-in">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Research &amp; Education Journey</h2>
+                <div class="w-20 h-1 bg-primary rounded-full"></div>
+                <p class="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl">
+                    Two parallel tracks &mdash; a Ph.D. in Biomedical Engineering and an M.S. in Computer Science &amp; Engineering &mdash; kept compounding into a single research practice.
+                </p>
+            </div>
+
+            <div class="relative border-l-2 border-slate-300 dark:border-slate-600 ml-3 md:ml-0 space-y-12">
+
+                <!-- Ph.D. Defense -->
+                <div class="relative pl-8 md:pl-10 fade-in">
+                    <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-primary ring-4 ring-slate-100 dark:ring-slate-800"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline mb-2">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Ph.D. in Biomedical Engineering &mdash; University of Connecticut</h3>
+                        <span class="text-primary font-semibold text-sm md:ml-4 mt-1 md:mt-0">Conferred 2026</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                        Dissertation on <em>Graph Signal Processing &amp; Graph Neural Networks for Multimodal Biomedical Data</em>, introducing the first GSP framework to analyze biomedical signals (EDA, ERG) and a probabilistic graph-attention architecture for multimodal MRI stroke-lesion detection. Work spans methodology, rigorous validation, and clinical framing.
+                    </p>
+                </div>
+
+                <!-- M.S. CS -->
+                <div class="relative pl-8 md:pl-10 fade-in">
+                    <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-accent ring-4 ring-slate-100 dark:ring-slate-800"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline mb-2">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">M.S. in Computer Science &amp; Engineering &mdash; University of Connecticut</h3>
+                        <span class="text-accent font-semibold text-sm md:ml-4 mt-1 md:mt-0">Conferred 2025</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                        Pursued in parallel to the Ph.D. to formalize my CS foundations: algorithms, distributed systems, advanced machine learning, and the software-engineering practices behind production AI. This is where the probabilistic reasoning, graph theory, and systems thinking that power my research come from.
+                    </p>
+                </div>
+
+                <!-- Research Scientist -->
+                <div class="relative pl-8 md:pl-10 fade-in">
+                    <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-slate-100 dark:ring-slate-800"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline mb-2">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Research Scientist &mdash; UConn (Chon Lab &amp; collaborators)</h3>
+                        <span class="text-emerald-500 font-semibold text-sm md:ml-4 mt-1 md:mt-0">2022 &mdash; Present</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                        Lead research on multimodal AI, graph neural networks, and their applications to healthcare &amp; neuroscience. Designed and released the first graph-based pipelines for electrodermal activity and electroretinogram analysis, collaborated on wearable PPG arrhythmia detection, and built attention-based MRI models for stroke.
+                    </p>
+                </div>
+
+                <!-- B.S. -->
+                <div class="relative pl-8 md:pl-10 fade-in">
+                    <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-500 ring-4 ring-slate-100 dark:ring-slate-800"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline mb-2">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Research Student &mdash; Intelligent Machines &amp; Pattern Recognition Lab</h3>
+                        <span class="text-slate-500 dark:text-slate-400 font-semibold text-sm md:ml-4 mt-1 md:mt-0">2014 &mdash; 2022</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                        Undergraduate research on Automation, Electronics and Computational Science. Worked on graph-based protein-interaction analysis, SVM-driven structural prediction, and metabolomics with the MAIT package &mdash; the seeds of my current interest in graph-shaped biological data.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Skills & Expertise -->
+    <section id="skills" class="py-20 bg-white dark:bg-darkCard border-t border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center fade-in">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Areas of Strength</h2>
+                <div class="w-20 h-1 bg-primary rounded-full mx-auto mb-6"></div>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                    My work lives at the intersection of <span class="font-semibold text-slate-800 dark:text-slate-200">biomedical engineering</span> and <span class="font-semibold text-slate-800 dark:text-slate-200">computer science</span>. Four pillars power everything I do &mdash; AI modeling, physiological signals, software &amp; systems engineering, and the languages that glue them together.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Advanced Computer Science & AI -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700 fade-in flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-microchip text-3xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Architecting the Mind: Advanced AI</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        To unravel the complexities of human physiology, I rely on the robust foundations of <span class="font-semibold text-primary">PyTorch</span> and <span class="font-semibold text-primary">PyTorch Geometric</span>. My passion lies in designing <span class="font-semibold text-primary">Probabilistic Graph Attention Networks</span> and applying <span class="font-semibold text-primary">Bayesian Methods</span> to navigate the uncertainty inherent in medical data. By blending these advanced deep learning architectures with emerging generative models, I build AI systems capable of perceiving the subtle, interconnected patterns of life.
+                    </p>
+                </div>
+
+                <!-- Biomedical Engineering Innovation -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700 fade-in flex flex-col items-center text-center" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-heartbeat text-3xl text-emerald-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Decoding the Body: Signals & Imaging</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        The human body speaks a language of high-dimensional signals, and I have dedicated my research to translating it. From the electrical whispers of the heart and brain (<span class="font-semibold text-emerald-500">EKG, EEG</span>) to the rhythmic flow of blood (<span class="font-semibold text-emerald-500">PPG</span>), I capture these physiological stories. I also venture deeper, utilizing <span class="font-semibold text-emerald-500">MRI and fMRI</span> to map the intricate structures and functions of the brain. Through Graph Neural Networks, I transform these vast modalities into coherent maps of human emotion and health.
+                    </p>
+                </div>
+
+                <!-- Software & Systems Engineering -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700 fade-in flex flex-col items-center text-center" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-layer-group text-3xl text-amber-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Software &amp; Systems Engineering</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        My M.S. in Computer Science &amp; Engineering shapes how I ship research: <span class="font-semibold text-amber-500">clean APIs</span>, <span class="font-semibold text-amber-500">reproducible pipelines</span>, <span class="font-semibold text-amber-500">CI/CD with GitHub Actions</span>, containerized training with <span class="font-semibold text-amber-500">Docker</span>, and data pipelines that respect privacy and security. I treat research code like a product &mdash; tested, versioned, and observable.
+                    </p>
+                </div>
+
+                <!-- Programming Languages -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700 fade-in flex flex-col items-center text-center" style="transition-delay: 300ms;">
+                    <div class="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-code text-3xl text-purple-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Languages of Creation</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        <span class="font-semibold text-purple-500">Python</span> as my research lingua franca, <span class="font-semibold text-purple-500">R</span> for rigorous statistical inference, <span class="font-semibold text-purple-500">C/C++</span> for performance-critical signal processing, and <span class="font-semibold text-purple-500">Rust</span> &amp; <span class="font-semibold text-purple-500">Go</span> for safe, concurrent systems. On the web side, <span class="font-semibold text-purple-500">TypeScript</span> when it matters.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Featured Research Projects -->
+    <section id="research" class="py-20 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center fade-in">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Featured Research</h2>
+                <div class="w-20 h-1 bg-primary rounded-full mx-auto mb-6"></div>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                    Three pieces of work that shaped how I think about physiological signals, graphs, and attention. Each card doubles as its own graphical abstract &mdash; <span class="font-semibold text-slate-800 dark:text-slate-200">hover (or tap) to see the method, why it matters, and a direct link to the paper</span>.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1 · Graph-based Multi-Modal MRI for Stroke ============================================== -->
+                <article class="research-card group relative rounded-2xl overflow-hidden bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-500 fade-in" data-accent="primary" tabindex="0">
+                    <div class="relative h-52 overflow-hidden bg-gradient-to-br from-sky-500/10 via-sky-500/5 to-blue-600/10">
+                        <svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-primary p-4" aria-label="Graphical abstract: multi-modal MRI merges via graph attention into a stroke lesion mask">
+                            <defs>
+                                <marker id="arrowPrimary" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                                </marker>
+                            </defs>
+                            <!-- Modality stack (T1, T2, FLAIR) -->
+                            <g transform="translate(18, 30)">
+                                <rect x="0"  y="0"  width="96" height="32" rx="6" fill="currentColor" opacity="0.10"/>
+                                <rect x="0"  y="40" width="96" height="32" rx="6" fill="currentColor" opacity="0.18"/>
+                                <rect x="0"  y="80" width="96" height="32" rx="6" fill="currentColor" opacity="0.30"/>
+                                <text x="10" y="20"  font-size="11" fill="currentColor" font-weight="700">T1</text>
+                                <text x="10" y="60"  font-size="11" fill="currentColor" font-weight="700">T2</text>
+                                <text x="10" y="100" font-size="11" fill="currentColor" font-weight="700">FLAIR</text>
+                                <text x="0"  y="132" font-size="9"  fill="currentColor" opacity="0.7">multi-modal MRI</text>
+                            </g>
+                            <path d="M122 80 L150 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowPrimary)"/>
+                            <!-- Graph with probabilistic attention -->
+                            <g transform="translate(162, 20)">
+                                <line x1="40" y1="20" x2="80" y2="60" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+                                <line x1="40" y1="20" x2="20" y2="95" stroke="currentColor" stroke-width="3.5" opacity="0.9"/>
+                                <line x1="80" y1="60" x2="20" y2="95" stroke="currentColor" stroke-width="1.8" opacity="0.45"/>
+                                <line x1="80" y1="60" x2="95" y2="135" stroke="currentColor" stroke-width="3"   opacity="0.75"/>
+                                <line x1="20" y1="95" x2="95" y2="135" stroke="currentColor" stroke-width="1.6" opacity="0.4"/>
+                                <line x1="40" y1="20" x2="95" y2="135" stroke="currentColor" stroke-width="1.2" opacity="0.25"/>
+                                <circle cx="40" cy="20"  r="8"  fill="currentColor"/>
+                                <circle cx="80" cy="60"  r="10" fill="currentColor" opacity="0.85"/>
+                                <circle cx="20" cy="95"  r="12" fill="currentColor"/>
+                                <circle cx="95" cy="135" r="9"  fill="currentColor" opacity="0.9"/>
+                                <text x="0" y="175" font-size="9" fill="currentColor" opacity="0.7">probabilistic graph attention</text>
+                            </g>
+                            <path d="M280 80 L310 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowPrimary)"/>
+                            <!-- Brain outline with lesion -->
+                            <g transform="translate(320, 35)">
+                                <path d="M12 6 C30 -2 56 2 64 30 C70 55 56 92 32 92 C8 92 -4 66 2 40 C6 18 6 10 12 6 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <ellipse cx="42" cy="44" rx="12" ry="9" fill="currentColor" opacity="0.7"/>
+                                <ellipse cx="42" cy="44" rx="18" ry="14" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+                                <text x="-2" y="115" font-size="9" fill="currentColor" opacity="0.7">lesion mask</text>
+                            </g>
+                        </svg>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-primary text-white text-[10px] font-bold rounded-full tracking-wide">Neurocomputing · 2025</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">Graph-Based Multi-Modal MRI with Probabilistic Attention for Stroke Lesion Detection</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Fuses T1, T2, and FLAIR MRI into a single attention-weighted graph &mdash; sharper lesion maps, in a fraction of the compute.
+                        </p>
+                    </div>
+
+                    <!-- Hover / focus overlay -->
+                    <div class="research-overlay absolute inset-0 bg-white/97 dark:bg-darkCard/97 backdrop-blur-sm p-6 flex flex-col opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-500 overflow-y-auto">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">Method</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3 leading-relaxed">
+                            Represent each voxel neighborhood as a node and fuse three MRI modalities into a single graph. A <span class="font-semibold">probabilistic graph-attention network</span> learns which connections carry lesion-relevant evidence &mdash; the uncertainty estimate doubles as an interpretability map for clinicians.
+                        </p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">Why it matters</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                            In stroke, minutes equal neurons. This approach delivers higher Dice scores than 3D-U-Net baselines while generating attention heatmaps that radiologists can sanity-check &mdash; closing the "black-box" gap that keeps deep learning out of acute care.
+                        </p>
+                        <a href="https://doi.org/10.1016/j.neucom.2025.131620" target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center justify-center w-full py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-secondary transition-colors">
+                            <i class="fas fa-file-pdf mr-2"></i> Read the paper
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Card 2 · EDA-Graph for Emotion ========================================================= -->
+                <article class="research-card group relative rounded-2xl overflow-hidden bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-500 fade-in" data-accent="emerald" tabindex="0">
+                    <div class="relative h-52 overflow-hidden bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-teal-500/10">
+                        <svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-emerald-500 p-4" aria-label="Graphical abstract: EDA time series transformed to a graph, mapped to valence and arousal">
+                            <defs>
+                                <marker id="arrowEmerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                                </marker>
+                            </defs>
+                            <!-- EDA waveform -->
+                            <g transform="translate(12, 40)">
+                                <path d="M0 60 Q12 58 20 55 T40 40 T58 30 Q70 50 85 35 T110 25 Q120 48 135 40"
+                                      stroke="currentColor" stroke-width="2.5" fill="none"/>
+                                <g stroke="currentColor" stroke-width="0.5" opacity="0.25">
+                                    <line x1="0" y1="0"  x2="135" y2="0"/>
+                                    <line x1="0" y1="30" x2="135" y2="30"/>
+                                    <line x1="0" y1="60" x2="135" y2="60"/>
+                                    <line x1="0" y1="90" x2="135" y2="90"/>
+                                </g>
+                                <text x="0" y="112" font-size="9" fill="currentColor" opacity="0.7">electrodermal activity</text>
+                            </g>
+                            <path d="M160 80 L188 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowEmerald)"/>
+                            <!-- Graph -->
+                            <g transform="translate(198, 20)">
+                                <line x1="20" y1="40" x2="55" y2="18" stroke="currentColor" stroke-width="2.2" opacity="0.75"/>
+                                <line x1="55" y1="18" x2="90" y2="50" stroke="currentColor" stroke-width="1.4" opacity="0.45"/>
+                                <line x1="20" y1="40" x2="45" y2="90" stroke="currentColor" stroke-width="2.6" opacity="0.85"/>
+                                <line x1="45" y1="90" x2="90" y2="50" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                                <line x1="45" y1="90" x2="85" y2="120" stroke="currentColor" stroke-width="1.6" opacity="0.5"/>
+                                <line x1="90" y1="50" x2="85" y2="120" stroke="currentColor" stroke-width="1.4" opacity="0.4"/>
+                                <circle cx="20" cy="40"  r="7" fill="currentColor"/>
+                                <circle cx="55" cy="18"  r="6" fill="currentColor" opacity="0.85"/>
+                                <circle cx="90" cy="50"  r="8" fill="currentColor" opacity="0.9"/>
+                                <circle cx="45" cy="90"  r="10" fill="currentColor"/>
+                                <circle cx="85" cy="120" r="6" fill="currentColor" opacity="0.85"/>
+                                <text x="0" y="150" font-size="9" fill="currentColor" opacity="0.7">GSP graph</text>
+                            </g>
+                            <path d="M306 80 L330 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowEmerald)"/>
+                            <!-- Valence-arousal quadrants -->
+                            <g transform="translate(335, 30)">
+                                <rect x="0"  y="0"  width="26" height="26" rx="4" fill="currentColor" opacity="0.35"/>
+                                <rect x="30" y="0"  width="26" height="26" rx="4" fill="currentColor" opacity="0.75"/>
+                                <rect x="0"  y="30" width="26" height="26" rx="4" fill="currentColor" opacity="0.55"/>
+                                <rect x="30" y="30" width="26" height="26" rx="4" fill="currentColor" opacity="0.25"/>
+                                <circle cx="43" cy="13" r="4" fill="white" stroke="currentColor" stroke-width="2"/>
+                                <text x="0" y="78" font-size="9" fill="currentColor" opacity="0.7">valence × arousal</text>
+                            </g>
+                        </svg>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-full tracking-wide">IEEE JBHI · 2024</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">EDA-Graph: Graph Signal Processing of Electrodermal Activity for Emotion Detection</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            The first graph-signal-processing pipeline for a biomedical signal &mdash; turns a 1-D sweat trace into a topological feature your classifier can actually see.
+                        </p>
+                    </div>
+
+                    <div class="research-overlay absolute inset-0 bg-white/97 dark:bg-darkCard/97 backdrop-blur-sm p-6 flex flex-col opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-500 overflow-y-auto">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-1">Method</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3 leading-relaxed">
+                            Segment the EDA trace into nodes, weight edges by temporal &amp; phasic similarity, then apply <span class="font-semibold">graph Fourier &amp; wavelet transforms</span> to derive spectral descriptors. The graph captures nonlinear sweat-gland dynamics that FFT-based baselines flatten out.
+                        </p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-1">Why it matters</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                            Emotion recognition in wearables lives or dies by the quality of a single skin-conductance channel. EDA-Graph pushed state-of-the-art on the continuous valence &amp; arousal axes while staying cheap enough for on-device inference.
+                        </p>
+                        <a href="https://doi.org/10.1109/JBHI.2024.3405491" target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center justify-center w-full py-2.5 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 transition-colors">
+                            <i class="fas fa-file-pdf mr-2"></i> Read the paper
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Card 3 · ERG-Graph for Neurodevelopmental Disorders ======================================== -->
+                <article class="research-card group relative rounded-2xl overflow-hidden bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-500 fade-in" data-accent="violet" tabindex="0">
+                    <div class="relative h-52 overflow-hidden bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-indigo-500/10">
+                        <svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-violet-500 p-4" aria-label="Graphical abstract: retinal ERG waveform converted to a sparse graph used to classify ASD, ADHD, and typically developing groups">
+                            <defs>
+                                <marker id="arrowViolet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                                </marker>
+                            </defs>
+                            <!-- Eye with ERG waveform -->
+                            <g transform="translate(14, 50)">
+                                <ellipse cx="55" cy="40" rx="55" ry="30" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="55" cy="40" r="16" fill="currentColor" opacity="0.25"/>
+                                <circle cx="55" cy="40" r="7"  fill="currentColor"/>
+                                <!-- ERG waveform inside -->
+                                <path d="M15 52 Q30 48 40 55 L48 30 L58 70 L72 35 L88 50 Q100 52 105 48"
+                                      stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.8"/>
+                                <text x="10" y="95" font-size="9" fill="currentColor" opacity="0.7">ERG (two flashes)</text>
+                            </g>
+                            <path d="M132 90 L160 90" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowViolet)"/>
+                            <!-- Sparse graph -->
+                            <g transform="translate(168, 30)">
+                                <line x1="20" y1="30" x2="60" y2="15" stroke="currentColor" stroke-width="2.2" opacity="0.75"/>
+                                <line x1="60" y1="15" x2="90" y2="55" stroke="currentColor" stroke-width="1.8" opacity="0.55"/>
+                                <line x1="20" y1="30" x2="45" y2="85" stroke="currentColor" stroke-width="2.8" opacity="0.85"/>
+                                <line x1="45" y1="85" x2="90" y2="55" stroke="currentColor" stroke-width="1.6" opacity="0.45"/>
+                                <circle cx="20" cy="30" r="7"  fill="currentColor"/>
+                                <circle cx="60" cy="15" r="6"  fill="currentColor" opacity="0.85"/>
+                                <circle cx="90" cy="55" r="8"  fill="currentColor"/>
+                                <circle cx="45" cy="85" r="9"  fill="currentColor" opacity="0.9"/>
+                                <text x="0" y="115" font-size="9" fill="currentColor" opacity="0.7">sparse ERG graph</text>
+                            </g>
+                            <path d="M276 90 L304 90" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowViolet)"/>
+                            <!-- Classification output -->
+                            <g transform="translate(310, 45)">
+                                <rect x="0"  y="0"  width="72" height="18" rx="4" fill="currentColor" opacity="0.25"/>
+                                <rect x="0"  y="23" width="72" height="18" rx="4" fill="currentColor" opacity="0.7"/>
+                                <rect x="0"  y="46" width="72" height="18" rx="4" fill="currentColor" opacity="0.4"/>
+                                <text x="6"  y="13"  font-size="10" fill="currentColor" font-weight="700">TD</text>
+                                <text x="6"  y="36"  font-size="10" fill="white"       font-weight="700">ASD</text>
+                                <text x="6"  y="59"  font-size="10" fill="currentColor" font-weight="700">ADHD</text>
+                                <text x="-4" y="86"  font-size="9"  fill="currentColor" opacity="0.7">classifier</text>
+                            </g>
+                        </svg>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-violet-500 text-white text-[10px] font-bold rounded-full tracking-wide">Bioengineering · 2026</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">ERG-Graph: Graph Signal Processing of the Electroretinogram for Neurodevelopmental Disorders</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            A 2-minute retinal recording, rendered as a graph, separates autism and ADHD from typical development with clinical-grade accuracy.
+                        </p>
+                    </div>
+
+                    <div class="research-overlay absolute inset-0 bg-white/97 dark:bg-darkCard/97 backdrop-blur-sm p-6 flex flex-col opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-500 overflow-y-auto">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-violet-500 mb-1">Method</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3 leading-relaxed">
+                            Extract a-/b-wave peaks from ERG responses at two flash strengths, build a sparse similarity graph across waveform landmarks, and feed its graph-Fourier coefficients into a classical classifier. The graph discards redundant temporal samples while preserving the diagnostic topology.
+                        </p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-violet-500 mb-1">Why it matters</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                            Neurodevelopmental diagnosis today hinges on hours of behavioral assessment. An objective, non-invasive retinal biomarker &mdash; cheap enough to run in any vision clinic &mdash; could close diagnostic gaps for families who can't reach a specialist.
+                        </p>
+                        <a href="https://doi.org/10.3390/bioengineering13040446" target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center justify-center w-full py-2.5 bg-violet-500 text-white font-semibold rounded-lg hover:bg-violet-600 transition-colors">
+                            <i class="fas fa-file-pdf mr-2"></i> Read the paper
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <p class="mt-10 text-center text-xs text-slate-500 dark:text-slate-400 fade-in">
+                Graphical abstracts are minimalist SVGs I draw by hand to mirror each paper's pipeline. Tap or keyboard-focus any card to flip it.
+            </p>
+        </div>
+    </section>
+
+    <section id="news" class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12 fade-in">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Recent News</h2>
+            <div class="w-20 h-1 bg-primary rounded-full"></div>
+        </div>
+
+        <div class="bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="max-h-96 overflow-y-auto custom-scrollbar p-6 space-y-6">
+                <!-- News items -->
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">04/2026</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Ph.D. Defense:</span> Successfully defended my Ph.D. Thesis on April 2nd. I am now officially a Ph.D.! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">04/2026</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold block text-lg mb-2">Narrative Story: Emotion Recognition with EDA-Graphs</span>
+                    In my paper "Continuous Emotion Recognition Using EDA-Graphs: A Graph Signal Processing Approach for Affective Dimension Estimation", I explored how our skin's electrical properties can reveal our emotional states. By modeling electrodermal activity (EDA) as a graph, we were able to capture complex patterns over time, leading to more accurate estimation of how people feel in real-time. This work bridges the gap between physiological signals and affective computing, paving the way for more emotionally intelligent systems.</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">04/2026</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold block text-lg mb-2">Narrative Story: The ERG-Graph Project</span>
+                    My latest publication, "ERG-Graph", tells the story of our quest to better understand the electrical activity of the retina. By analyzing electroretinograms (ERGs) through the lens of graph signal processing, we uncovered new, efficient ways to classify neurodevelopmental disorders. This research significantly reduces computational complexity while maintaining high accuracy, making advanced diagnostics more accessible.</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">11/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Dissertation Proposal:</span> Successfully defended my Dissertation Proposal in the Ph.D. in Biomedical Engineering. I'm a Ph.D. Candidate! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">10/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-first author paper, "A Multimodal Deep Learning Exploration for Pain Intensity Classification", was accepted by 2025 Companion Proceedings of the 27th International Conference on Multimodal Interaction. Congrats to the first author Javier! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">09/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My first author paper, "Graph-Based Analysis of Electroretinograms for Reducing Computational Complexity and Classifying Neurodevelopmental Disorders", was accepted by 2025 IEEE-EMBS 22nd International Conference on Body Sensor Networks (BSN).</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">09/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-author paper, "Multiclass arrhythmia classification using multimodal smartwatch photoplethysmography signals collected in real-life settings", was accepted by IEEE Transactions on Biomedical Engineering Journal. Congrats to the first author, Cassey! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">09/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold block text-lg mb-2">Narrative Story: Stroke Detection with MRI and Graph Attention</span>
+                    In "Graph-Based Multi-Modal MRI Analysis with Probabilistic Attention for Stroke Lesion Detection", we tackled the critical challenge of identifying stroke lesions quickly and accurately. We developed a novel approach using Probabilistic Graph Attention Networks to analyze multimodal MRI data. This method allows the AI to focus on the most relevant parts of the brain scans, leading to improved detection rates and potentially life-saving early interventions.</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">06/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-author paper, "Big team science reveals promises and limitations of machine learning efforts to model physiological markers of affective experience", was accepted by Royal Society Open Science Journal. Congrats to the first author, Nicholas! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">05/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Master's Defense:</span> Successfully defended my Master Thesis in Computer Science. I'm a Master in Computer Science now! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">04/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-author paper, "Multiclass Arrhythmia Classification using Smartwatch Photoplethysmography Signals Collected in Real-life Settings", was accepted by ICASSP 2025. Congrats to the first author, Cassey! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">03/2025</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My first author paper, "Artificial Intelligence Approaches for the Detection of Normal Pressure Hydrocephalus: A Systematic Review" was accepted by Applied Science Journal. Thank you! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">12/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-author paper, "Spectral analysis of light-adapted electroretinograms in neurodevelopmental disorders: Classification with machine learning", was accepted by Bioengineering Journal.</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">12/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My first author paper, "Fractal analysis of electrodermal activity for emotion recognition..." was accepted by Sensors Journal. Thank you! 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">07/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My first author paper, "Emotional States Detection Using Electrodermal Activity and Graph Signal Processing", was accepted by IEEE-EMBS BSN.</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">06/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-first author paper, "Autoencoder Based Nonlinear Feature Extraction from EDA Signals for Emotion Recognition" was accepted by IEEE Sensors journal. 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">05/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My first author paper, "EDA-graph: graph signal processing of electrodermal activity for emotional states detection" was accepted by IEEE JBHI. 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">02/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-first author paper, "Detecting Autism Spectrum Disorder and Attention Deficit Hyperactivity Disorder Using Multimodal Time-Frequency Analysis..." was accepted by Journal of Autism and Developmental Disorders. 🎉</div>
+                </div>
+                <div class="news-item flex gap-4 fade-in">
+                    <div class="text-primary font-bold whitespace-nowrap text-sm mt-0.5">01/2024</div>
+                    <div class="text-sm text-slate-700 dark:text-slate-300"><span class="font-semibold">Publication Accepted:</span> My co-first author paper, "Nonlinear signal processing methods for automatic emotion recognition using electrodermal activity" was accepted by IEEE Sensors Journal. 🎉</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carousel Section -->
+<section id="gallery" class="py-20 bg-slate-50 dark:bg-slate-800 transition-colors">
+    <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-12 text-center text-slate-800 dark:text-white fade-in">Gallery</h2>
+        <div class="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl shadow-lg fade-in" id="carousel">
+            <div class="flex transition-transform duration-500 ease-in-out" id="carousel-inner">
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/Timeline photos~5.jpg" alt="Gallery Image 1" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/PXL_20251209_002039904.jpg" alt="Gallery Image 2" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/PXL_20251217_005602547.jpg" alt="Gallery Image 3" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/PXL_20251213_181615377.jpg" alt="Gallery Image 4" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/PXL_20260109_194609178.jpg" alt="Gallery Image 5" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/PXL_20250110_204039997.jpg" alt="Gallery Image 6" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/IMG_20191117_115559-EFFECTS.jpg" alt="Gallery Image 7" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/PXL_20250512_154417974.jpg" alt="Gallery Image 8" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/FB_IMG_1762583870989.jpg" alt="Gallery Image 9" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/Timeline photos.jpg" alt="Gallery Image 10" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/IMG-20260402-WA0019.jpg" alt="Gallery Image 11" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/IMG-20260402-WA0020.jpg" alt="Gallery Image 12" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/IMG-20260402-WA0023.jpg" alt="Gallery Image 13" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+                <div class="min-w-full">
+                    <img src="assets/images/carousel/IMG-20260402-WA0025.jpg" alt="Gallery Image 14" class="w-full h-auto object-cover max-h-[400px]">
+                </div>
+            </div>
+            <button id="prevBtn" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-3 rounded-full transition-colors focus:outline-none">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="nextBtn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-3 rounded-full transition-colors focus:outline-none">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2" id="carousel-indicators">
+                <button class="w-3 h-3 rounded-full bg-white transition-colors indicator-btn" data-index="0"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="1"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="2"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="3"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="4"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="5"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="6"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="7"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="8"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="9"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="10"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="11"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="12"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 transition-colors indicator-btn" data-index="13"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 text-center border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 space-y-4">
+            <p>&copy; <span id="year"></span> Luis R. Mercado-Diaz &middot; Ph.D. Biomedical Engineering &middot; M.S. Computer Science &amp; Engineering</p>
+            <div class="flex justify-center space-x-6">
+                <a href="mailto:lrmercadod@gmail.com" class="hover:text-white transition-colors" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/lrmercadod/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/jouninLRMD" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://scholar.google.com/citations?user=DY-wDFkAAAAJ" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+            </div>
+            <p class="text-xs text-slate-500">
+                Static site hosted on GitHub Pages &middot; Tailwind CSS, FontAwesome &middot;
+                Publications auto-refreshed from <a href="https://openalex.org" target="_blank" rel="noopener noreferrer" class="hover:text-white">OpenAlex</a> via GitHub Actions &middot;
+                <a href="/.well-known/security.txt" class="hover:text-white">security.txt</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
