@@ -132,3 +132,27 @@ input:focus-visible {
     outline-offset: 2px;
     border-radius: 4px;
 }
+
+/* ---------- Featured Research cards ---------- */
+.research-card {
+    transform: translateZ(0);
+    will-change: transform;
+}
+.research-card:hover {
+    transform: translateY(-4px);
+}
+/* Touch devices: use a toggled class instead of :hover so the overlay
+   stays open after a tap. The JS in main.js sets .show on tap. */
+.research-card.show .research-overlay {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+/* A thin colored top-edge per accent */
+.research-card[data-accent="primary"]  { border-top: 3px solid #0ea5e9; }
+.research-card[data-accent="emerald"]  { border-top: 3px solid #10b981; }
+.research-card[data-accent="violet"]   { border-top: 3px solid #8b5cf6; }
+
+.research-overlay { transition: opacity .45s ease, transform .45s ease; }
+.research-overlay::-webkit-scrollbar      { width: 6px; }
+.research-overlay::-webkit-scrollbar-thumb { background: rgba(100,116,139,.35); border-radius: 4px; }

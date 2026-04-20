@@ -267,6 +267,34 @@
         scheduleAuto();
     }
 
+    // --- Featured-research cards: tap-to-flip on touch devices -----------
+    function initResearchCards() {
+        const cards = $$(".research-card");
+        if (!cards.length) return;
+
+        // Treat touch / no-hover devices specially: a tap toggles the
+        // overlay, a second tap closes it. On hover-capable devices we let
+        // CSS :hover handle everything so mouse users aren't disrupted.
+        const isHover = window.matchMedia("(hover: hover)").matches;
+        if (isHover) return;
+
+        cards.forEach((card) => {
+            card.addEventListener("click", (e) => {
+                // Don't swallow clicks on links inside the overlay.
+                if (e.target.closest("a")) return;
+                cards.forEach((c) => c !== card && c.classList.remove("show"));
+                card.classList.toggle("show");
+            });
+        });
+
+        // Close on outside tap
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".research-card")) {
+                cards.forEach((c) => c.classList.remove("show"));
+            }
+        });
+    }
+
     // --- Bootstrap --------------------------------------------------------
     document.addEventListener("DOMContentLoaded", () => {
         initTheme();
@@ -275,6 +303,7 @@
         initScrollSpy();
         initPublications();
         initCarousel();
+        initResearchCards();
         initFadeIn();
     });
 })();
