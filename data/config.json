@@ -4,11 +4,13 @@
     "short_name": "L. R. Mercado-Diaz",
     "name_variants": [
       "Luis R. Mercado-Diaz",
+      "Luis R. Mercado Diaz",
+      "Luis R. M. D.",
       "L. R. Mercado-Diaz",
       "L. R. Mercado Diaz",
-      "L. R. Mercado-Díaz",
-      "Luis Mercado-Diaz",
-      "Luis Mercado"
+      "L. Mercado Diaz",
+      "L.R.M. Diaz",
+      "L. R. M. D."
     ],
     "orcid": "",
     "openalex_id": "",
@@ -26,6 +28,9 @@
       "Luis R. Mercado-Diaz"
     ],
     "exclude_dois": [],
-    "manual_overrides": {}
+    "manual_overrides": {},
+    "require_affiliation_for_discovery": true,
+    "require_affiliation_per_work": true
   }
 }
+
