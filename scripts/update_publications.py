@@ -80,7 +80,9 @@ def strip_accents(s: str) -> str:
 
 
 def normalize_name(name: str) -> str:
+    """Lowercase, strip accents, replace hyphens & dots with spaces, collapse whitespace."""
     name = strip_accents(name).lower()
+    name = re.sub(r"[\-\.,_]", " ", name)
     name = re.sub(r"[^a-z\s]", "", name)
     return re.sub(r"\s+", " ", name).strip()
 
@@ -95,49 +97,115 @@ def normalize_doi(doi: str | None) -> str | None:
 
 # ---------- Author matching ----------
 
+# Hard-coded constraints for *this* author. They are deliberately narrow —
+# we want a high-precision filter so we never pull in homonyms.
+_VALID_GIVEN_FIRST_TOKENS = {"l", "luis"}
+# After normalization, the surname token sequence must be exactly one of:
+_VALID_SURNAME_FORMS: tuple[tuple[str, ...], ...] = (
+    ("mercado", "diaz"),  # "Mercado Diaz" / "Mercado-Diaz" → both normalize to two tokens
+)
+
+
 @dataclasses.dataclass
 class AuthorMatcher:
+    """Strict author identity check.
+
+    A name matches iff:
+      * its normalized surname tokens equal one of `_VALID_SURNAME_FORMS`, AND
+      * its first given-name token is "l" or "luis", AND
+      * every additional given-name token (between first and surname) is either
+        a single initial that prefixes a corresponding paper-side full token,
+        or matches a configured variant token positionally.
+
+    `variants` and `co_first` are kept for backwards compatibility with the
+    existing call sites, but the logic above is what actually decides matches.
+    """
+
     variants: list[str]
     co_first: list[str]
 
-    def _normalized(self) -> list[str]:
-        return [normalize_name(v) for v in self.variants]
-
     def is_author(self, raw_name: str) -> bool:
-        norm = normalize_name(raw_name)
-        for variant in self._normalized():
-            if not variant:
-                continue
-            if norm == variant:
-                return True
-            # Partial match: last name plus first initial is often enough
-            if self._same_person(norm, variant):
-                return True
-        return False
+        tokens = normalize_name(raw_name).split()
+        if len(tokens) < 2:
+            return False
 
-    @staticmethod
-    def _same_person(a: str, b: str) -> bool:
-        a_parts, b_parts = a.split(), b.split()
-        if not a_parts or not b_parts:
+        # Try the canonical surnames first ("Mercado Diaz" / "Mercado-Diaz").
+        surname_len = 0
+        for form in _VALID_SURNAME_FORMS:
+            n = len(form)
+            if len(tokens) >= n and tuple(tokens[-n:]) == form:
+                surname_len = n
+                break
+
+        # Fallback: ultra-abbreviated forms like "L.R.M. Diaz" or "L. R. M. D."
+        # Accept a final "diaz" (or trailing "m d" for "M. D.") only if the
+        # given-name region contains an "m" / "mercado" hint, so we don't
+        # collide with random "Luis Diaz" / "L. Diaz" people.
+        if surname_len == 0:
+            if tokens[-1] == "d" and len(tokens) >= 2 and tokens[-2] == "m":
+                surname_len = 2
+            elif tokens[-1] == "diaz":
+                # Require an "m" / "mercado" earlier in the tokens.
+                given_region = tokens[:-1]
+                if any(t == "m" or t == "mercado" for t in given_region[1:]):
+                    surname_len = 1
+
+        if surname_len == 0:
             return False
-        if a_parts[-1] != b_parts[-1]:
+
+        given = tokens[:-surname_len]
+        if not given:
             return False
-        # Require at least one more shared initial
-        a_initials = {p[0] for p in a_parts[:-1] if p}
-        b_initials = {p[0] for p in b_parts[:-1] if p}
-        return bool(a_initials & b_initials)
+        if given[0] not in _VALID_GIVEN_FIRST_TOKENS:
+            return False
+        # Any further given-name tokens must start with l/r/m/d (matching
+        # Luis/Roberto/Mercado/Diaz) — keeps "Luis Carlos Mercado Diaz" out.
+        allowed_initials = {"l", "r", "m", "d"}
+        for tok in given[1:]:
+            if tok[0] not in allowed_initials:
+                return False
+        return True
 
 
 # ---------- OpenAlex ----------
 
+def _candidate_affiliations(candidate: dict[str, Any]) -> set[str]:
+    """All affiliation strings (lower-case) reported for an OpenAlex author."""
+    out: set[str] = set()
+    for inst in candidate.get("last_known_institutions") or []:
+        name = (inst or {}).get("display_name") or ""
+        if name:
+            out.add(name.lower())
+    for aff in candidate.get("affiliations") or []:
+        name = ((aff or {}).get("institution") or {}).get("display_name") or ""
+        if name:
+            out.add(name.lower())
+    return out
+
+
+def _affiliation_matches(candidate_affs: set[str], required: set[str]) -> bool:
+    """True if any required affiliation substring appears in any candidate aff."""
+    if not required:
+        return True
+    for req in required:
+        for cand in candidate_affs:
+            if req in cand:
+                return True
+    return False
+
+
 def openalex_discover_author_ids(config: dict[str, Any], matcher: AuthorMatcher) -> list[str]:
     """Resolve likely OpenAlex author IDs from the configured name variants.
 
-    OpenAlex's /works endpoint with raw_author_name.search is fuzzy and can
-    miss papers when the author's name was indexed in an unexpected form.
-    Resolving the author ID first gives us a single, deterministic handle we
-    can then use to pull *every* work authored by that person.
+    To prevent homonym pollution we *also* require the candidate to share at
+    least one configured affiliation when `fetch.require_affiliation_for_discovery`
+    is true (the default). Without that guard, multiple "Luis Mercado-Diaz"
+    accounts at OpenAlex would all get pulled.
     """
+    fetch_cfg = config.get("fetch") or {}
+    required_affs = {a.lower() for a in (config["author"].get("affiliations") or []) if a}
+    require_aff = bool(fetch_cfg.get("require_affiliation_for_discovery", True))
+
     author_ids: set[str] = set()
     variants = config["author"].get("name_variants") or [config["author"]["full_name"]]
     for variant in variants:
@@ -155,10 +223,20 @@ def openalex_discover_author_ids(config: dict[str, Any], matcher: AuthorMatcher)
             log.warning("Author search for %r failed: %s", variant, exc)
             continue
         for candidate in payload.get("results") or []:
-            if matcher.is_author(candidate.get("display_name", "")):
-                aid = candidate.get("id")
-                if aid:
-                    author_ids.add(aid)
+            display = candidate.get("display_name", "")
+            if not matcher.is_author(display):
+                continue
+            cand_affs = _candidate_affiliations(candidate)
+            if require_aff and required_affs and not _affiliation_matches(cand_affs, required_affs):
+                log.info(
+                    "Skipping homonym %r (id=%s) — affiliations %s do not match required %s",
+                    display, candidate.get("id"), sorted(cand_affs) or ["(none)"], sorted(required_affs),
+                )
+                continue
+            aid = candidate.get("id")
+            if aid:
+                author_ids.add(aid)
+                log.info("Accepted author %r (id=%s) with affiliations %s", display, aid, sorted(cand_affs))
     log.info("Discovered %d OpenAlex author ID(s): %s", len(author_ids), sorted(author_ids))
     return sorted(author_ids)
 
@@ -167,10 +245,17 @@ def openalex_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[
     author = config["author"]
     orcid = (author.get("orcid") or "").strip()
     openalex_id = (author.get("openalex_id") or "").strip()
-    min_year = int(config.get("fetch", {}).get("min_year", 2015))
+    fetch_cfg = config.get("fetch") or {}
+    min_year = int(fetch_cfg.get("min_year", 2015))
+    require_aff_per_work = bool(fetch_cfg.get("require_affiliation_per_work", True))
+    required_affs = (
+        {a.lower() for a in (author.get("affiliations") or []) if a}
+        if require_aff_per_work else set()
+    )
 
     # Build author-level filters in priority order: deterministic IDs first,
-    # then author-ID discovery, then fuzzy name search as last resort.
+    # then author-ID discovery (also affiliation-filtered), then fuzzy name
+    # search as a last resort.
     author_filters: list[str] = []
     if orcid:
         author_filters.append(f"author.orcid:{orcid}")
@@ -194,11 +279,14 @@ def openalex_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[
         except Exception as exc:  # noqa: BLE001 — keep other filters running
             log.warning("OpenAlex filter %r failed: %s", af, exc)
 
-    return [
-        openalex_to_publication(w, matcher)
-        for w in collected.values()
-        if openalex_keep(w, matcher)
-    ]
+    kept = [w for w in collected.values() if openalex_keep(w, matcher, required_affs)]
+    skipped = len(collected) - len(kept)
+    if skipped:
+        log.info(
+            "Filtered out %d work(s) lacking matched author with required affiliation",
+            skipped,
+        )
+    return [openalex_to_publication(w, matcher) for w in kept]
 
 
 def _openalex_works(author_filter: str, min_year: int) -> list[dict[str, Any]]:
@@ -226,9 +314,30 @@ def _openalex_works(author_filter: str, min_year: int) -> list[dict[str, Any]]:
     return works
 
 
-def openalex_keep(work: dict[str, Any], matcher: AuthorMatcher) -> bool:
+def openalex_keep(work: dict[str, Any], matcher: AuthorMatcher, required_affs: set[str] | None = None) -> bool:
+    """Return True if at least one authorship matches the strict matcher.
+
+    When `required_affs` is supplied we additionally require that the matched
+    authorship's institutions overlap one of them — this kills the homonym
+    case where a different "Luis Mercado-Diaz" published with a non-UConn
+    institution.
+    """
     authorships = work.get("authorships") or []
-    return any(matcher.is_author(a.get("author", {}).get("display_name", "")) for a in authorships)
+    for a in authorships:
+        name = (a.get("author") or {}).get("display_name", "")
+        if not matcher.is_author(name):
+            continue
+        if not required_affs:
+            return True
+        institutions = a.get("institutions") or []
+        inst_names = {(inst.get("display_name") or "").lower() for inst in institutions}
+        # Also check raw_affiliation_strings for cases where an institution
+        # entity isn't linked but the affiliation text mentions UConn.
+        raw_strs = {s.lower() for s in (a.get("raw_affiliation_strings") or [])}
+        haystacks = inst_names | raw_strs
+        if any(req in cand for req in required_affs for cand in haystacks):
+            return True
+    return False
 
 
 def openalex_to_publication(work: dict[str, Any], matcher: AuthorMatcher) -> dict[str, Any]:
