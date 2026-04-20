@@ -14,6 +14,9 @@ const { title = site.title, description = site.description } = Astro.props;
 // Tailwind is now built at compile time (no 'unsafe-inline' for scripts),
 // Inter is self-hosted via @fontsource (no fonts.googleapis.com), and we
 // only retain FontAwesome on a CDN with an SRI-hashed stylesheet.
+// NOTE: `frame-ancestors` and `sandbox` are intentionally omitted — both
+// are only valid in the HTTP response header, not a <meta> tag, and
+// Chromium logs a console warning if seen here.
 const csp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",          // 'unsafe-inline' only for small theme flash-prevention
@@ -21,7 +24,6 @@ const csp = [
   "font-src  'self' data: https://cdnjs.cloudflare.com",
   "img-src   'self' data:",
   "connect-src 'self'",
-  "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
 ].join("; ");
