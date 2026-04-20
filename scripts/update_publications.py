@@ -248,25 +248,35 @@ def openalex_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[
     fetch_cfg = config.get("fetch") or {}
     min_year = int(fetch_cfg.get("min_year", 2015))
     require_aff_per_work = bool(fetch_cfg.get("require_affiliation_per_work", True))
-    required_affs = (
-        {a.lower() for a in (author.get("affiliations") or []) if a}
-        if require_aff_per_work else set()
-    )
-
     # Build author-level filters in priority order: deterministic IDs first,
     # then author-ID discovery (also affiliation-filtered), then fuzzy name
     # search as a last resort.
     author_filters: list[str] = []
+    have_id_filter = False
     if orcid:
         author_filters.append(f"author.orcid:{orcid}")
+        have_id_filter = True
     if openalex_id:
         author_filters.append(f"author.id:{openalex_id}")
+        have_id_filter = True
     if not author_filters:
         for aid in openalex_discover_author_ids(config, matcher):
             author_filters.append(f"author.id:{aid}")
     if not author_filters:
         primary = author["full_name"].replace(" ", "+")
         author_filters.append(f"raw_author_name.search:{primary}")
+
+    # When we filter by ORCID or a specific OpenAlex author ID, every returned
+    # work is already guaranteed to be authored by *this* person. The per-work
+    # UConn check would then only serve to drop legitimate collaborator papers
+    # where the author entry didn't record UConn (e.g. Big Team Science). So
+    # we skip it in that case.
+    required_affs = (
+        {a.lower() for a in (author.get("affiliations") or []) if a}
+        if (require_aff_per_work and not have_id_filter) else set()
+    )
+    if have_id_filter and require_aff_per_work:
+        log.info("ORCID / author ID set — skipping per-work affiliation filter.")
 
     collected: dict[str, dict[str, Any]] = {}
     for af in author_filters:
