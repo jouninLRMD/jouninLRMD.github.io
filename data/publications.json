@@ -66,19 +66,6 @@
       "source": "openalex"
     },
     {
-      "id": "10.31234/osf.io/j9gbx_v2",
-      "title": "Big team science reveals promises and limitations of machine learning efforts to model the physiological basis of affective experience",
-      "authors": "Nicholas Alvaro Coles, Bartosz Perz, Maciej Behnke, Johannes C. Eichstaedt, Soo-Hyung Kim, et al.",
-      "venue": "",
-      "details": "2025",
-      "year": 2025,
-      "doi": "10.31234/osf.io/j9gbx_v2",
-      "url": "https://doi.org/10.31234/osf.io/j9gbx_v2",
-      "role": "co",
-      "type": "preprint",
-      "source": "openalex"
-    },
-    {
       "id": "10.1007/s10803-024-06290-w",
       "title": "Detecting Autism Spectrum Disorder and Attention Deficit Hyperactivity Disorder Using Multimodal Time-Frequency Analysis with Machine Learning Using the Electroretinogram from Two Flash Strengths",
       "authors": "S. M. Manjur, L. R. Mercado-Diaz, I. O. Lee, et al.",
@@ -150,19 +137,6 @@
       "url": "https://doi.org/10.1109/MeMeA60663.2024.10596800",
       "role": "first",
       "type": "conference",
-      "source": "openalex"
-    },
-    {
-      "id": "10.31234/osf.io/j9gbx",
-      "title": "Big team science reveals promises and limitations of machine learning efforts to model the physiological basis of affective experience",
-      "authors": "Nicholas Alvaro Coles, Bartosz Perz, Maciej Behnke, Johannes C. Eichstaedt, Soo-Hyung Kim, et al.",
-      "venue": "",
-      "details": "2024",
-      "year": 2024,
-      "doi": "10.31234/osf.io/j9gbx",
-      "url": "https://doi.org/10.31234/osf.io/j9gbx",
-      "role": "co",
-      "type": "preprint",
       "source": "openalex"
     },
     {
