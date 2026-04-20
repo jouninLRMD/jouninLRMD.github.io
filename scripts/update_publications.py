@@ -450,6 +450,44 @@ def _map_type(t: str) -> str:
     return "journal"
 
 
+def _authors_contain_this_author(authors_str: str, matcher: AuthorMatcher) -> bool:
+    """True if any name inside the formatted author string passes the matcher.
+
+    The stored `authors` is typically "A, B, C, D, E, et al." — a split on
+    commas / semicolons / "and" gives us the individual names to check.
+    """
+    if not authors_str:
+        return False
+    parts = re.split(r"[,;]|\band\b", authors_str, flags=re.IGNORECASE)
+    for p in parts:
+        p = p.strip()
+        if not p or p.lower() == "et al.":
+            continue
+        if matcher.is_author(p):
+            return True
+    return False
+
+
+def _purge_non_author(entries: list[dict[str, Any]], matcher: AuthorMatcher) -> list[dict[str, Any]]:
+    """Drop any entry whose formatted author list contains no Mercado-Diaz match.
+
+    This is the safety net for legacy records that predate the strict
+    matcher — without it, homonym papers already committed to
+    publications.json would stick around forever since merge_publications
+    only ever *adds* entries.
+    """
+    kept: list[dict[str, Any]] = []
+    dropped = 0
+    for e in entries:
+        if _authors_contain_this_author(e.get("authors") or "", matcher):
+            kept.append(e)
+        else:
+            dropped += 1
+    if dropped:
+        log.info("Purged %d entry(ies) whose authors list has no Mercado-Diaz match", dropped)
+    return kept
+
+
 # ---------- Preprint filter ----------
 
 PREPRINT_DOI_PREFIXES = (
@@ -485,6 +523,7 @@ def merge_publications(
     existing: list[dict[str, Any]],
     fetched: list[dict[str, Any]],
     exclude: set[str],
+    matcher: AuthorMatcher | None = None,
 ) -> tuple[list[dict[str, Any]], int]:
     index: dict[str, dict[str, Any]] = {}
     added = 0
@@ -519,6 +558,8 @@ def merge_publications(
             added += 1
 
     merged_list = _drop_preprints(list(index.values()))
+    if matcher is not None:
+        merged_list = _purge_non_author(merged_list, matcher)
     merged_list.sort(
         key=lambda p: (-(p.get("year") or 0), (p.get("title") or "").lower())
     )
@@ -563,7 +604,7 @@ def main() -> int:
         log.error("No publications fetched and no existing data. Aborting.")
         return 1
 
-    merged, added = merge_publications(existing, fetched, exclude)
+    merged, added = merge_publications(existing, fetched, exclude, matcher)
 
     payload = {
         "generated_at": dt.date.today().isoformat(),
