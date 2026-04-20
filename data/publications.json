@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-04-20",
-  "source": "seed (initial import from index.html; subsequent updates via scripts/update_publications.py)",
+  "source": "auto (openalex+crossref) merged with manual curation",
   "author": {
     "name": "Luis R. Mercado-Diaz",
     "name_variants": [
@@ -13,6 +13,42 @@
     ]
   },
   "publications": [
+    {
+      "id": "10.1145/3747327.3764783",
+      "title": "A Multimodal Deep Learning Exploration for Pain Intensity Classification",
+      "authors": "J. O. Pinzon-Arenas, L. R. Mercado-Diaz, B. E. Faremi, and H. F. Posada-Quintero",
+      "venue": "ICMI '25",
+      "details": "Companion Proceedings of the 27th International Conference on Multimodal Interaction (ICMI '25), 2025",
+      "year": 2025,
+      "doi": "10.1145/3747327.3764783",
+      "url": "https://doi.org/10.1145/3747327.3764783",
+      "role": "first",
+      "type": "conference"
+    },
+    {
+      "id": "10.3390/app15073653",
+      "title": "Artificial Intelligence Approaches for the Detection of Normal Pressure Hydrocephalus: A Systematic Review",
+      "authors": "L. R. Mercado-Diaz, N. Prakash, G. X. Gong, and H. F. Posada-Quintero",
+      "venue": "Applied Sciences",
+      "details": "Applied Sciences, 15(7), 3653, 2025",
+      "year": 2025,
+      "doi": "10.3390/app15073653",
+      "url": "https://doi.org/10.3390/app15073653",
+      "role": "first",
+      "type": "journal"
+    },
+    {
+      "id": "10.1007/s10803-024-06290-w",
+      "title": "Detecting Autism Spectrum Disorder and Attention Deficit Hyperactivity Disorder Using Multimodal Time-Frequency Analysis with Machine Learning Using the Electroretinogram from Two Flash Strengths",
+      "authors": "S. M. Manjur, L. R. Mercado-Diaz, I. O. Lee, et al.",
+      "venue": "Journal of Autism and Developmental Disorders",
+      "details": "Journal of Autism and Developmental Disorders, 55, 1365-1378, 2025",
+      "year": 2025,
+      "doi": "10.1007/s10803-024-06290-w",
+      "url": "https://doi.org/10.1007/s10803-024-06290-w",
+      "role": "first",
+      "type": "journal"
+    },
     {
       "id": "10.1016/j.neucom.2025.131620",
       "title": "Graph-Based Multi-Modal MRI Analysis with Probabilistic Attention for Stroke Lesion Detection",
@@ -38,42 +74,6 @@
       "type": "journal"
     },
     {
-      "id": "10.1007/s10803-024-06290-w",
-      "title": "Detecting Autism Spectrum Disorder and Attention Deficit Hyperactivity Disorder Using Multimodal Time-Frequency Analysis with Machine Learning Using the Electroretinogram from Two Flash Strengths",
-      "authors": "S. M. Manjur, L. R. Mercado-Diaz, I. O. Lee, et al.",
-      "venue": "Journal of Autism and Developmental Disorders",
-      "details": "Journal of Autism and Developmental Disorders, 55, 1365-1378, 2025",
-      "year": 2025,
-      "doi": "10.1007/s10803-024-06290-w",
-      "url": "https://doi.org/10.1007/s10803-024-06290-w",
-      "role": "first",
-      "type": "journal"
-    },
-    {
-      "id": "10.3390/app15073653",
-      "title": "Artificial Intelligence Approaches for the Detection of Normal Pressure Hydrocephalus: A Systematic Review",
-      "authors": "L. R. Mercado-Diaz, N. Prakash, G. X. Gong, and H. F. Posada-Quintero",
-      "venue": "Applied Sciences",
-      "details": "Applied Sciences, 15(7), 3653, 2025",
-      "year": 2025,
-      "doi": "10.3390/app15073653",
-      "url": "https://doi.org/10.3390/app15073653",
-      "role": "first",
-      "type": "journal"
-    },
-    {
-      "id": "10.1145/3747327.3764783",
-      "title": "A Multimodal Deep Learning Exploration for Pain Intensity Classification",
-      "authors": "J. O. Pinzon-Arenas, L. R. Mercado-Diaz, B. E. Faremi, and H. F. Posada-Quintero",
-      "venue": "ICMI '25",
-      "details": "Companion Proceedings of the 27th International Conference on Multimodal Interaction (ICMI '25), 2025",
-      "year": 2025,
-      "doi": "10.1145/3747327.3764783",
-      "url": "https://doi.org/10.1145/3747327.3764783",
-      "role": "first",
-      "type": "conference"
-    },
-    {
       "id": "10.3390/bioengineering12010015",
       "title": "Spectral Analysis of Light-Adapted Electroretinograms in Neurodevelopmental Disorders: Classification with Machine Learning",
       "authors": "P. A. Constable, J. O. Pinzon-Arenas, L. R. Mercado Diaz, et al.",
@@ -86,16 +86,16 @@
       "type": "journal"
     },
     {
-      "id": "10.3390/s24248130",
-      "title": "Fractal Analysis of Electrodermal Activity for Emotion Recognition: A Novel Approach Using Detrended Fluctuation Analysis and Wavelet Entropy",
-      "authors": "L. R. Mercado-Diaz, Y. R. Veeranki, E. W. Large, and H. F. Posada-Quintero",
-      "venue": "Sensors",
-      "details": "Sensors, 24(24), 8130, 2024",
+      "id": "10.1109/MeMeA60663.2024.10596800",
+      "title": "Autoencoder Based Nonlinear Feature Extraction from EDA Signals for Emotion Recognition",
+      "authors": "Y. R. Veeranki, L. R. Mercado-Diaz, and H. F. Posada-Quintero",
+      "venue": "IEEE MeMeA 2024",
+      "details": "2024 IEEE International Symposium on Medical Measurements and Applications (MeMeA), 2024",
       "year": 2024,
-      "doi": "10.3390/s24248130",
-      "url": "https://doi.org/10.3390/s24248130",
+      "doi": "10.1109/MeMeA60663.2024.10596800",
+      "url": "https://doi.org/10.1109/MeMeA60663.2024.10596800",
       "role": "first",
-      "type": "journal"
+      "type": "conference"
     },
     {
       "id": "10.1109/JBHI.2024.3405491",
@@ -122,28 +122,16 @@
       "type": "conference"
     },
     {
-      "id": "10.1109/BSN63547.2024.10780734",
-      "title": "Smartwatch Photoplethysmogram-Based Atrial Fibrillation Detection with Premature Atrial and Ventricular Contraction Differentiation Using Densely Connected Convolutional Neural Networks",
-      "authors": "D. Chen, D. Han, L. R. Mercado-Díaz, J. Moon, and K. H. Chon",
-      "venue": "IEEE BSN 2024",
-      "details": "2024 IEEE 20th International Conference on Body Sensor Networks (BSN), 2024",
+      "id": "10.3390/s24248130",
+      "title": "Fractal Analysis of Electrodermal Activity for Emotion Recognition: A Novel Approach Using Detrended Fluctuation Analysis and Wavelet Entropy",
+      "authors": "L. R. Mercado-Diaz, Y. R. Veeranki, E. W. Large, and H. F. Posada-Quintero",
+      "venue": "Sensors",
+      "details": "Sensors, 24(24), 8130, 2024",
       "year": 2024,
-      "doi": "10.1109/BSN63547.2024.10780734",
-      "url": "https://doi.org/10.1109/BSN63547.2024.10780734",
-      "role": "co",
-      "type": "conference"
-    },
-    {
-      "id": "10.1109/MeMeA60663.2024.10596800",
-      "title": "Autoencoder Based Nonlinear Feature Extraction from EDA Signals for Emotion Recognition",
-      "authors": "Y. R. Veeranki, L. R. Mercado-Diaz, and H. F. Posada-Quintero",
-      "venue": "IEEE MeMeA 2024",
-      "details": "2024 IEEE International Symposium on Medical Measurements and Applications (MeMeA), 2024",
-      "year": 2024,
-      "doi": "10.1109/MeMeA60663.2024.10596800",
-      "url": "https://doi.org/10.1109/MeMeA60663.2024.10596800",
+      "doi": "10.3390/s24248130",
+      "url": "https://doi.org/10.3390/s24248130",
       "role": "first",
-      "type": "conference"
+      "type": "journal"
     },
     {
       "id": "10.1109/JSEN.2024.3354553",
@@ -156,6 +144,18 @@
       "url": "https://doi.org/10.1109/JSEN.2024.3354553",
       "role": "first",
       "type": "journal"
+    },
+    {
+      "id": "10.1109/BSN63547.2024.10780734",
+      "title": "Smartwatch Photoplethysmogram-Based Atrial Fibrillation Detection with Premature Atrial and Ventricular Contraction Differentiation Using Densely Connected Convolutional Neural Networks",
+      "authors": "D. Chen, D. Han, L. R. Mercado-Díaz, J. Moon, and K. H. Chon",
+      "venue": "IEEE BSN 2024",
+      "details": "2024 IEEE 20th International Conference on Body Sensor Networks (BSN), 2024",
+      "year": 2024,
+      "doi": "10.1109/BSN63547.2024.10780734",
+      "url": "https://doi.org/10.1109/BSN63547.2024.10780734",
+      "role": "co",
+      "type": "conference"
     },
     {
       "id": "10.1109/ACIIW59127.2023.10388196",
