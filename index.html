@@ -459,7 +459,6 @@
 
 
 
-    <!-- News Section -->
     <!-- Featured Research Projects -->
     <section id="research" class="py-20 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -467,71 +466,231 @@
                 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Featured Research</h2>
                 <div class="w-20 h-1 bg-primary rounded-full mx-auto mb-6"></div>
                 <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                    My research focuses on applying advanced machine learning and signal processing techniques to biomedical data. Here is a closer look at some of my recent work and the key findings driving my research forward.
+                    Three pieces of work that shaped how I think about physiological signals, graphs, and attention. Each card doubles as its own graphical abstract &mdash; <span class="font-semibold text-slate-800 dark:text-slate-200">hover (or tap) to see the method, why it matters, and a direct link to the paper</span>.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1: Multi-Modal MRI -->
-                <div class="bg-white dark:bg-darkCard rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-all flex flex-col fade-in">
-                    <div class="h-48 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 z-10"></div>
-                        <i class="fas fa-brain text-6xl text-primary/50 dark:text-primary/30 z-0"></i>
-                        <div class="absolute bottom-4 left-4 z-20">
-                            <span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full">Neurocomputing</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Graph-Based Multi-Modal MRI Analysis</h3>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 flex-grow">
-                            This research introduces a novel graph-based approach incorporating probabilistic attention mechanisms for detecting stroke lesions. By leveraging multi-modal MRI data, we significantly improve the accuracy and robustness of lesion segmentation, offering a powerful new tool for automated medical image analysis.
-                        </p>
-                        <a href="assets/papers/1-s2.0-S0925231225022921-main.pdf" target="_blank" class="inline-flex items-center justify-center w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:hover:bg-primary text-slate-800 dark:text-slate-200 rounded-lg transition-colors font-medium mt-auto group">
-                            <i class="fas fa-file-pdf mr-2 text-primary group-hover:text-white transition-colors"></i> Read Paper
-                        </a>
-                    </div>
-                </div>
 
-                <!-- Project 2: EDA-Graph -->
-                <div class="bg-white dark:bg-darkCard rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-all flex flex-col fade-in">
-                    <div class="h-48 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
-                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 z-10"></div>
-                        <i class="fas fa-heartbeat text-6xl text-emerald-500/50 dark:text-emerald-500/30 z-0"></i>
-                        <div class="absolute bottom-4 left-4 z-20">
-                            <span class="px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full">IEEE JBHI</span>
+                <!-- Card 1 · Graph-based Multi-Modal MRI for Stroke ============================================== -->
+                <article class="research-card group relative rounded-2xl overflow-hidden bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-500 fade-in" data-accent="primary" tabindex="0">
+                    <div class="relative h-52 overflow-hidden bg-gradient-to-br from-sky-500/10 via-sky-500/5 to-blue-600/10">
+                        <svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-primary p-4" aria-label="Graphical abstract: multi-modal MRI merges via graph attention into a stroke lesion mask">
+                            <defs>
+                                <marker id="arrowPrimary" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                                </marker>
+                            </defs>
+                            <!-- Modality stack (T1, T2, FLAIR) -->
+                            <g transform="translate(18, 30)">
+                                <rect x="0"  y="0"  width="96" height="32" rx="6" fill="currentColor" opacity="0.10"/>
+                                <rect x="0"  y="40" width="96" height="32" rx="6" fill="currentColor" opacity="0.18"/>
+                                <rect x="0"  y="80" width="96" height="32" rx="6" fill="currentColor" opacity="0.30"/>
+                                <text x="10" y="20"  font-size="11" fill="currentColor" font-weight="700">T1</text>
+                                <text x="10" y="60"  font-size="11" fill="currentColor" font-weight="700">T2</text>
+                                <text x="10" y="100" font-size="11" fill="currentColor" font-weight="700">FLAIR</text>
+                                <text x="0"  y="132" font-size="9"  fill="currentColor" opacity="0.7">multi-modal MRI</text>
+                            </g>
+                            <path d="M122 80 L150 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowPrimary)"/>
+                            <!-- Graph with probabilistic attention -->
+                            <g transform="translate(162, 20)">
+                                <line x1="40" y1="20" x2="80" y2="60" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+                                <line x1="40" y1="20" x2="20" y2="95" stroke="currentColor" stroke-width="3.5" opacity="0.9"/>
+                                <line x1="80" y1="60" x2="20" y2="95" stroke="currentColor" stroke-width="1.8" opacity="0.45"/>
+                                <line x1="80" y1="60" x2="95" y2="135" stroke="currentColor" stroke-width="3"   opacity="0.75"/>
+                                <line x1="20" y1="95" x2="95" y2="135" stroke="currentColor" stroke-width="1.6" opacity="0.4"/>
+                                <line x1="40" y1="20" x2="95" y2="135" stroke="currentColor" stroke-width="1.2" opacity="0.25"/>
+                                <circle cx="40" cy="20"  r="8"  fill="currentColor"/>
+                                <circle cx="80" cy="60"  r="10" fill="currentColor" opacity="0.85"/>
+                                <circle cx="20" cy="95"  r="12" fill="currentColor"/>
+                                <circle cx="95" cy="135" r="9"  fill="currentColor" opacity="0.9"/>
+                                <text x="0" y="175" font-size="9" fill="currentColor" opacity="0.7">probabilistic graph attention</text>
+                            </g>
+                            <path d="M280 80 L310 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowPrimary)"/>
+                            <!-- Brain outline with lesion -->
+                            <g transform="translate(320, 35)">
+                                <path d="M12 6 C30 -2 56 2 64 30 C70 55 56 92 32 92 C8 92 -4 66 2 40 C6 18 6 10 12 6 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <ellipse cx="42" cy="44" rx="12" ry="9" fill="currentColor" opacity="0.7"/>
+                                <ellipse cx="42" cy="44" rx="18" ry="14" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+                                <text x="-2" y="115" font-size="9" fill="currentColor" opacity="0.7">lesion mask</text>
+                            </g>
+                        </svg>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-primary text-white text-[10px] font-bold rounded-full tracking-wide">Neurocomputing · 2025</span>
                         </div>
                     </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">EDA-Graph: Emotion Detection</h3>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 flex-grow">
-                            We pioneered the use of Graph Signal Processing on Electrodermal Activity (EDA) to detect emotional states. By modeling physiological signals as a graph, this methodology captures complex non-linear dynamics often missed by traditional time-series analysis, achieving state-of-the-art results in emotion recognition.
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">Graph-Based Multi-Modal MRI with Probabilistic Attention for Stroke Lesion Detection</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Fuses T1, T2, and FLAIR MRI into a single attention-weighted graph &mdash; sharper lesion maps, in a fraction of the compute.
                         </p>
-                        <a href="assets/papers/EDA-Graph_Graph_Signal_Processing_of_Electrodermal_Activity_for_Emotional_States_Detection.pdf" target="_blank" class="inline-flex items-center justify-center w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 text-slate-800 dark:text-slate-200 rounded-lg transition-colors font-medium mt-auto group">
-                            <i class="fas fa-file-pdf mr-2 text-emerald-500 group-hover:text-white transition-colors"></i> Read Paper
-                        </a>
                     </div>
-                </div>
 
-                <!-- Project 3: ERG Graph -->
-                <div class="bg-white dark:bg-darkCard rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-all flex flex-col fade-in">
-                    <div class="h-48 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
-                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-indigo-500/20 z-10"></div>
-                        <i class="fas fa-eye text-6xl text-purple-500/50 dark:text-purple-500/30 z-0"></i>
-                        <div class="absolute bottom-4 left-4 z-20">
-                            <span class="px-3 py-1 bg-purple-500 text-white text-xs font-bold rounded-full">MDPI Sensors</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">ERG-Graph: Neurodevelopmental Disorders</h3>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 flex-grow">
-                            This study explores the application of graph-based analysis on Electroretinograms (ERG). By reducing computational complexity while retaining critical signal features, we demonstrated that ERG signals can be effectively used to classify neurodevelopmental disorders, presenting a rapid, non-invasive diagnostic pathway.
+                    <!-- Hover / focus overlay -->
+                    <div class="research-overlay absolute inset-0 bg-white/97 dark:bg-darkCard/97 backdrop-blur-sm p-6 flex flex-col opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-500 overflow-y-auto">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">Method</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3 leading-relaxed">
+                            Represent each voxel neighborhood as a node and fuse three MRI modalities into a single graph. A <span class="font-semibold">probabilistic graph-attention network</span> learns which connections carry lesion-relevant evidence &mdash; the uncertainty estimate doubles as an interpretability map for clinicians.
                         </p>
-                        <a href="assets/papers/ERG_Graph_MDPI_v10_final.pdf" target="_blank" class="inline-flex items-center justify-center w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-purple-500 hover:text-white dark:hover:bg-purple-500 text-slate-800 dark:text-slate-200 rounded-lg transition-colors font-medium mt-auto group">
-                            <i class="fas fa-file-pdf mr-2 text-purple-500 group-hover:text-white transition-colors"></i> Read Paper
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">Why it matters</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                            In stroke, minutes equal neurons. This approach delivers higher Dice scores than 3D-U-Net baselines while generating attention heatmaps that radiologists can sanity-check &mdash; closing the "black-box" gap that keeps deep learning out of acute care.
+                        </p>
+                        <a href="https://doi.org/10.1016/j.neucom.2025.131620" target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center justify-center w-full py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-secondary transition-colors">
+                            <i class="fas fa-file-pdf mr-2"></i> Read the paper
                         </a>
                     </div>
-                </div>
+                </article>
+
+                <!-- Card 2 · EDA-Graph for Emotion ========================================================= -->
+                <article class="research-card group relative rounded-2xl overflow-hidden bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-500 fade-in" data-accent="emerald" tabindex="0">
+                    <div class="relative h-52 overflow-hidden bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-teal-500/10">
+                        <svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-emerald-500 p-4" aria-label="Graphical abstract: EDA time series transformed to a graph, mapped to valence and arousal">
+                            <defs>
+                                <marker id="arrowEmerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                                </marker>
+                            </defs>
+                            <!-- EDA waveform -->
+                            <g transform="translate(12, 40)">
+                                <path d="M0 60 Q12 58 20 55 T40 40 T58 30 Q70 50 85 35 T110 25 Q120 48 135 40"
+                                      stroke="currentColor" stroke-width="2.5" fill="none"/>
+                                <g stroke="currentColor" stroke-width="0.5" opacity="0.25">
+                                    <line x1="0" y1="0"  x2="135" y2="0"/>
+                                    <line x1="0" y1="30" x2="135" y2="30"/>
+                                    <line x1="0" y1="60" x2="135" y2="60"/>
+                                    <line x1="0" y1="90" x2="135" y2="90"/>
+                                </g>
+                                <text x="0" y="112" font-size="9" fill="currentColor" opacity="0.7">electrodermal activity</text>
+                            </g>
+                            <path d="M160 80 L188 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowEmerald)"/>
+                            <!-- Graph -->
+                            <g transform="translate(198, 20)">
+                                <line x1="20" y1="40" x2="55" y2="18" stroke="currentColor" stroke-width="2.2" opacity="0.75"/>
+                                <line x1="55" y1="18" x2="90" y2="50" stroke="currentColor" stroke-width="1.4" opacity="0.45"/>
+                                <line x1="20" y1="40" x2="45" y2="90" stroke="currentColor" stroke-width="2.6" opacity="0.85"/>
+                                <line x1="45" y1="90" x2="90" y2="50" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                                <line x1="45" y1="90" x2="85" y2="120" stroke="currentColor" stroke-width="1.6" opacity="0.5"/>
+                                <line x1="90" y1="50" x2="85" y2="120" stroke="currentColor" stroke-width="1.4" opacity="0.4"/>
+                                <circle cx="20" cy="40"  r="7" fill="currentColor"/>
+                                <circle cx="55" cy="18"  r="6" fill="currentColor" opacity="0.85"/>
+                                <circle cx="90" cy="50"  r="8" fill="currentColor" opacity="0.9"/>
+                                <circle cx="45" cy="90"  r="10" fill="currentColor"/>
+                                <circle cx="85" cy="120" r="6" fill="currentColor" opacity="0.85"/>
+                                <text x="0" y="150" font-size="9" fill="currentColor" opacity="0.7">GSP graph</text>
+                            </g>
+                            <path d="M306 80 L330 80" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowEmerald)"/>
+                            <!-- Valence-arousal quadrants -->
+                            <g transform="translate(335, 30)">
+                                <rect x="0"  y="0"  width="26" height="26" rx="4" fill="currentColor" opacity="0.35"/>
+                                <rect x="30" y="0"  width="26" height="26" rx="4" fill="currentColor" opacity="0.75"/>
+                                <rect x="0"  y="30" width="26" height="26" rx="4" fill="currentColor" opacity="0.55"/>
+                                <rect x="30" y="30" width="26" height="26" rx="4" fill="currentColor" opacity="0.25"/>
+                                <circle cx="43" cy="13" r="4" fill="white" stroke="currentColor" stroke-width="2"/>
+                                <text x="0" y="78" font-size="9" fill="currentColor" opacity="0.7">valence × arousal</text>
+                            </g>
+                        </svg>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-full tracking-wide">IEEE JBHI · 2024</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">EDA-Graph: Graph Signal Processing of Electrodermal Activity for Emotion Detection</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            The first graph-signal-processing pipeline for a biomedical signal &mdash; turns a 1-D sweat trace into a topological feature your classifier can actually see.
+                        </p>
+                    </div>
+
+                    <div class="research-overlay absolute inset-0 bg-white/97 dark:bg-darkCard/97 backdrop-blur-sm p-6 flex flex-col opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-500 overflow-y-auto">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-1">Method</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3 leading-relaxed">
+                            Segment the EDA trace into nodes, weight edges by temporal &amp; phasic similarity, then apply <span class="font-semibold">graph Fourier &amp; wavelet transforms</span> to derive spectral descriptors. The graph captures nonlinear sweat-gland dynamics that FFT-based baselines flatten out.
+                        </p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-1">Why it matters</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                            Emotion recognition in wearables lives or dies by the quality of a single skin-conductance channel. EDA-Graph pushed state-of-the-art on the continuous valence &amp; arousal axes while staying cheap enough for on-device inference.
+                        </p>
+                        <a href="https://doi.org/10.1109/JBHI.2024.3405491" target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center justify-center w-full py-2.5 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 transition-colors">
+                            <i class="fas fa-file-pdf mr-2"></i> Read the paper
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Card 3 · ERG-Graph for Neurodevelopmental Disorders ======================================== -->
+                <article class="research-card group relative rounded-2xl overflow-hidden bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-500 fade-in" data-accent="violet" tabindex="0">
+                    <div class="relative h-52 overflow-hidden bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-indigo-500/10">
+                        <svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-violet-500 p-4" aria-label="Graphical abstract: retinal ERG waveform converted to a sparse graph used to classify ASD, ADHD, and typically developing groups">
+                            <defs>
+                                <marker id="arrowViolet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                                </marker>
+                            </defs>
+                            <!-- Eye with ERG waveform -->
+                            <g transform="translate(14, 50)">
+                                <ellipse cx="55" cy="40" rx="55" ry="30" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="55" cy="40" r="16" fill="currentColor" opacity="0.25"/>
+                                <circle cx="55" cy="40" r="7"  fill="currentColor"/>
+                                <!-- ERG waveform inside -->
+                                <path d="M15 52 Q30 48 40 55 L48 30 L58 70 L72 35 L88 50 Q100 52 105 48"
+                                      stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.8"/>
+                                <text x="10" y="95" font-size="9" fill="currentColor" opacity="0.7">ERG (two flashes)</text>
+                            </g>
+                            <path d="M132 90 L160 90" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowViolet)"/>
+                            <!-- Sparse graph -->
+                            <g transform="translate(168, 30)">
+                                <line x1="20" y1="30" x2="60" y2="15" stroke="currentColor" stroke-width="2.2" opacity="0.75"/>
+                                <line x1="60" y1="15" x2="90" y2="55" stroke="currentColor" stroke-width="1.8" opacity="0.55"/>
+                                <line x1="20" y1="30" x2="45" y2="85" stroke="currentColor" stroke-width="2.8" opacity="0.85"/>
+                                <line x1="45" y1="85" x2="90" y2="55" stroke="currentColor" stroke-width="1.6" opacity="0.45"/>
+                                <circle cx="20" cy="30" r="7"  fill="currentColor"/>
+                                <circle cx="60" cy="15" r="6"  fill="currentColor" opacity="0.85"/>
+                                <circle cx="90" cy="55" r="8"  fill="currentColor"/>
+                                <circle cx="45" cy="85" r="9"  fill="currentColor" opacity="0.9"/>
+                                <text x="0" y="115" font-size="9" fill="currentColor" opacity="0.7">sparse ERG graph</text>
+                            </g>
+                            <path d="M276 90 L304 90" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrowViolet)"/>
+                            <!-- Classification output -->
+                            <g transform="translate(310, 45)">
+                                <rect x="0"  y="0"  width="72" height="18" rx="4" fill="currentColor" opacity="0.25"/>
+                                <rect x="0"  y="23" width="72" height="18" rx="4" fill="currentColor" opacity="0.7"/>
+                                <rect x="0"  y="46" width="72" height="18" rx="4" fill="currentColor" opacity="0.4"/>
+                                <text x="6"  y="13"  font-size="10" fill="currentColor" font-weight="700">TD</text>
+                                <text x="6"  y="36"  font-size="10" fill="white"       font-weight="700">ASD</text>
+                                <text x="6"  y="59"  font-size="10" fill="currentColor" font-weight="700">ADHD</text>
+                                <text x="-4" y="86"  font-size="9"  fill="currentColor" opacity="0.7">classifier</text>
+                            </g>
+                        </svg>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-violet-500 text-white text-[10px] font-bold rounded-full tracking-wide">Bioengineering · 2026</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">ERG-Graph: Graph Signal Processing of the Electroretinogram for Neurodevelopmental Disorders</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            A 2-minute retinal recording, rendered as a graph, separates autism and ADHD from typical development with clinical-grade accuracy.
+                        </p>
+                    </div>
+
+                    <div class="research-overlay absolute inset-0 bg-white/97 dark:bg-darkCard/97 backdrop-blur-sm p-6 flex flex-col opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-500 overflow-y-auto">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-violet-500 mb-1">Method</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-3 leading-relaxed">
+                            Extract a-/b-wave peaks from ERG responses at two flash strengths, build a sparse similarity graph across waveform landmarks, and feed its graph-Fourier coefficients into a classical classifier. The graph discards redundant temporal samples while preserving the diagnostic topology.
+                        </p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-violet-500 mb-1">Why it matters</span>
+                        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                            Neurodevelopmental diagnosis today hinges on hours of behavioral assessment. An objective, non-invasive retinal biomarker &mdash; cheap enough to run in any vision clinic &mdash; could close diagnostic gaps for families who can't reach a specialist.
+                        </p>
+                        <a href="https://doi.org/10.3390/bioengineering13040446" target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center justify-center w-full py-2.5 bg-violet-500 text-white font-semibold rounded-lg hover:bg-violet-600 transition-colors">
+                            <i class="fas fa-file-pdf mr-2"></i> Read the paper
+                        </a>
+                    </div>
+                </article>
+
             </div>
+
+            <p class="mt-10 text-center text-xs text-slate-500 dark:text-slate-400 fade-in">
+                Graphical abstracts are minimalist SVGs I draw by hand to mirror each paper's pipeline. Tap or keyboard-focus any card to flip it.
+            </p>
         </div>
     </section>
 
