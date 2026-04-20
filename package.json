@@ -1,0 +1,21 @@
+{
+  "name": "jouninlrmd-site",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Personal website of Luis R. Mercado-Diaz — Astro-based.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.1.5",
+    "@astrojs/tailwind": "^5.1.4",
+    "@astrojs/sitemap": "^3.2.1",
+    "tailwindcss": "^3.4.17",
+    "@fontsource/inter": "^5.1.0"
+  }
+}

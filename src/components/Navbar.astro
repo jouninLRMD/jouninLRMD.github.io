@@ -1,0 +1,50 @@
+---
+const links = [
+  { href: "#about", label: "About" },
+  { href: "#projects", label: "Projects" },
+  { href: "#publications", label: "Publications" },
+  { href: "#experience", label: "Experience" },
+  { href: "#skills", label: "Skills" },
+  { href: "#research", label: "Research" },
+  { href: "#news", label: "News" },
+  { href: "#gallery", label: "Gallery" },
+];
+---
+<nav id="navbar" class="fixed w-full z-50 top-0 transition-all duration-300">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <a href="#" class="font-bold text-xl tracking-tight text-primary">LRMD</a>
+
+      <div class="hidden md:flex space-x-8 items-center">
+        {links.map((l) => (
+          <a href={l.href} class="nav-link text-sm font-medium hover:text-primary transition-colors">{l.label}</a>
+        ))}
+        <button id="theme-toggle" aria-label="Toggle dark mode"
+                class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none">
+          <i class="fas fa-moon text-slate-700 dark:text-slate-300 inline-block dark:hidden"></i>
+          <i class="fas fa-sun  text-slate-700 dark:text-slate-300 hidden dark:inline-block"></i>
+        </button>
+      </div>
+
+      <div class="md:hidden flex items-center space-x-4">
+        <button id="theme-toggle-mobile" aria-label="Toggle dark mode"
+                class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none">
+          <i class="fas fa-moon text-slate-700 dark:text-slate-300 inline-block dark:hidden"></i>
+          <i class="fas fa-sun  text-slate-700 dark:text-slate-300 hidden dark:inline-block"></i>
+        </button>
+        <button id="mobile-menu-button" aria-label="Open menu"
+                class="text-slate-600 dark:text-slate-300 hover:text-primary focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-darkCard shadow-lg absolute w-full left-0 top-16">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {links.map((l) => (
+        <a href={l.href} class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-700">{l.label}</a>
+      ))}
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,27 @@
+---
+import { site } from "../data/site";
+---
+<footer class="bg-slate-900 text-slate-400 py-10 text-center border-t border-slate-800">
+  <div class="max-w-6xl mx-auto px-4 space-y-4">
+    <p>&copy; <span id="year"></span> {site.name} &middot; Ph.D. Biomedical Engineering &middot; M.S. Computer Science &amp; Engineering</p>
+    <div class="flex justify-center space-x-6">
+      <a href={`mailto:${site.email}`} class="hover:text-white transition-colors" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      <a href={site.socials.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href={site.socials.github} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href={site.socials.scholar} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+      <a href={site.socials.orcid} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="ORCID"><i class="fab fa-orcid"></i></a>
+    </div>
+    <p class="text-xs text-slate-500">
+      Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="hover:text-white">Astro</a>
+      &middot; Tailwind CSS &middot; Self-hosted Inter &middot;
+      Publications auto-refreshed from <a href="https://openalex.org" target="_blank" rel="noopener noreferrer" class="hover:text-white">OpenAlex</a>
+      via GitHub Actions &middot;
+      <a href="/.well-known/security.txt" class="hover:text-white">security.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  const y = document.getElementById("year");
+  if (y) y.textContent = String(new Date().getFullYear());
+</script>

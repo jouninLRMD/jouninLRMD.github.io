@@ -1,0 +1,57 @@
+---
+const items = [
+  {
+    dot: "bg-primary",
+    title: "Ph.D. in Biomedical Engineering — University of Connecticut",
+    date: "Conferred 2026",
+    dateColor: "text-primary",
+    body: "Dissertation on <em>Graph Signal Processing &amp; Graph Neural Networks for Multimodal Biomedical Data</em>, introducing the first GSP framework to analyze biomedical signals (EDA, ERG) and a probabilistic graph-attention architecture for multimodal MRI stroke-lesion detection. Work spans methodology, rigorous validation, and clinical framing.",
+  },
+  {
+    dot: "bg-accent",
+    title: "M.S. in Computer Science &amp; Engineering — University of Connecticut",
+    date: "Conferred 2025",
+    dateColor: "text-accent",
+    body: "Pursued in parallel to the Ph.D. to formalize my CS foundations: algorithms, distributed systems, advanced machine learning, and the software-engineering practices behind production AI. This is where the probabilistic reasoning, graph theory, and systems thinking that power my research come from.",
+  },
+  {
+    dot: "bg-emerald-500",
+    title: "Research Scientist — UConn (Chon Lab &amp; collaborators)",
+    date: "2022 — Present",
+    dateColor: "text-emerald-500",
+    body: "Lead research on multimodal AI, graph neural networks, and their applications to healthcare &amp; neuroscience. Designed and released the first graph-based pipelines for electrodermal activity and electroretinogram analysis, collaborated on wearable PPG arrhythmia detection, and built attention-based MRI models for stroke.",
+  },
+  {
+    dot: "bg-slate-400 dark:bg-slate-500",
+    title: "Research Student — Intelligent Machines &amp; Pattern Recognition Lab",
+    date: "2014 — 2022",
+    dateColor: "text-slate-500 dark:text-slate-400",
+    body: "Undergraduate research on Automation, Electronics and Computational Science. Worked on graph-based protein-interaction analysis, SVM-driven structural prediction, and metabolomics with the MAIT package — the seeds of my current interest in graph-shaped biological data.",
+  },
+];
+---
+<section id="experience" class="py-20 bg-slate-100 dark:bg-slate-800/50 transition-colors">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-12 fade-in">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Research &amp; Education Journey</h2>
+      <div class="w-20 h-1 bg-primary rounded-full"></div>
+      <p class="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl">
+        Two parallel tracks &mdash; a Ph.D. in Biomedical Engineering and an M.S. in Computer
+        Science &amp; Engineering &mdash; kept compounding into a single research practice.
+      </p>
+    </div>
+
+    <div class="relative border-l-2 border-slate-300 dark:border-slate-600 ml-3 md:ml-0 space-y-12">
+      {items.map((it) => (
+        <div class="relative pl-8 md:pl-10 fade-in">
+          <div class={`absolute -left-2 top-1 w-4 h-4 rounded-full ${it.dot} ring-4 ring-slate-100 dark:ring-slate-800`}></div>
+          <div class="flex flex-col md:flex-row md:items-baseline mb-2">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white" set:html={it.title}></h3>
+            <span class={`${it.dateColor} font-semibold text-sm md:ml-4 mt-1 md:mt-0`}>{it.date}</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm" set:html={it.body}></p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
