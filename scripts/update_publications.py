@@ -130,30 +130,85 @@ class AuthorMatcher:
 
 # ---------- OpenAlex ----------
 
+def openalex_discover_author_ids(config: dict[str, Any], matcher: AuthorMatcher) -> list[str]:
+    """Resolve likely OpenAlex author IDs from the configured name variants.
+
+    OpenAlex's /works endpoint with raw_author_name.search is fuzzy and can
+    miss papers when the author's name was indexed in an unexpected form.
+    Resolving the author ID first gives us a single, deterministic handle we
+    can then use to pull *every* work authored by that person.
+    """
+    author_ids: set[str] = set()
+    variants = config["author"].get("name_variants") or [config["author"]["full_name"]]
+    for variant in variants:
+        if not variant:
+            continue
+        url = (
+            "https://api.openalex.org/authors?"
+            + urllib.parse.urlencode(
+                {"search": variant, "per-page": "25", "mailto": CONTACT_EMAIL}
+            )
+        )
+        try:
+            payload = http_get_json(url)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Author search for %r failed: %s", variant, exc)
+            continue
+        for candidate in payload.get("results") or []:
+            if matcher.is_author(candidate.get("display_name", "")):
+                aid = candidate.get("id")
+                if aid:
+                    author_ids.add(aid)
+    log.info("Discovered %d OpenAlex author ID(s): %s", len(author_ids), sorted(author_ids))
+    return sorted(author_ids)
+
+
 def openalex_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[str, Any]]:
     author = config["author"]
     orcid = (author.get("orcid") or "").strip()
     openalex_id = (author.get("openalex_id") or "").strip()
-
-    filters: list[str] = []
-    if orcid:
-        filters.append(f"author.orcid:{orcid}")
-    elif openalex_id:
-        filters.append(f"author.id:{openalex_id}")
-    else:
-        # Search by display name; we'll filter locally with matcher
-        primary = author["full_name"].replace(" ", "+")
-        filters.append(f"raw_author_name.search:{primary}")
-
     min_year = int(config.get("fetch", {}).get("min_year", 2015))
-    filters.append(f"from_publication_date:{min_year}-01-01")
 
+    # Build author-level filters in priority order: deterministic IDs first,
+    # then author-ID discovery, then fuzzy name search as last resort.
+    author_filters: list[str] = []
+    if orcid:
+        author_filters.append(f"author.orcid:{orcid}")
+    if openalex_id:
+        author_filters.append(f"author.id:{openalex_id}")
+    if not author_filters:
+        for aid in openalex_discover_author_ids(config, matcher):
+            author_filters.append(f"author.id:{aid}")
+    if not author_filters:
+        primary = author["full_name"].replace(" ", "+")
+        author_filters.append(f"raw_author_name.search:{primary}")
+
+    collected: dict[str, dict[str, Any]] = {}
+    for af in author_filters:
+        try:
+            for work in _openalex_works(af, min_year):
+                wid = work.get("id") or normalize_doi(work.get("doi"))
+                if not wid or wid in collected:
+                    continue
+                collected[wid] = work
+        except Exception as exc:  # noqa: BLE001 — keep other filters running
+            log.warning("OpenAlex filter %r failed: %s", af, exc)
+
+    return [
+        openalex_to_publication(w, matcher)
+        for w in collected.values()
+        if openalex_keep(w, matcher)
+    ]
+
+
+def _openalex_works(author_filter: str, min_year: int) -> list[dict[str, Any]]:
+    """Page through /works for a single author filter, returning all results."""
+    filters = [author_filter, f"from_publication_date:{min_year}-01-01"]
     params = {
         "filter": ",".join(filters),
         "per-page": "100",
         "mailto": CONTACT_EMAIL,
     }
-
     works: list[dict[str, Any]] = []
     cursor = "*"
     while True:
@@ -167,8 +222,8 @@ def openalex_fetch(config: dict[str, Any], matcher: AuthorMatcher) -> list[dict[
         cursor = (payload.get("meta") or {}).get("next_cursor")
         if not cursor or not results:
             break
-
-    return [openalex_to_publication(w, matcher) for w in works if openalex_keep(w, matcher)]
+    log.info("OpenAlex %s -> %d works", author_filter, len(works))
+    return works
 
 
 def openalex_keep(work: dict[str, Any], matcher: AuthorMatcher) -> bool:
@@ -286,6 +341,35 @@ def _map_type(t: str) -> str:
     return "journal"
 
 
+# ---------- Preprint filter ----------
+
+PREPRINT_DOI_PREFIXES = (
+    "10.31234/osf.io/",   # OSF / PsyArXiv
+    "10.48550/arxiv.",     # arXiv
+    "10.1101/",            # bioRxiv / medRxiv
+    "10.21203/rs.3.rs-",   # Research Square
+    "10.36227/techrxiv.",  # TechRxiv
+    "10.2139/ssrn.",       # SSRN
+    "10.31219/osf.io/",    # OSF alt prefix
+)
+
+
+def _is_preprint(entry: dict[str, Any]) -> bool:
+    doi = (entry.get("doi") or "").lower()
+    if any(doi.startswith(p) for p in PREPRINT_DOI_PREFIXES):
+        return True
+    return (entry.get("type") or "").lower() == "preprint"
+
+
+def _drop_preprints(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Drop all preprint entries (OSF/arXiv/bioRxiv/SSRN/TechRxiv/etc.)."""
+    out = [e for e in entries if not _is_preprint(e)]
+    dropped = len(entries) - len(out)
+    if dropped:
+        log.info("Dropped %d preprint(s) (policy: published-only)", dropped)
+    return out
+
+
 # ---------- Merge logic ----------
 
 def merge_publications(
@@ -325,7 +409,7 @@ def merge_publications(
             index[key] = entry
             added += 1
 
-    merged_list = list(index.values())
+    merged_list = _drop_preprints(list(index.values()))
     merged_list.sort(
         key=lambda p: (-(p.get("year") or 0), (p.get("title") or "").lower())
     )
