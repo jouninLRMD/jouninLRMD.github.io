@@ -1,194 +1,280 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Current year for footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+/* main.js — Personal site behaviour.
+ *
+ * Modularized into small init() functions so each concern is independent and
+ * a failure in one (e.g. the publications fetch) cannot break the rest.
+ */
 
-    // ==========================================
-    // Dark/Light Mode Toggle
-    // ==========================================
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
+(() => {
+    "use strict";
 
-    function toggleDarkMode() {
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('color-theme', 'light');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('color-theme', 'dark');
-        }
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    // --- Year in footer ---------------------------------------------------
+    const yearEl = $("#year");
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+    // --- Theme toggle -----------------------------------------------------
+    function initTheme() {
+        const stored = localStorage.getItem("color-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const shouldBeDark = stored === "dark" || (!stored && prefersDark);
+        document.documentElement.classList.toggle("dark", shouldBeDark);
+
+        const toggle = () => {
+            const nowDark = !document.documentElement.classList.contains("dark");
+            document.documentElement.classList.toggle("dark", nowDark);
+            localStorage.setItem("color-theme", nowDark ? "dark" : "light");
+        };
+        $("#theme-toggle")?.addEventListener("click", toggle);
+        $("#theme-toggle-mobile")?.addEventListener("click", toggle);
     }
 
-    // Determine initial theme based on system preference or saved preference
-    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
+    // --- Mobile menu ------------------------------------------------------
+    function initMobileMenu() {
+        const btn = $("#mobile-menu-button");
+        const menu = $("#mobile-menu");
+        if (!btn || !menu) return;
+        btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+        $$("a", menu).forEach((a) =>
+            a.addEventListener("click", () => menu.classList.add("hidden")),
+        );
     }
 
-    // Add click events to buttons
-    themeToggleBtn.addEventListener('click', toggleDarkMode);
-    themeToggleBtnMobile.addEventListener('click', toggleDarkMode);
+    // --- Sticky navbar polish --------------------------------------------
+    function initNavbar() {
+        const nav = $("#navbar");
+        if (!nav) return;
+        const onScroll = () => {
+            const scrolled = window.scrollY > 50;
+            nav.classList.toggle("shadow-md", scrolled);
+            nav.classList.toggle("bg-white/90", scrolled);
+            nav.classList.toggle("dark:bg-darkCard/90", scrolled);
+            nav.classList.toggle("backdrop-blur-sm", scrolled);
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+    }
 
-    // ==========================================
-    // Mobile Menu Toggle
-    // ==========================================
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+    // --- Scroll reveal ----------------------------------------------------
+    function initFadeIn(roots) {
+        const nodes = Array.isArray(roots) ? roots : $$(".fade-in");
+        const observer = new IntersectionObserver(
+            (entries, obs) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add("appear");
+                        obs.unobserve(e.target);
+                    }
+                });
+            },
+            { threshold: 0, rootMargin: "0px 0px -80px 0px" },
+        );
+        nodes.forEach((n) => observer.observe(n));
+    }
 
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+    // --- ScrollSpy --------------------------------------------------------
+    function initScrollSpy() {
+        const sections = $$("section, header");
+        const links = $$(".nav-link");
+        if (!sections.length || !links.length) return;
+        const onScroll = () => {
+            let current = "";
+            for (const s of sections) {
+                if (window.pageYOffset >= s.offsetTop - 200) current = s.id;
+            }
+            links.forEach((l) =>
+                l.classList.toggle(
+                    "active",
+                    l.getAttribute("href") === `#${current}`,
+                ),
+            );
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+    }
 
-    // Close mobile menu when clicking a link
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-        });
-    });
+    // --- Publications (dynamic) ------------------------------------------
+    const escapeHTML = (s) =>
+        String(s ?? "").replace(/[&<>"']/g, (c) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+        })[c]);
 
-    // ==========================================
-    // Navbar Scroll Effect (Sticky Header)
-    // ==========================================
-    const navbar = document.getElementById('navbar');
+    const AUTHOR_BOLD_RE =
+        /(L\.\s*R\.\s*Mercado[\-\s]?D[ií]az|Luis\s+R\.?\s*Mercado[\-\s]?D[ií]az)/gi;
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('shadow-md', 'bg-white/90', 'dark:bg-darkCard/90', 'backdrop-blur-sm');
-            navbar.classList.remove('bg-transparent');
-        } else {
-            navbar.classList.remove('shadow-md', 'bg-white/90', 'dark:bg-darkCard/90', 'backdrop-blur-sm');
-            navbar.classList.add('bg-transparent');
+    function highlightAuthor(authors) {
+        return escapeHTML(authors).replace(
+            AUTHOR_BOLD_RE,
+            '<span class="font-semibold text-slate-800 dark:text-slate-200">$1</span>',
+        );
+    }
+
+    function renderPublication(p) {
+        const roleClass = p.role === "first"
+            ? "border-primary"
+            : "border-slate-300 dark:border-slate-600";
+        const roleBadge = p.role === "first"
+            ? '<span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide rounded-full bg-primary/10 text-primary mr-2">First / Co-First</span>'
+            : '<span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 mr-2">Co-Author</span>';
+        const doiLink = p.doi
+            ? `<a href="${escapeHTML(p.url || `https://doi.org/${p.doi}`)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm text-primary hover:text-secondary hover:underline">
+                   <i class="fas fa-external-link-alt mr-1 text-xs"></i> DOI: ${escapeHTML(p.doi)}
+               </a>`
+            : p.url
+            ? `<a href="${escapeHTML(p.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm text-primary hover:text-secondary hover:underline">
+                   <i class="fas fa-external-link-alt mr-1 text-xs"></i> Link
+               </a>`
+            : "";
+        const year = p.year ? `<span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 mr-2">${escapeHTML(p.year)}</span>` : "";
+
+        return `<article class="pub-item ${p.role === "first" ? "first" : "co"} p-6 bg-white dark:bg-darkCard rounded-lg shadow-sm border-l-4 ${roleClass} hover:shadow-md transition-shadow">
+            <div class="mb-2">${year}${roleBadge}</div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">${escapeHTML(p.title)}</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mb-2">${highlightAuthor(p.authors || "")}</p>
+            <p class="text-sm italic text-slate-500 dark:text-slate-500 mb-3">${escapeHTML(p.details || p.venue || "")}</p>
+            ${doiLink}
+        </article>`;
+    }
+
+    function renderEmpty(container) {
+        container.innerHTML = "";
+        const empty = $("#publications-empty");
+        if (empty) empty.classList.remove("hidden");
+    }
+
+    function renderList(container, pubs) {
+        if (!pubs.length) {
+            renderEmpty(container);
+            return;
         }
-    });
+        container.innerHTML = pubs.map(renderPublication).join("");
+        container.setAttribute("aria-busy", "false");
+    }
 
-    // Trigger scroll event on load to set initial state
-    window.dispatchEvent(new Event('scroll'));
+    function initPublications() {
+        const container = $("#publications-list");
+        if (!container) return;
 
-    // ==========================================
-    // Publication Filters
-    // ==========================================
-    const filterButtons = document.querySelectorAll('.pub-filter');
-    const pubItems = document.querySelectorAll('.pub-item');
+        let ALL = [];
+        let currentFilter = "all";
+        let currentQuery = "";
 
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            button.classList.add('active');
+        const applyFilters = () => {
+            const q = currentQuery.trim().toLowerCase();
+            const filtered = ALL.filter((p) => {
+                if (currentFilter !== "all" && p.role !== currentFilter) return false;
+                if (!q) return true;
+                const hay = `${p.title} ${p.authors} ${p.venue} ${p.details} ${p.doi || ""}`.toLowerCase();
+                return hay.includes(q);
+            });
+            renderList(container, filtered);
+        };
 
-            const filterValue = button.getAttribute('data-filter');
-
-            pubItems.forEach(item => {
-                if (filterValue === 'all') {
-                    item.style.display = 'block';
-                } else if (item.classList.contains(filterValue)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+        // Filter buttons
+        $$(".pub-filter").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                $$(".pub-filter").forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentFilter = btn.dataset.filter || "all";
+                applyFilters();
             });
         });
-    });
 
-    // ==========================================
-    // Scroll Animations (Intersection Observer)
-    // ==========================================
-    const faders = document.querySelectorAll('.fade-in');
-
-    const appearOptions = {
-        threshold: 0,
-        rootMargin: "0px 0px -100px 0px" // Trigger slightly before the element enters the viewport
-    };
-
-    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                return;
-            } else {
-                entry.target.classList.add('appear');
-                observer.unobserve(entry.target); // Stop observing once it has appeared
-            }
-        });
-    }, appearOptions);
-
-    faders.forEach(fader => {
-        appearOnScroll.observe(fader);
-    });
-
-    // ==========================================
-    // ScrollSpy (Highlight active link)
-    // ==========================================
-    const sections = document.querySelectorAll('section, header');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    window.addEventListener('scroll', () => {
-        let current = '';
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            // 200px offset for smoother transition between sections
-            if (pageYOffset >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
-            }
-        });
-    });
-});
-// Carousel Functionality
-const carouselInner = document.getElementById('carousel-inner');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const indicators = document.querySelectorAll('.indicator-btn');
-let currentIndex = 0;
-const totalItems = indicators.length;
-
-function updateCarousel() {
-    if (!carouselInner) return;
-    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
-    indicators.forEach((indicator, index) => {
-        if (index === currentIndex) {
-            indicator.classList.remove('bg-white/50');
-            indicator.classList.add('bg-white');
-        } else {
-            indicator.classList.remove('bg-white');
-            indicator.classList.add('bg-white/50');
+        // Search input
+        const search = $("#pub-search");
+        if (search) {
+            search.addEventListener("input", (e) => {
+                currentQuery = e.target.value || "";
+                applyFilters();
+            });
         }
-    });
-}
 
-if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex === 0) ? totalItems - 1 : currentIndex - 1;
-        updateCarousel();
-    });
-}
+        // Fetch JSON (cache-busted against stale caches)
+        fetch(`data/publications.json?_=${Date.now()}`, { cache: "no-cache" })
+            .then((r) => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
+            .then((payload) => {
+                ALL = (payload.publications || []).slice().sort(
+                    (a, b) => (b.year || 0) - (a.year || 0),
+                );
+                const updatedEl = $("#publications-updated-at");
+                if (updatedEl && payload.generated_at)
+                    updatedEl.textContent = payload.generated_at;
+                applyFilters();
+            })
+            .catch((err) => {
+                console.warn("Failed to load publications.json:", err);
+                renderEmpty(container);
+            });
+    }
 
-if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex === totalItems - 1) ? 0 : currentIndex + 1;
-        updateCarousel();
-    });
-}
+    // --- Carousel ---------------------------------------------------------
+    function initCarousel() {
+        const carouselInner = $("#carousel-inner");
+        const prevBtn = $("#prevBtn");
+        const nextBtn = $("#nextBtn");
+        const indicators = $$(".indicator-btn");
+        if (!carouselInner || !indicators.length) return;
 
-indicators.forEach(indicator => {
-    indicator.addEventListener('click', (e) => {
-        currentIndex = parseInt(e.target.dataset.index);
-        updateCarousel();
-    });
-});
+        let current = 0;
+        const total = indicators.length;
+        let timer = null;
 
-// Auto-play
-if (carouselInner) {
-    setInterval(() => {
-        currentIndex = (currentIndex === totalItems - 1) ? 0 : currentIndex + 1;
-        updateCarousel();
-    }, 5000); // 5 seconds interval
-}
+        const update = () => {
+            carouselInner.style.transform = `translateX(-${current * 100}%)`;
+            indicators.forEach((ind, i) => {
+                ind.classList.toggle("bg-white", i === current);
+                ind.classList.toggle("bg-white/50", i !== current);
+            });
+        };
+        const go = (i) => {
+            current = (i + total) % total;
+            update();
+        };
+        const scheduleAuto = () => {
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => go(current + 1), 6000);
+        };
+
+        prevBtn?.addEventListener("click", () => {
+            go(current - 1);
+            scheduleAuto();
+        });
+        nextBtn?.addEventListener("click", () => {
+            go(current + 1);
+            scheduleAuto();
+        });
+        indicators.forEach((ind) =>
+            ind.addEventListener("click", (e) => {
+                go(parseInt(e.currentTarget.dataset.index, 10));
+                scheduleAuto();
+            }),
+        );
+
+        // Pause on hover (respect user intent)
+        const carousel = $("#carousel");
+        carousel?.addEventListener("mouseenter", () => timer && clearInterval(timer));
+        carousel?.addEventListener("mouseleave", scheduleAuto);
+
+        update();
+        scheduleAuto();
+    }
+
+    // --- Bootstrap --------------------------------------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        initMobileMenu();
+        initNavbar();
+        initScrollSpy();
+        initPublications();
+        initCarousel();
+        initFadeIn();
+    });
+})();
