@@ -1,0 +1,89 @@
+---
+import { site } from "../data/site";
+
+const iconMap: Record<string, string> = {
+  microscope: "fa-microscope",
+  "laptop-code": "fa-laptop-code",
+  stethoscope: "fa-stethoscope",
+};
+---
+<header id="about" class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/20 blur-3xl"></div>
+    <div class="absolute top-32 right-0 w-80 h-80 rounded-full bg-accent/20 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/3 w-96 h-96 rounded-full bg-emerald-400/10 blur-3xl"></div>
+  </div>
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+    <div class="flex-1 space-y-6 fade-in">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        Research Scientist @ UConn · Biomedical Engineering × Computer Science
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
+        {site.name}<br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-blue-600">
+          Ph.D. &middot; M.S. &middot; B.S.
+        </span>
+      </h1>
+
+      <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+        I am a dual-disciplinary researcher trained as a
+        <span class="font-semibold text-slate-800 dark:text-slate-200">Biomedical Engineer (Ph.D.)</span>
+        and a
+        <span class="font-semibold text-slate-800 dark:text-slate-200">Computer Scientist &amp; Engineer (M.S.)</span>.
+        That pairing lets me move fluidly between the clinic and the data center&mdash;designing algorithms
+        that respect physiology, and physiology-aware systems that scale like modern software.
+      </p>
+
+      <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
+        My work spans <span class="font-semibold text-primary">graph signal processing</span>,
+        <span class="font-semibold text-primary">graph neural networks</span>,
+        <span class="font-semibold text-primary">multimodal &amp; foundation models</span>,
+        wearable &amp; sensor AI, and medical imaging. I care about
+        <span class="font-semibold text-slate-800 dark:text-slate-200">human-centered AI</span>,
+        interpretability, and the software-engineering rigor that turns a research prototype into
+        something a clinician or end-user can actually trust.
+      </p>
+
+      <div class="flex flex-wrap gap-2 pt-2" aria-label="Academic credentials">
+        {site.credentials.map((c) => (
+          <span class="credential-chip">
+            <i class={`fas ${iconMap[c.icon]}`}></i>
+            {c.text}
+          </span>
+        ))}
+      </div>
+
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a href={`mailto:${site.email}`} class="social-btn group">
+          <i class="fas fa-envelope text-primary group-hover:text-white transition-colors"></i>
+          <span>{site.email}</span>
+        </a>
+        <a href={site.socials.linkedin} target="_blank" rel="noopener noreferrer" class="social-btn group">
+          <i class="fab fa-linkedin text-primary group-hover:text-white transition-colors"></i>
+          <span>LinkedIn</span>
+        </a>
+        <a href={site.socials.github} target="_blank" rel="noopener noreferrer" class="social-btn group">
+          <i class="fab fa-github text-primary group-hover:text-white transition-colors"></i>
+          <span>GitHub</span>
+        </a>
+        <a href={site.socials.scholar} target="_blank" rel="noopener noreferrer" class="social-btn group">
+          <i class="fas fa-graduation-cap text-primary group-hover:text-white transition-colors"></i>
+          <span>Google Scholar</span>
+        </a>
+        <a href={site.socials.orcid} target="_blank" rel="noopener noreferrer" class="social-btn group">
+          <i class="fab fa-orcid text-primary group-hover:text-white transition-colors"></i>
+          <span>ORCID</span>
+        </a>
+      </div>
+
+      <div class="pt-4">
+        <a href="/assets/docs/Luis_Mercado_AI_Resume_extended.pdf" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-secondary transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1">
+          <i class="fas fa-download"></i> Download CV
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

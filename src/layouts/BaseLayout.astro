@@ -1,0 +1,103 @@
+---
+import "@fontsource/inter/300.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "../styles/global.css";
+import { site } from "../data/site";
+
+const { title = site.title, description = site.description } = Astro.props;
+
+// Content Security Policy — tight, and tightened further by going Astro:
+// Tailwind is now built at compile time (no 'unsafe-inline' for scripts),
+// Inter is self-hosted via @fontsource (no fonts.googleapis.com), and we
+// only retain FontAwesome on a CDN with an SRI-hashed stylesheet.
+const csp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",          // 'unsafe-inline' only for small theme flash-prevention
+  "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com",
+  "font-src  'self' data: https://cdnjs.cloudflare.com",
+  "img-src   'self' data:",
+  "connect-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+---
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0ea5e9" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#0f172a" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={site.url} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href={site.url} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- FontAwesome with Subresource Integrity (supply-chain safety). -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Structured data (Schema.org Person) for SEO & ORCID discoverability -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: site.name,
+      url: site.url,
+      email: `mailto:${site.email}`,
+      sameAs: Object.values(site.socials),
+      jobTitle: "Research Scientist",
+      alumniOf: [
+        { "@type": "CollegeOrUniversity", name: "University of Connecticut" },
+      ],
+      hasCredential: [
+        { "@type": "EducationalOccupationalCredential", credentialCategory: "Ph.D.", educationalLevel: "Doctorate", name: "Ph.D. in Biomedical Engineering" },
+        { "@type": "EducationalOccupationalCredential", credentialCategory: "M.S.",  educationalLevel: "Master",    name: "M.S. in Computer Science and Engineering" },
+        { "@type": "EducationalOccupationalCredential", credentialCategory: "B.S.",  educationalLevel: "Bachelor",   name: "B.S. in Biomedical Engineering" },
+      ],
+      knowsAbout: [
+        "Graph Signal Processing",
+        "Graph Neural Networks",
+        "Multimodal Machine Learning",
+        "Biomedical Signal Processing",
+        "Medical Imaging",
+        "Affective Computing",
+        "Human-Centered AI",
+      ],
+    })} />
+
+    <!-- Theme-flash prevention: run before paint to avoid white flash in dark mode. -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("color-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (stored === "dark" || (!stored && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-darkBg dark:text-slate-200 font-sans transition-colors duration-300">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,78 @@
+---
+const cards = [
+  {
+    ring: "bg-primary/10",
+    icon: "fa-microchip",
+    iconColor: "text-primary",
+    title: "Architecting the Mind: Advanced AI",
+    body: `To unravel the complexities of human physiology, I rely on the robust foundations of
+           <span class="font-semibold text-primary">PyTorch</span> and
+           <span class="font-semibold text-primary">PyTorch Geometric</span>. My passion lies in
+           designing <span class="font-semibold text-primary">Probabilistic Graph Attention Networks</span>
+           and applying <span class="font-semibold text-primary">Bayesian Methods</span> to navigate
+           the uncertainty inherent in medical data.`,
+  },
+  {
+    ring: "bg-emerald-500/10",
+    icon: "fa-heartbeat",
+    iconColor: "text-emerald-500",
+    title: "Decoding the Body: Signals & Imaging",
+    body: `From the electrical whispers of the heart and brain
+           (<span class="font-semibold text-emerald-500">EKG, EEG</span>) to the rhythmic flow of blood
+           (<span class="font-semibold text-emerald-500">PPG</span>) and deeper into
+           <span class="font-semibold text-emerald-500">MRI and fMRI</span>, I translate
+           high-dimensional physiology into graph-native representations.`,
+  },
+  {
+    ring: "bg-amber-500/10",
+    icon: "fa-layer-group",
+    iconColor: "text-amber-500",
+    title: "Software & Systems Engineering",
+    body: `My M.S. in Computer Science &amp; Engineering shapes how I ship research:
+           <span class="font-semibold text-amber-500">clean APIs</span>,
+           <span class="font-semibold text-amber-500">reproducible pipelines</span>,
+           <span class="font-semibold text-amber-500">CI/CD with GitHub Actions</span>,
+           containerized training with <span class="font-semibold text-amber-500">Docker</span>,
+           and data pipelines that respect privacy and security.`,
+  },
+  {
+    ring: "bg-purple-500/10",
+    icon: "fa-code",
+    iconColor: "text-purple-500",
+    title: "Languages of Creation",
+    body: `<span class="font-semibold text-purple-500">Python</span> as my research lingua franca,
+           <span class="font-semibold text-purple-500">R</span> for rigorous statistical inference,
+           <span class="font-semibold text-purple-500">C/C++</span> for performance-critical signal
+           processing, and <span class="font-semibold text-purple-500">Rust</span> &amp;
+           <span class="font-semibold text-purple-500">Go</span> for safe, concurrent systems.`,
+  },
+];
+---
+<section id="skills" class="py-20 bg-white dark:bg-darkCard border-t border-b border-slate-200 dark:border-slate-800 transition-colors">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-12 text-center fade-in">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Areas of Strength</h2>
+      <div class="w-20 h-1 bg-primary rounded-full mx-auto mb-6"></div>
+      <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+        My work lives at the intersection of
+        <span class="font-semibold text-slate-800 dark:text-slate-200">biomedical engineering</span>
+        and
+        <span class="font-semibold text-slate-800 dark:text-slate-200">computer science</span>.
+        Four pillars power everything I do &mdash; AI modeling, physiological signals, software
+        &amp; systems engineering, and the languages that glue them together.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {cards.map((c) => (
+        <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700 fade-in flex flex-col items-center text-center">
+          <div class={`w-16 h-16 ${c.ring} rounded-full flex items-center justify-center mb-6`}>
+            <i class={`fas ${c.icon} text-3xl ${c.iconColor}`}></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4" set:html={c.title}></h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" set:html={c.body}></p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

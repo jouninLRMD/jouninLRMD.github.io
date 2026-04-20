@@ -1,0 +1,60 @@
+---
+const projects = [
+  {
+    image: "/images/Fig_2_step_by_step_graph.jpg",
+    alt: "EDA-Graph Generation Methodology",
+    dates: "2022 - 2023",
+    title: "Pioneering Graph Signal Processing for Biomedical Signals",
+    body: "Developed the first Graph Signal Processing method to analyze biomedical signals, introducing a novel paradigm for understanding physiological data. This approach transforms traditional time-series signals into graph structures, enabling the extraction of spatial and temporal patterns. Applied to EDA for emotion recognition, achieving state-of-the-art performance with interpretable features.",
+  },
+  {
+    image: "/images/Final_methodology_figure.png",
+    alt: "ERG-Graph Methodology",
+    dates: "2023 - 2024",
+    title: "Graph-Based Detection of Neurodevelopmental Disorders",
+    body: "Created an innovative GSP framework for analyzing ERG signals to detect ASD and ADHD. This approach leverages graph-based representation of ERG waveforms to capture subtle abnormalities in retinal neural processing. The method demonstrates high classification accuracy while significantly reducing computational complexity, making it practical for clinical deployment.",
+  },
+  {
+    image: "/images/posad1-3291955-large.gif",
+    alt: "Deep Learning for Multimodal Analysis of Emotions",
+    dates: "2020 - 2025",
+    title: "Deep Learning for Multimodal Biomedical Signal Analysis",
+    body: "Developed advanced deep learning architectures for multimodal biomedical signal analysis, encompassing autoencoders for nonlinear feature extraction, CNNs for time-frequency analysis, and multimodal fusion techniques integrating EDA, ERG, ECG, and PPG. Applied to emotion recognition, pain intensity classification, and arrhythmia detection.",
+  },
+  {
+    image: "/images/GAT_Architecture_for_stroke.jpg",
+    alt: "Graph Neural Networks for Stroke Detection",
+    dates: "2024 - 2025",
+    title: "Graph Neural Networks for Stroke Detection & Segmentation",
+    body: "Engineered a sophisticated GNN framework with probabilistic attention mechanisms for detecting and segmenting stroke lesions from multimodal MRI data. It represents brain imaging data as graphs and achieves superior performance in stroke lesion detection while providing interpretable attention maps that align with clinical expertise.",
+  },
+];
+---
+<section id="projects" class="py-20 bg-white dark:bg-darkCard border-y border-slate-200 dark:border-slate-800 transition-colors">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 fade-in">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Featured Research Projects</h2>
+      <div class="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+      <p class="text-slate-600 dark:text-slate-400 italic max-w-2xl mx-auto">
+        My strength lies in creativity, enabling me to devise novel solutions across various topics!
+        Four selected featured research achievements:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {projects.map((p) => (
+        <article class="project-card rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all fade-in">
+          <div class="h-64 overflow-hidden bg-white dark:bg-slate-900 flex items-center justify-center p-4">
+            <img src={p.image} alt={p.alt} loading="lazy" decoding="async"
+                 class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-6">
+            <div class="text-sm text-primary font-semibold mb-2">{p.dates}</div>
+            <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-3">{p.title}</h4>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{p.body}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

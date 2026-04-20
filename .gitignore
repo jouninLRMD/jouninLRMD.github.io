@@ -6,3 +6,11 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# Node / Astro
+node_modules/
+.astro/
+dist/
+.env
+.env.*
+*.log

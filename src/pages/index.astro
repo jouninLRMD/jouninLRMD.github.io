@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Projects from "../components/Projects.astro";
+import Publications from "../components/Publications.astro";
+import Experience from "../components/Experience.astro";
+import Skills from "../components/Skills.astro";
+import FeaturedResearch from "../components/FeaturedResearch.astro";
+import News from "../components/News.astro";
+import Gallery from "../components/Gallery.astro";
+import Footer from "../components/Footer.astro";
+---
+<BaseLayout>
+  <Navbar />
+  <Hero />
+  <Projects />
+  <Publications />
+  <Experience />
+  <Skills />
+  <FeaturedResearch />
+  <News />
+  <Gallery />
+  <Footer />
+
+  <script>
+    // Shared cross-section behaviour: theme toggle, nav effects, scroll reveal, scrollspy.
+    document.addEventListener("DOMContentLoaded", () => {
+      // Theme toggle
+      const toggle = () => {
+        const nowDark = !document.documentElement.classList.contains("dark");
+        document.documentElement.classList.toggle("dark", nowDark);
+        localStorage.setItem("color-theme", nowDark ? "dark" : "light");
+      };
+      document.getElementById("theme-toggle")?.addEventListener("click", toggle);
+      document.getElementById("theme-toggle-mobile")?.addEventListener("click", toggle);
+
+      // Mobile menu
+      const btn  = document.getElementById("mobile-menu-button");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+        menu.querySelectorAll("a").forEach((a) =>
+          a.addEventListener("click", () => menu.classList.add("hidden")));
+      }
+
+      // Navbar style on scroll
+      const nav = document.getElementById("navbar");
+      const onScroll = () => {
+        const scrolled = window.scrollY > 50;
+        nav?.classList.toggle("shadow-md", scrolled);
+        nav?.classList.toggle("bg-white/90", scrolled);
+        nav?.classList.toggle("dark:bg-darkCard/90", scrolled);
+        nav?.classList.toggle("backdrop-blur-sm", scrolled);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      // ScrollSpy
+      const sections = Array.from(document.querySelectorAll<HTMLElement>("section, header"));
+      const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link"));
+      const spy = () => {
+        let current = "";
+        for (const s of sections) {
+          if (window.pageYOffset >= s.offsetTop - 200) current = s.id;
+        }
+        links.forEach((l) => l.classList.toggle("active", l.getAttribute("href") === `#${current}`));
+      };
+      window.addEventListener("scroll", spy, { passive: true });
+      spy();
+
+      // Fade-in on scroll
+      const faders = document.querySelectorAll(".fade-in");
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add("appear");
+              obs.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0, rootMargin: "0px 0px -80px 0px" },
+      );
+      faders.forEach((f) => io.observe(f));
+    });
+  </script>
+</BaseLayout>
