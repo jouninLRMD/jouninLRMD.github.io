@@ -48,8 +48,10 @@ jobs:
             echo "No changes to publications.json; nothing to commit."
             exit 0
           fi
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Attribute automated refreshes to Luis so the repo history is
+          # consistent with manual commits.
+          git config user.name  "Luís Roberto Mercado Díaz"
+          git config user.email "lrmercadod@gmail.com"
           git add data/publications.json
           git commit -m "chore(data): refresh publications from OpenAlex/CrossRef"
           git push
