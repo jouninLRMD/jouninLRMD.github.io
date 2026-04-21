@@ -1,0 +1,61 @@
+name: Tech watch
+
+# Weekly sanity check of the stack. Emits public/tech-status.json (outdated
+# npm packages, npm audit summary, overall health). Complementary to
+# Dependabot — Dependabot opens bump PRs, this surfaces the summary to
+# visitors via the footer widget.
+
+on:
+  schedule:
+    - cron: "37 6 * * 1"   # Mondays at 06:37 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/tech_watch.mjs"
+      - ".github/workflows/tech-watch.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tech-watch
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run tech-watch scan
+        run: node scripts/tech_watch.mjs
+
+      - name: Commit & push (only if changed)
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- public/tech-status.json; then
+            echo "No changes to tech-status.json; nothing to commit."
+            exit 0
+          fi
+          git config user.name  "tech-watch bot"
+          git config user.email "actions@github.com"
+          git add public/tech-status.json
+          git commit -m "chore(tech-watch): refresh stack-health report"
+          git push

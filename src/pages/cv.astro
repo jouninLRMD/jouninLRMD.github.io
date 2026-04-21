@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+import { education, experience, awards, skillsSummary } from "../data/cv";
+import pubsData from "../../data/publications.json";
+
+type Pub = {
+  title: string;
+  authors?: string;
+  venue?: string;
+  details?: string;
+  year?: number;
+  doi?: string;
+  url?: string;
+  role?: string;
+};
+
+const publications = (pubsData.publications as Pub[]).slice().sort(
+  (a, b) => (b.year || 0) - (a.year || 0),
+);
+
+const pageTitle = `${site.name} — Curriculum Vitae`;
+const pageDescription =
+  `Full CV of ${site.name}: education, research experience, publications, and technical skills.`;
+---
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 print:py-4 print:max-w-none">
+    <div class="flex items-start justify-between gap-4 mb-8 print:mb-4">
+      <div>
+        <a href="/" class="text-sm text-primary hover:underline print:hidden">&larr; Back to site</a>
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white mt-2">{site.name}</h1>
+        <p class="text-slate-600 dark:text-slate-400 mt-1">
+          Ph.D. Biomedical Engineering &middot; M.S. Computer Science & Engineering
+        </p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+          <a href={`mailto:${site.email}`} class="hover:text-primary">{site.email}</a>
+          &middot; <a href={site.socials.orcid} class="hover:text-primary">ORCID</a>
+          &middot; <a href={site.socials.scholar} class="hover:text-primary">Scholar</a>
+          &middot; <a href={site.socials.github} class="hover:text-primary">GitHub</a>
+          &middot; <a href={site.socials.linkedin} class="hover:text-primary">LinkedIn</a>
+        </p>
+      </div>
+      <button id="print-cv"
+              class="print:hidden shrink-0 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-secondary transition-colors">
+        <i class="fas fa-print mr-2"></i>Print / Save PDF
+      </button>
+    </div>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-700 pb-1">Education</h2>
+      <div class="space-y-5">
+        {education.map((e) => (
+          <div>
+            <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{e.title}</h3>
+              <span class="text-sm text-slate-500 dark:text-slate-400">{e.date}</span>
+            </div>
+            {e.org && <p class="text-sm text-slate-600 dark:text-slate-400 italic">{e.org}{e.location ? ` — ${e.location}` : ""}</p>}
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed" set:html={e.body}></p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-700 pb-1">Research Experience</h2>
+      <div class="space-y-5">
+        {experience.map((e) => (
+          <div>
+            <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{e.title}</h3>
+              <span class="text-sm text-slate-500 dark:text-slate-400">{e.date}</span>
+            </div>
+            {e.org && <p class="text-sm text-slate-600 dark:text-slate-400 italic">{e.org}{e.location ? ` — ${e.location}` : ""}</p>}
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed" set:html={e.body}></p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-700 pb-1">Selected Honors & Recognition</h2>
+      <div class="space-y-3">
+        {awards.map((a) => (
+          <div>
+            <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
+              <h3 class="text-base font-semibold text-slate-900 dark:text-white">{a.title}</h3>
+              <span class="text-sm text-slate-500 dark:text-slate-400">{a.date}</span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed" set:html={a.body}></p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-700 pb-1">Technical Skills</h2>
+      <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+        <div><dt class="font-semibold text-slate-900 dark:text-white">Modeling & AI</dt><dd class="text-slate-600 dark:text-slate-400">{skillsSummary.modeling.join(", ")}</dd></div>
+        <div><dt class="font-semibold text-slate-900 dark:text-white">Signals & Imaging</dt><dd class="text-slate-600 dark:text-slate-400">{skillsSummary.signals.join(", ")}</dd></div>
+        <div><dt class="font-semibold text-slate-900 dark:text-white">Systems & Tooling</dt><dd class="text-slate-600 dark:text-slate-400">{skillsSummary.systems.join(", ")}</dd></div>
+        <div><dt class="font-semibold text-slate-900 dark:text-white">Languages</dt><dd class="text-slate-600 dark:text-slate-400">{skillsSummary.languages.join(", ")}</dd></div>
+      </dl>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-700 pb-1">
+        Publications
+        <span class="ml-2 text-sm font-normal text-slate-500 dark:text-slate-400">({publications.length})</span>
+      </h2>
+      <ol class="space-y-4 list-decimal list-outside ml-5 text-sm">
+        {publications.map((p) => (
+          <li class="leading-relaxed">
+            <strong class="text-slate-900 dark:text-white">{p.title}</strong>
+            {p.authors && <span class="text-slate-600 dark:text-slate-400"> — {p.authors}</span>}
+            {p.details && <em class="block text-slate-500 dark:text-slate-400">{p.details}</em>}
+            {p.doi && (
+              <a href={p.url || `https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer"
+                 class="text-primary hover:underline">doi:{p.doi}</a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("print-cv")?.addEventListener("click", () => window.print());
+  </script>
+
+  <style>
+    @media print {
+      :global(html) { background: white; }
+      :global(body) { color: black; }
+    }
+  </style>
+</BaseLayout>

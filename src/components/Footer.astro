@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import StackHealth from "./StackHealth.astro";
 ---
 <footer class="bg-slate-900 text-slate-400 py-10 text-center border-t border-slate-800">
   <div class="max-w-6xl mx-auto px-4 space-y-4">
@@ -11,12 +12,25 @@ import { site } from "../data/site";
       <a href={site.socials.scholar} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
       <a href={site.socials.orcid} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="ORCID"><i class="fab fa-orcid"></i></a>
     </div>
+
+    <div class="flex flex-wrap justify-center gap-3 text-xs">
+      <a href="/cv" class="hover:text-white">CV</a>
+      <span class="text-slate-600">&middot;</span>
+      <a href="/rss.xml" class="hover:text-white">RSS feed</a>
+      <span class="text-slate-600">&middot;</span>
+      <a href="/.well-known/security.txt" class="hover:text-white">security.txt</a>
+    </div>
+
+    <div class="flex justify-center">
+      <StackHealth />
+    </div>
+
     <p class="text-xs text-slate-500">
       Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="hover:text-white">Astro</a>
       &middot; Tailwind CSS &middot; Self-hosted Inter &middot;
       Publications auto-refreshed from <a href="https://openalex.org" target="_blank" rel="noopener noreferrer" class="hover:text-white">OpenAlex</a>
-      via GitHub Actions &middot;
-      <a href="/.well-known/security.txt" class="hover:text-white">security.txt</a>
+      via GitHub Actions &middot; Stack health auto-scanned weekly by
+      <a href="https://github.com/jouninLRMD/jouninLRMD.github.io/actions/workflows/tech-watch.yml" target="_blank" rel="noopener noreferrer" class="hover:text-white">tech-watch</a>.
     </p>
   </div>
 </footer>

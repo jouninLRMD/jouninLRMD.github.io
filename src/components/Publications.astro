@@ -3,25 +3,9 @@
  * The daily GitHub Actions workflow regenerates the JSON; any commit to
  * main rebuilds the site with fresh entries. No runtime fetch needed.
  */
-import pubsData from "../../data/publications.json";
+import { allPublications, generatedAt, pubSlug } from "../lib/publications";
 
-type Pub = {
-  id?: string;
-  title: string;
-  authors?: string;
-  venue?: string;
-  details?: string;
-  year?: number;
-  doi?: string;
-  url?: string;
-  role?: "first" | "co" | string;
-  type?: string;
-};
-
-const publications = (pubsData.publications as Pub[]).slice().sort(
-  (a, b) => (b.year || 0) - (a.year || 0),
-);
-const generatedAt = pubsData.generated_at ?? "";
+const publications = allPublications();
 
 const AUTHOR_RE = /(L\.\s*R\.\s*Mercado[-\s]?D[ií]az|Luis\s+R\.?\s*Mercado[-\s]?D[ií]az|Luis\s+Roberto\s+Mercado\s+D[ií]az)/gi;
 
@@ -81,12 +65,18 @@ function highlightAuthor(authors = ""): string {
         <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">{p.title}</h3>
         <p class="text-slate-600 dark:text-slate-400 text-sm mb-2" set:html={highlightAuthor(p.authors)}></p>
         <p class="text-sm italic text-slate-500 dark:text-slate-500 mb-3">{p.details || p.venue || ""}</p>
-        {p.doi && (
-          <a href={p.url || `https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center text-sm text-primary hover:text-secondary hover:underline">
-            <i class="fas fa-external-link-alt mr-1 text-xs"></i> DOI: {p.doi}
+        <div class="flex flex-wrap items-center gap-4">
+          {p.doi && (
+            <a href={p.url || `https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center text-sm text-primary hover:text-secondary hover:underline">
+              <i class="fas fa-external-link-alt mr-1 text-xs"></i> DOI: {p.doi}
+            </a>
+          )}
+          <a href={`/publications/${pubSlug(p)}`}
+             class="inline-flex items-center text-sm text-slate-500 hover:text-primary hover:underline">
+            Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
           </a>
-        )}
+        </div>
       </article>
     ))}
   </div>
