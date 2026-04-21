@@ -17,13 +17,6 @@ export default defineConfig({
     sitemap(),
   ],
   build: {
-    // Keep asset hashes stable-ish so browser caches are happy across
-    // deploys when content didn't change.
     assets: "_astro",
-  },
-  vite: {
-    build: {
-      cssMinify: "lightningcss",
-    },
   },
 });
