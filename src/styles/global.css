@@ -1,7 +1,20 @@
-/* Base Tailwind layers */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 entrypoint. Replaces the v3 `@tailwind base/components/utilities`
+   directives. Theme tokens and darkMode:"class" are loaded from
+   tailwind.config.mjs via the @config compatibility directive so the
+   existing class names (e.g. bg-darkBg, bg-primary) keep working. */
+@import "tailwindcss";
+@config "../../tailwind.config.mjs";
+
+/* v4 changed the default border color to currentColor. Restore the v3
+   default (slate-200 / slate-700) to keep the site's look unchanged. */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: var(--color-slate-200, currentColor);
+  }
+  .dark *, .dark ::after, .dark ::before, .dark ::backdrop, .dark ::file-selector-button {
+    border-color: var(--color-slate-700, currentColor);
+  }
+}
 
 /* Self-hosted Inter from @fontsource — pulled in by BaseLayout.astro. */
 
