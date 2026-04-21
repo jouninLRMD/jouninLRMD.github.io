@@ -1,0 +1,38 @@
+# Automated dependency updates. Dependabot opens PRs when newer versions of
+# npm packages or GitHub Actions are available; the tech-watch workflow below
+# publishes a readable summary to the site.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "automated"
+    groups:
+      astro:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+      tooling:
+        patterns:
+          - "typescript"
+          - "@fontsource/*"
+          - "tailwindcss"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "github-actions"
+      - "automated"

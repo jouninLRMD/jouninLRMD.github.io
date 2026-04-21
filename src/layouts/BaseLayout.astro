@@ -50,6 +50,7 @@ const csp = [
     <meta name="twitter:card" content="summary" />
     <link rel="canonical" href={site.url} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} — Publications`} href="/rss.xml" />
 
     <!-- FontAwesome with Subresource Integrity (supply-chain safety). -->
     <link
@@ -61,7 +62,7 @@ const csp = [
     />
 
     <!-- Structured data (Schema.org Person) for SEO & ORCID discoverability -->
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Person",
       name: site.name,

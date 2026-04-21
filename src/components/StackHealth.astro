@@ -1,0 +1,40 @@
+---
+/** Stack health widget. Renders the current report from the tech-watch
+ *  agent (public/tech-status.json). Built into every page at compile time,
+ *  so the footer reflects the stack as of the most recent scan. */
+import techStatus from "../../public/tech-status.json";
+
+type Status = {
+  generated_at: string;
+  node: string;
+  outdated_count: number;
+  major_behind: number;
+  vulnerabilities: {
+    info: number; low: number; moderate: number; high: number; critical: number; total: number;
+  };
+  health: "green" | "amber" | "red";
+};
+
+const s = techStatus as Status;
+const generated = s.generated_at ? new Date(s.generated_at).toISOString().slice(0, 10) : "unknown";
+
+const badge = {
+  green: { dot: "bg-emerald-500", label: "All green", ring: "ring-emerald-500/20" },
+  amber: { dot: "bg-amber-500",   label: "Minor updates available", ring: "ring-amber-500/20" },
+  red:   { dot: "bg-rose-500",    label: "Needs attention", ring: "ring-rose-500/20" },
+}[s.health] ?? { dot: "bg-slate-400", label: "Unknown", ring: "ring-slate-400/20" };
+
+const vulnCount = s.vulnerabilities?.total ?? 0;
+---
+<div class={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/60 text-slate-300 text-xs ring-1 ${badge.ring}`}
+     title={`Last scan: ${generated} · Node ${s.node}`}>
+  <span class={`w-2 h-2 rounded-full ${badge.dot} animate-pulse`} aria-hidden="true"></span>
+  <span>Stack health: <span class="font-semibold text-slate-100">{badge.label}</span></span>
+  <span class="text-slate-500">·</span>
+  <span>
+    {s.outdated_count} outdated{s.major_behind > 0 ? ` (${s.major_behind} major)` : ""},
+    {" "}{vulnCount} {vulnCount === 1 ? "vuln" : "vulns"}
+  </span>
+  <span class="text-slate-500">·</span>
+  <span>scanned <span class="font-mono">{generated}</span></span>
+</div>

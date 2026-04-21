@@ -3,6 +3,8 @@ name: Build & deploy Astro site
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -13,6 +15,12 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: false
+
+# Opt every JavaScript action in this workflow into Node 24 ahead of the
+# June 2026 forced upgrade. Silences the "Node.js 20 actions are deprecated"
+# annotation on each run.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
@@ -31,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      - name: Type-check (astro check)
+        run: npm run check
+
       - name: Build Astro site
         run: npm run build
         env:
@@ -41,8 +52,50 @@ jobs:
         with:
           path: ./dist
 
+      - name: Upload dist for link-check
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ./dist
+          retention-days: 1
+
+  link-check:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Non-blocking: external links can be flaky; we want visibility, not a
+    # red CI on a transient 503 from a DOI resolver.
+    continue-on-error: true
+    steps:
+      - name: Checkout (for lychee config)
+        uses: actions/checkout@v4
+
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: ./dist
+
+      - name: Run lychee link-checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --base ./dist
+            --verbose
+            --no-progress
+            --accept 200,203,206,301,302,307,308,429,999
+            --exclude-mail
+            --exclude "^https://doi\\.org/"
+            --exclude "^https://openalex\\.org"
+            ./dist/**/*.html
+          fail: false
+
   deploy:
     needs: build
+    # Only publish to Pages from main — PRs just exercise the build /
+    # type-check / link-check jobs so we get pre-merge signal without
+    # competing for the `pages` deployment environment.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
