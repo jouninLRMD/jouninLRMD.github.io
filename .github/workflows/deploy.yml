@@ -3,6 +3,8 @@ name: Build & deploy Astro site
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -90,6 +92,10 @@ jobs:
 
   deploy:
     needs: build
+    # Only publish to Pages from main — PRs just exercise the build /
+    # type-check / link-check jobs so we get pre-merge signal without
+    # competing for the `pages` deployment environment.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
