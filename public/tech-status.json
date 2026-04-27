@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-21T19:06:48.693Z",
+  "generated_at": "2026-04-27T09:07:36.514Z",
   "node": "v22.22.2",
-  "outdated_count": 1,
+  "outdated_count": 2,
   "major_behind": 1,
   "vulnerabilities": {
     "info": 0,
@@ -12,6 +12,14 @@
     "total": 5
   },
   "outdated": [
+    {
+      "name": "astro",
+      "current": "6.1.8",
+      "wanted": "6.1.9",
+      "latest": "6.1.9",
+      "type": "dependencies",
+      "homepage": "https://astro.build"
+    },
     {
       "name": "typescript",
       "current": "5.9.3",
