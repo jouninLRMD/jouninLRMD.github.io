@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-27T09:07:36.514Z",
+  "generated_at": "2026-05-04T09:05:50.665Z",
   "node": "v22.22.2",
-  "outdated_count": 2,
+  "outdated_count": 3,
   "major_behind": 1,
   "vulnerabilities": {
     "info": 0,
@@ -13,10 +13,18 @@
   },
   "outdated": [
     {
+      "name": "@astrojs/check",
+      "current": "0.9.8",
+      "wanted": "0.9.9",
+      "latest": "0.9.9",
+      "type": "devDependencies",
+      "homepage": "https://github.com/withastro/astro/tree/main/packages/language-tools/astro-check"
+    },
+    {
       "name": "astro",
       "current": "6.1.8",
-      "wanted": "6.1.9",
-      "latest": "6.1.9",
+      "wanted": "6.2.1",
+      "latest": "6.2.1",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
