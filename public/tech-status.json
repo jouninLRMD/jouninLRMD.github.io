@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-18T10:48:39.611Z",
-  "node": "v22.22.2",
+  "generated_at": "2026-05-25T10:58:27.588Z",
+  "node": "v22.22.3",
   "outdated_count": 5,
   "major_behind": 1,
   "vulnerabilities": {
@@ -31,8 +31,8 @@
     {
       "name": "astro",
       "current": "6.1.8",
-      "wanted": "6.3.3",
-      "latest": "6.3.3",
+      "wanted": "6.3.7",
+      "latest": "6.3.7",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
