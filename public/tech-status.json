@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-25T10:58:27.588Z",
+  "generated_at": "2026-06-01T12:19:52.388Z",
   "node": "v22.22.3",
-  "outdated_count": 5,
+  "outdated_count": 6,
   "major_behind": 1,
   "vulnerabilities": {
     "info": 0,
@@ -21,6 +21,14 @@
       "homepage": "https://github.com/withastro/astro/tree/main/packages/language-tools/astro-check"
     },
     {
+      "name": "@astrojs/sitemap",
+      "current": "3.7.2",
+      "wanted": "3.7.3",
+      "latest": "3.7.3",
+      "type": "dependencies",
+      "homepage": "https://docs.astro.build/en/guides/integrations-guide/sitemap/"
+    },
+    {
       "name": "@tailwindcss/vite",
       "current": "4.2.4",
       "wanted": "4.3.0",
@@ -31,8 +39,8 @@
     {
       "name": "astro",
       "current": "6.1.8",
-      "wanted": "6.3.7",
-      "latest": "6.3.7",
+      "wanted": "6.4.2",
+      "latest": "6.4.2",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
