@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-08T11:28:34.199Z",
+  "generated_at": "2026-06-15T12:52:37.282Z",
   "node": "v22.22.3",
   "outdated_count": 6,
   "major_behind": 1,
   "vulnerabilities": {
     "info": 0,
-    "low": 1,
+    "low": 0,
     "moderate": 5,
-    "high": 3,
+    "high": 6,
     "critical": 0,
-    "total": 9
+    "total": 11
   },
   "outdated": [
     {
@@ -31,24 +31,24 @@
     {
       "name": "@tailwindcss/vite",
       "current": "4.2.4",
-      "wanted": "4.3.0",
-      "latest": "4.3.0",
+      "wanted": "4.3.1",
+      "latest": "4.3.1",
       "type": "dependencies",
       "homepage": "https://tailwindcss.com"
     },
     {
       "name": "astro",
       "current": "6.1.8",
-      "wanted": "6.4.4",
-      "latest": "6.4.4",
+      "wanted": "6.4.7",
+      "latest": "6.4.7",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
     {
       "name": "tailwindcss",
       "current": "4.2.4",
-      "wanted": "4.3.0",
-      "latest": "4.3.0",
+      "wanted": "4.3.1",
+      "latest": "4.3.1",
       "type": "dependencies",
       "homepage": "https://tailwindcss.com"
     },
