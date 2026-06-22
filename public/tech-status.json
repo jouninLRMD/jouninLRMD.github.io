@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-15T12:52:37.282Z",
+  "generated_at": "2026-06-22T12:36:52.706Z",
   "node": "v22.22.3",
   "outdated_count": 6,
-  "major_behind": 1,
+  "major_behind": 2,
   "vulnerabilities": {
     "info": 0,
-    "low": 0,
-    "moderate": 5,
-    "high": 6,
+    "low": 1,
+    "moderate": 6,
+    "high": 5,
     "critical": 0,
-    "total": 11
+    "total": 12
   },
   "outdated": [
     {
@@ -39,8 +39,8 @@
     {
       "name": "astro",
       "current": "6.1.8",
-      "wanted": "6.4.7",
-      "latest": "6.4.7",
+      "wanted": "6.4.8",
+      "latest": "7.0.0",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
