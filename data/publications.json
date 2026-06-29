@@ -1,18 +1,33 @@
 {
-  "generated_at": "2026-04-20",
+  "generated_at": "2026-06-29",
   "source": "auto (openalex+crossref) merged with manual curation",
   "author": {
     "name": "Luis R. Mercado-Diaz",
     "name_variants": [
       "Luis R. Mercado-Diaz",
+      "Luis R. Mercado Diaz",
+      "Luis R. M. D.",
       "L. R. Mercado-Diaz",
       "L. R. Mercado Diaz",
-      "L. R. Mercado-Díaz",
-      "Luis Mercado-Diaz",
-      "Luis Mercado"
+      "L. Mercado Diaz",
+      "L.R.M. Diaz",
+      "L. R. M. D."
     ]
   },
   "publications": [
+    {
+      "id": "10.3390/biophysica6030049",
+      "title": "Comparing Brain and Electrodermal Responses for Arousal Classification in Human–Computer Interaction",
+      "authors": "Yedukondala Rao Veeranki, Luis R. Mercado-Diaz, Hugo F. Posada-Quintero",
+      "venue": "Biophysica",
+      "details": "Biophysica, 2026",
+      "year": 2026,
+      "doi": "10.3390/biophysica6030049",
+      "url": "https://doi.org/10.3390/biophysica6030049",
+      "role": "co",
+      "type": "journal",
+      "source": "crossref"
+    },
     {
       "id": "10.3390/app16073240",
       "title": "Continuous Emotion Recognition Using EDA-Graphs: A Graph Signal Processing Approach for Affective Dimension Estimation",
@@ -56,7 +71,7 @@
       "id": "10.1109/bsn66969.2025.11337804",
       "title": "Analysis of Driver Behavior in Various Events Using Electrodermal Activity Signal",
       "authors": "Yedukondala Rao Veeranki, Toleti Sai Shanmukh Kailash, Luís Roberto Mercado Díaz, Hugo F. Posada–Quintero",
-      "venue": "",
+      "venue": "2025 IEEE 21st International Conference on Body Sensor Networks (BSN)",
       "details": "2025",
       "year": 2025,
       "doi": "10.1109/bsn66969.2025.11337804",
@@ -95,7 +110,7 @@
       "id": "10.1109/bsn66969.2025.11337467",
       "title": "Graph-Based Analysis of Electroretinograms for Reducing Computational Complexity and Classifying Neurodevelopmental Disorders",
       "authors": "Luis R. Mercado-Diaz, Javier O. Pinzón-Arenas, Paul A. Constable, Hugo F. Posada–Quintero",
-      "venue": "",
+      "venue": "2025 IEEE 21st International Conference on Body Sensor Networks (BSN)",
       "details": "2025",
       "year": 2025,
       "doi": "10.1109/bsn66969.2025.11337467",
@@ -114,7 +129,8 @@
       "doi": "10.1016/j.neucom.2025.131620",
       "url": "https://doi.org/10.1016/j.neucom.2025.131620",
       "role": "first",
-      "type": "journal"
+      "type": "journal",
+      "source": "crossref"
     },
     {
       "id": "10.1109/TBME.2025.3613471",
