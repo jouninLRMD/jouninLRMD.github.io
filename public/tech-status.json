@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-29T11:33:43.024Z",
-  "node": "v22.23.0",
-  "outdated_count": 6,
+  "generated_at": "2026-07-06T11:14:41.738Z",
+  "node": "v22.23.1",
+  "outdated_count": 7,
   "major_behind": 2,
   "vulnerabilities": {
     "info": 0,
     "low": 1,
-    "moderate": 6,
+    "moderate": 5,
     "high": 5,
     "critical": 0,
-    "total": 12
+    "total": 11
   },
   "outdated": [
     {
@@ -19,6 +19,14 @@
       "latest": "0.9.9",
       "type": "devDependencies",
       "homepage": "https://github.com/withastro/astro/tree/main/packages/language-tools/astro-check"
+    },
+    {
+      "name": "@astrojs/rss",
+      "current": "4.0.18",
+      "wanted": "4.0.19",
+      "latest": "4.0.19",
+      "type": "dependencies",
+      "homepage": "https://astro.build"
     },
     {
       "name": "@astrojs/sitemap",
@@ -31,8 +39,8 @@
     {
       "name": "@tailwindcss/vite",
       "current": "4.2.4",
-      "wanted": "4.3.1",
-      "latest": "4.3.1",
+      "wanted": "4.3.2",
+      "latest": "4.3.2",
       "type": "dependencies",
       "homepage": "https://tailwindcss.com"
     },
@@ -40,15 +48,15 @@
       "name": "astro",
       "current": "6.1.8",
       "wanted": "6.4.8",
-      "latest": "7.0.3",
+      "latest": "7.0.6",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
     {
       "name": "tailwindcss",
       "current": "4.2.4",
-      "wanted": "4.3.1",
-      "latest": "4.3.1",
+      "wanted": "4.3.2",
+      "latest": "4.3.2",
       "type": "dependencies",
       "homepage": "https://tailwindcss.com"
     },
