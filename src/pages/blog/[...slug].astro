@@ -1,0 +1,105 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import { site } from "../../data/site";
+import { allPublications, pubSlug } from "../../lib/publications";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+
+// If the post declares a DOI, link it to the matching auto-synced
+// publication page (when one exists) and to the canonical DOI URL.
+const pub = post.data.doi
+  ? allPublications().find((p) => p.doi?.toLowerCase() === post.data.doi!.toLowerCase())
+  : undefined;
+const doiUrl = post.data.doi ? `https://doi.org/${post.data.doi}` : undefined;
+
+const pageTitle = `${post.data.title} — ${site.name}`;
+---
+<BaseLayout title={pageTitle} description={post.data.description}>
+  <Navbar />
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
+    <a href="/blog" class="text-sm text-primary hover:underline">&larr; All posts</a>
+
+    <article class="mt-6">
+      <header class="mb-8">
+        <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
+          <time datetime={post.data.date.toISOString()} class="text-primary font-semibold">{fmt(post.data.date)}</time>
+          {post.data.updated && <span class="text-xs">(updated {fmt(post.data.updated)})</span>}
+          {post.data.tags.map((t) => (
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">{t}</span>
+          ))}
+        </div>
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white leading-tight">{post.data.title}</h1>
+        <p class="text-lg text-slate-600 dark:text-slate-400 mt-3">{post.data.description}</p>
+
+        {(doiUrl || pub) && (
+          <div class="flex flex-wrap gap-3 mt-6">
+            {doiUrl && (
+              <a href={doiUrl} target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-secondary transition-colors">
+                <i class="fas fa-external-link-alt mr-2"></i>Read the paper
+              </a>
+            )}
+            {pub && (
+              <a href={`/publications/${pubSlug(pub)}`}
+                 class="inline-flex items-center px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-sm font-medium text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-colors">
+                <i class="fas fa-book-open mr-2"></i>Publication details
+              </a>
+            )}
+          </div>
+        )}
+      </header>
+
+      {post.data.cover && (
+        <figure class="mb-10 -mx-4 sm:mx-0">
+          <Image src={post.data.cover} alt={post.data.coverAlt ?? post.data.title}
+                 class="w-full rounded-none sm:rounded-xl shadow-sm" width={1400} />
+          {post.data.coverAlt && (
+            <figcaption class="text-center text-xs text-slate-500 dark:text-slate-400 mt-2 px-4">{post.data.coverAlt}</figcaption>
+          )}
+        </figure>
+      )}
+
+      <div class="prose prose-slate dark:prose-invert max-w-none
+                  prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                  prose-img:rounded-xl prose-img:shadow-sm">
+        <Content />
+      </div>
+    </article>
+
+    <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-4">
+      <a href="/blog" class="text-sm text-primary hover:underline">&larr; All posts</a>
+      <a href="/rss.xml" class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary">
+        <i class="fas fa-rss mr-1"></i>Subscribe via RSS
+      </a>
+    </div>
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.data.title,
+      description: post.data.description,
+      datePublished: post.data.date.toISOString(),
+      dateModified: (post.data.updated ?? post.data.date).toISOString(),
+      author: { "@type": "Person", name: site.name, url: site.url },
+      keywords: post.data.tags.join(", ") || undefined,
+      citation: doiUrl,
+      mainEntityOfPage: `${site.url}/blog/${post.id}`,
+    })} />
+  </main>
+
+  <Footer />
+</BaseLayout>

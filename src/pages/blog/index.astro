@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import { site } from "../../data/site";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
+
+const pageTitle = `${site.name} — Blog & Research Notes`;
+const pageDescription =
+  "Research notes, paper walk-throughs, and project updates by Luis R. Mercado-Diaz.";
+---
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Navbar />
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 min-h-screen">
+    <div class="mb-12">
+      <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-3">Blog &amp; Research Notes</h1>
+      <div class="w-20 h-1 bg-primary rounded-full mb-4"></div>
+      <p class="text-slate-600 dark:text-slate-400 max-w-2xl">
+        Deep dives into my published papers, ongoing projects, and ideas at the
+        intersection of graph-based AI, multimodal machine learning, and health.
+      </p>
+    </div>
+
+    {posts.length === 0 && (
+      <p class="text-slate-500 dark:text-slate-400 italic">No posts yet — first one coming soon.</p>
+    )}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}`}
+           class="group bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
+          {post.data.cover && (
+            <div class="aspect-[16/8] overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <Image src={post.data.cover} alt={post.data.coverAlt ?? post.data.title}
+                     class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                     width={800} />
+            </div>
+          )}
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-3">
+              <span class="text-primary font-semibold">{fmt(post.data.date)}</span>
+              {post.data.doi && (
+                <span class="inline-block px-2 py-0.5 font-bold uppercase tracking-wide rounded-full bg-primary/10 text-primary">Paper</span>
+              )}
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-primary transition-colors">
+              {post.data.title}
+            </h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 flex-1">{post.data.description}</p>
+            {post.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2 mt-4">
+                {post.data.tags.map((t) => (
+                  <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">{t}</span>
+                ))}
+              </div>
+            )}
+            <span class="text-sm font-medium text-primary mt-4 inline-flex items-center">
+              Read more <span class="ml-1 group-hover:translate-x-1 transition-transform">&rarr;</span>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

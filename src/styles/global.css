@@ -4,6 +4,9 @@
    existing class names (e.g. bg-darkBg, bg-primary) keep working. */
 @import "tailwindcss";
 @config "../../tailwind.config.mjs";
+/* Typography plugin: gives Markdown blog posts (`.prose`) proper article
+   styling — headings, figures, code blocks, blockquotes — in both themes. */
+@plugin "@tailwindcss/typography";
 
 /* v4 changed the default border color to currentColor. Restore the v3
    default (slate-200 / slate-700) to keep the site's look unchanged. */
