@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T11:14:41.738Z",
+  "generated_at": "2026-07-13T09:56:03.493Z",
   "node": "v22.23.1",
   "outdated_count": 7,
   "major_behind": 2,
@@ -48,7 +48,7 @@
       "name": "astro",
       "current": "6.1.8",
       "wanted": "6.4.8",
-      "latest": "7.0.6",
+      "latest": "7.0.7",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
@@ -64,7 +64,7 @@
       "name": "typescript",
       "current": "5.9.3",
       "wanted": "5.9.3",
-      "latest": "6.0.3",
+      "latest": "7.0.2",
       "type": "devDependencies",
       "homepage": "https://www.typescriptlang.org/"
     }
