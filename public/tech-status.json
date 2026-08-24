@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T07:36:12.208Z",
+  "generated_at": "2026-08-24T07:41:58.545Z",
   "node": "v22.23.2",
   "outdated_count": 8,
   "major_behind": 2,
@@ -56,7 +56,7 @@
       "name": "astro",
       "current": "6.1.8",
       "wanted": "6.4.8",
-      "latest": "7.2.2",
+      "latest": "7.2.4",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
