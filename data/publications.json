@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29",
+  "generated_at": "2026-08-28",
   "source": "auto (openalex+crossref) merged with manual curation",
   "author": {
     "name": "Luis R. Mercado-Diaz",
@@ -38,6 +38,19 @@
       "doi": "10.3390/app16073240",
       "url": "https://doi.org/10.3390/app16073240",
       "role": "first",
+      "type": "journal",
+      "source": "openalex"
+    },
+    {
+      "id": "10.3390/s26175407",
+      "title": "Electrodermal Activity as a Potential Diagnostic Biomarker for Alzheimer’s Disease: A Pilot Study",
+      "authors": "S Senthur Raja Pandian, Luís Roberto Mercado Díaz, Jonathan Ruiz-Triviño, David Aguillón, Hugo F. Posada–Quintero",
+      "venue": "Sensors",
+      "details": "Sensors, 2026",
+      "year": 2026,
+      "doi": "10.3390/s26175407",
+      "url": "https://doi.org/10.3390/s26175407",
+      "role": "co",
       "type": "journal",
       "source": "openalex"
     },
