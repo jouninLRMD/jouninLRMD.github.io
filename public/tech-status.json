@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T14:22:35.165Z",
+  "generated_at": "2026-09-07T12:59:21.137Z",
   "node": "v22.23.2",
   "outdated_count": 8,
   "major_behind": 2,
@@ -31,8 +31,8 @@
     {
       "name": "@astrojs/sitemap",
       "current": "3.7.2",
-      "wanted": "3.7.3",
-      "latest": "3.7.3",
+      "wanted": "3.7.4",
+      "latest": "3.7.4",
       "type": "dependencies",
       "homepage": "https://docs.astro.build/en/guides/integrations-guide/sitemap/"
     },
@@ -56,7 +56,7 @@
       "name": "astro",
       "current": "6.1.8",
       "wanted": "6.4.8",
-      "latest": "7.2.9",
+      "latest": "7.3.1",
       "type": "dependencies",
       "homepage": "https://astro.build"
     },
