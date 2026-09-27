@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28",
+  "generated_at": "2026-09-27",
   "source": "auto (openalex+crossref) merged with manual curation",
   "author": {
     "name": "Luis R. Mercado-Diaz",
@@ -38,6 +38,19 @@
       "doi": "10.3390/app16073240",
       "url": "https://doi.org/10.3390/app16073240",
       "role": "first",
+      "type": "journal",
+      "source": "openalex"
+    },
+    {
+      "id": "10.3390/signals7040073",
+      "title": "Electrodermal Activity as a Biomarker in Autism Spectrum Disorder, Attention Deficit Hyperactivity Disorder, and Obsessive-Compulsive Disorder: A Systematic Review",
+      "authors": "Riley Q. McNaboe, Luis R. Mercado-Diaz, Boluwatife E. Faremi, Hugo Fernando Posada-Quintero",
+      "venue": "Signals",
+      "details": "Signals, 2026",
+      "year": 2026,
+      "doi": "10.3390/signals7040073",
+      "url": "https://doi.org/10.3390/signals7040073",
+      "role": "co",
       "type": "journal",
       "source": "openalex"
     },
