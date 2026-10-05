@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02",
+  "generated_at": "2026-10-05",
   "source": "auto (openalex+crossref) merged with manual curation",
   "author": {
     "name": "Luis R. Mercado-Diaz",
@@ -84,7 +84,7 @@
       "id": "10.1109/aciiw71585.2026.11712089",
       "title": "Spatial Pain Recognition through Physiological Signal Fusion: A Deep Learning Perspective on Anatomical Localization",
       "authors": "Javier Orlando Pinzon-Arenas, Luis R. Mercado-Diaz, Hugo Fernando Posada-Quintero",
-      "venue": "",
+      "venue": "International Conference on Affective Computing and Intelligent Interaction Workshops and Demos (ACIIW)",
       "details": "2026",
       "year": 2026,
       "doi": "10.1109/aciiw71585.2026.11712089",
