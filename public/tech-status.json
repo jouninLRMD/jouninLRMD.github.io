@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-28T14:25:11.500Z",
-  "node": "v22.23.2",
+  "generated_at": "2026-10-05T15:13:41.072Z",
+  "node": "v22.23.3",
   "outdated_count": 8,
   "major_behind": 2,
   "vulnerabilities": {
     "info": 0,
     "low": 1,
     "moderate": 5,
-    "high": 10,
+    "high": 11,
     "critical": 1,
-    "total": 17
+    "total": 18
   },
   "outdated": [
     {
